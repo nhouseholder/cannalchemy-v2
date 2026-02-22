@@ -75,25 +75,25 @@ export default function EffectVerification({ predictions, forumData }) {
       </div>
 
       {/* Column headers */}
-      <div className="flex items-center gap-2 mb-2 px-1">
-        <div className="flex-1 text-[9px] font-semibold text-purple-400 uppercase tracking-wider">
-          Molecular Prediction
+      <div className="flex items-center gap-1 mb-2 px-1">
+        <div className="flex-1 text-[8px] font-semibold text-purple-400 uppercase tracking-wider">
+          Science
         </div>
-        <div className="w-24 text-center text-[9px] font-semibold text-gray-500 dark:text-[#6a7a6e] uppercase tracking-wider">
+        <div className="w-[72px] sm:w-24 text-center text-[8px] font-semibold text-gray-500 dark:text-[#6a7a6e] uppercase tracking-wider flex-shrink-0">
           Effect
         </div>
-        <div className="flex-1 text-right text-[9px] font-semibold text-blue-400 uppercase tracking-wider">
-          Community Reports
+        <div className="flex-1 text-right text-[8px] font-semibold text-blue-400 uppercase tracking-wider">
+          Community
         </div>
       </div>
 
       {/* Effect rows */}
       <div className="space-y-2">
         {pairs.map((pair) => (
-          <div key={pair.effect} className="flex items-center gap-2">
+          <div key={pair.effect} className="flex items-center gap-1">
             {/* Predicted bar (right-aligned) */}
-            <div className="flex-1 flex items-center gap-1.5">
-              <span className="text-[10px] text-gray-400 dark:text-[#6a7a6e] w-7 text-right font-mono">
+            <div className="flex-1 flex items-center gap-1">
+              <span className="text-[9px] text-gray-400 dark:text-[#6a7a6e] w-6 text-right font-mono flex-shrink-0">
                 {pair.predicted}%
               </span>
               <div className="flex-1 h-2 bg-gray-100 dark:bg-white/[0.04] rounded-full overflow-hidden">
@@ -108,21 +108,22 @@ export default function EffectVerification({ predictions, forumData }) {
               </div>
             </div>
 
-            {/* Effect name (center) */}
-            <div className="w-24 text-center">
+            {/* Effect name (center) — responsive width */}
+            <div className="w-[72px] sm:w-24 text-center flex-shrink-0 px-0.5">
               <span
-                className={`text-[10px] font-medium ${
+                className={`text-[9px] sm:text-[10px] font-medium leading-tight block truncate ${
                   pair.matched
                     ? 'text-gray-700 dark:text-[#c0d4c6]'
                     : 'text-gray-400 dark:text-[#5a6a5e]'
                 }`}
+                title={pair.effect}
               >
                 {pair.effect}
               </span>
             </div>
 
             {/* Reported bar (left-aligned) */}
-            <div className="flex-1 flex items-center gap-1.5">
+            <div className="flex-1 flex items-center gap-1">
               <div className="flex-1 h-2 bg-gray-100 dark:bg-white/[0.04] rounded-full overflow-hidden">
                 {pair.reported != null ? (
                   <div
@@ -135,13 +136,11 @@ export default function EffectVerification({ predictions, forumData }) {
                   />
                 ) : (
                   <div className="h-full flex items-center justify-center">
-                    <span className="text-[7px] text-gray-300 dark:text-[#3a4a3e]">
-                      no data
-                    </span>
+                    <span className="text-[7px] text-gray-300 dark:text-[#3a4a3e]">—</span>
                   </div>
                 )}
               </div>
-              <span className="text-[10px] text-gray-400 dark:text-[#6a7a6e] w-7 text-left font-mono">
+              <span className="text-[9px] text-gray-400 dark:text-[#6a7a6e] w-6 text-left font-mono flex-shrink-0">
                 {pair.reported != null ? `${pair.reported}%` : '—'}
               </span>
             </div>

@@ -73,7 +73,7 @@ export default function TerpeneRadar({ terpenes, strainType = 'hybrid' }) {
       </div>
 
       <ResponsiveContainer width="100%" height={220}>
-        <RadarChart cx="50%" cy="50%" outerRadius="68%" data={data}>
+        <RadarChart cx="50%" cy="50%" outerRadius="60%" data={data}>
           <PolarGrid
             stroke="currentColor"
             className="text-gray-200 dark:text-white/10"

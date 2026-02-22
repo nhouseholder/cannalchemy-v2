@@ -29,7 +29,7 @@ function PredictedEffectCard({ prediction }) {
   return (
     <div className="flex items-center gap-3 py-1.5">
       <div className="w-24 flex-shrink-0">
-        <span className="text-[11px] font-semibold text-gray-700 dark:text-[#c0d4c6]">
+        <span className="text-[11px] font-semibold text-gray-700 dark:text-[#c0d4c6] block truncate" title={displayName}>
           {displayName}
         </span>
       </div>
@@ -88,7 +88,7 @@ function ReceptorCard({ receptor, molecules, isActive }) {
             {molecules.map((m) => (
               <span
                 key={m.name}
-                className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[9px] font-medium"
+                className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[9px] font-medium max-w-full"
                 style={{
                   backgroundColor: `${info.color}12`,
                   color: info.color,

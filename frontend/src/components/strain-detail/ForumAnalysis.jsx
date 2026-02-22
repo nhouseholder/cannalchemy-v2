@@ -2,19 +2,17 @@ import { Users, ThumbsUp, ThumbsDown } from 'lucide-react'
 import { ConfidenceBadge, EffectBadge } from '../shared/Badge'
 
 function EffectBar({ label, pct, baseline, variant = 'positive' }) {
-  const color = variant === 'positive' ? '#32c864' : '#ef4444'
   const bgColor = variant === 'positive' ? 'bg-leaf-500' : 'bg-red-500'
-  const diff = baseline != null ? pct - baseline : null
 
   return (
     <div className="space-y-0.5">
-      <div className="flex items-center justify-between text-[11px]">
-        <span className="text-gray-700 dark:text-[#b0c4b4]">{label}</span>
-        <span className="text-gray-500 dark:text-[#8a9a8e]">
+      <div className="flex items-center justify-between gap-2">
+        <span className="text-[11px] text-gray-700 dark:text-[#b0c4b4] truncate flex-1 min-w-0">{label}</span>
+        <span className="text-[11px] text-gray-500 dark:text-[#8a9a8e] flex-shrink-0 whitespace-nowrap">
           {pct}%
           {baseline != null && (
-            <span className="ml-1 text-[10px] text-gray-400 dark:text-[#6a7a6e]">
-              vs {baseline}% baseline
+            <span className="ml-1 text-[9px] text-gray-400 dark:text-[#6a7a6e]">
+              (avg {baseline}%)
             </span>
           )}
         </span>

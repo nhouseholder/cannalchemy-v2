@@ -12,15 +12,15 @@ import { getReceptorColor, RECEPTOR_COLORS } from '../../utils/colors'
  * Uses a deterministic 3-column layout with strong repulsion to prevent overlap.
  */
 
-const NODE_RADIUS = { molecule: 18, receptor: 20, effect: 16 }
-const MIN_NODE_GAP = 58 // minimum vertical gap between node centers
+const NODE_RADIUS = { molecule: 14, receptor: 16, effect: 14 }
+const MIN_NODE_GAP = 68 // minimum vertical gap between node centers (generous for labels)
 
 function simpleForceLayout(nodes, links, width, height) {
   const byType = { molecule: [], receptor: [], effect: [] }
   nodes.forEach((n) => byType[n.type]?.push(n))
 
-  // 3-column positions
-  const colX = { molecule: width * 0.15, receptor: width * 0.5, effect: width * 0.85 }
+  // 3-column positions — generous margins so labels don't clip
+  const colX = { molecule: width * 0.14, receptor: width * 0.5, effect: width * 0.86 }
 
   // Initial even spacing per column
   Object.entries(byType).forEach(([type, group]) => {
@@ -60,8 +60,8 @@ function simpleForceLayout(nodes, links, width, height) {
     })
   }
 
-  // Clamp to viewbox with padding
-  const pad = 30
+  // Clamp to viewbox with generous padding for labels
+  const pad = 40
   nodes.forEach((n) => {
     n.y = Math.max(pad, Math.min(height - pad, n.y))
   })
@@ -94,15 +94,11 @@ function GraphNode({ node, dark, onHover, isHovered, connections }) {
   const c = colors[node.type] || colors.molecule
 
   // Label — truncate long names
-  const displayLabel = node.label.length > 14 ? node.label.slice(0, 13) + '\u2026' : node.label
-  const fontSize = node.label.length > 10 ? 6.5 : 7.5
+  const displayLabel = node.label.length > 12 ? node.label.slice(0, 11) + '\u2026' : node.label
+  const fontSize = node.label.length > 9 ? 6 : 7
 
-  // Place label outside the node to prevent overlap
-  const labelY = node.type === 'effect'
-    ? node.y + r + 10
-    : node.type === 'molecule'
-      ? node.y - r - 6
-      : node.y - r - 6
+  // Place label outside the node to prevent overlap — always below for consistency
+  const labelY = node.y + r + 10
 
   return (
     <g
@@ -124,20 +120,7 @@ function GraphNode({ node, dark, onHover, isHovered, connections }) {
         stroke={c.stroke}
         strokeWidth={isHovered ? 2 : 1.2}
       />
-      {/* Short label inside circle (abbreviation for receptors) */}
-      <text
-        x={node.x}
-        y={node.y + 1}
-        textAnchor="middle"
-        dominantBaseline="central"
-        fill={c.text}
-        fontSize={node.type === 'receptor' ? 7 : 6}
-        fontWeight={700}
-        className="pointer-events-none select-none"
-      >
-        {node.type === 'receptor' ? node.label : ''}
-      </text>
-      {/* Full label outside the circle */}
+      {/* Label below circle for all node types */}
       <text
         x={node.x}
         y={labelY}
@@ -148,31 +131,17 @@ function GraphNode({ node, dark, onHover, isHovered, connections }) {
         fontWeight={600}
         className="pointer-events-none select-none"
       >
-        {node.type === 'receptor' ? '' : displayLabel}
+        {displayLabel}
       </text>
-      {/* Subtitle below circle for molecules/effects */}
-      {node.subtitle && node.type !== 'receptor' && (
+      {/* Subtitle below label */}
+      {node.subtitle && (
         <text
           x={node.x}
           y={labelY + 9}
           textAnchor="middle"
           dominantBaseline="central"
           fill={dark ? '#6a7a6e' : '#9ca3af'}
-          fontSize={5.5}
-          className="pointer-events-none select-none"
-        >
-          {node.subtitle}
-        </text>
-      )}
-      {/* Subtitle below label for receptors */}
-      {node.subtitle && node.type === 'receptor' && (
-        <text
-          x={node.x}
-          y={node.y + r + 9}
-          textAnchor="middle"
-          dominantBaseline="central"
-          fill={dark ? '#6a7a6e' : '#9ca3af'}
-          fontSize={5.5}
+          fontSize={5}
           className="pointer-events-none select-none"
         >
           {node.subtitle}
@@ -272,9 +241,9 @@ export default function ReceptorMap({ pathways, effectPredictions }) {
       allNodes.filter((n) => n.type === 'receptor').length,
       allNodes.filter((n) => n.type === 'effect').length,
     )
-    // Give each node plenty of vertical space
-    const h = Math.max(maxCol * MIN_NODE_GAP + 80, 260)
-    const w = 420
+    // Give each node plenty of vertical space (+ label + subtitle room)
+    const h = Math.max(maxCol * MIN_NODE_GAP + 100, 280)
+    const w = 440
 
     simpleForceLayout(allNodes, linkList, w, h)
 
@@ -297,7 +266,7 @@ export default function ReceptorMap({ pathways, effectPredictions }) {
   if (!nodes.length) return null
 
   return (
-    <div className="rounded-2xl border border-gray-200 dark:border-white/[0.06] bg-white dark:bg-white/[0.02] p-4">
+    <div className="rounded-2xl border border-gray-200 dark:border-white/[0.06] bg-white dark:bg-white/[0.02] p-4 overflow-hidden">
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
           <div className="w-6 h-6 rounded-md bg-blue-500/10 flex items-center justify-center">

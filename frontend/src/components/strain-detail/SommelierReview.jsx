@@ -47,9 +47,9 @@ export default function SommelierReview({ notes, scores }) {
       </div>
 
       {/* Radar Chart */}
-      <div className="w-full h-52 -mx-2">
+      <div className="w-full h-52">
         <ResponsiveContainer width="100%" height="100%">
-          <RadarChart cx="50%" cy="50%" outerRadius="70%" data={chartData}>
+          <RadarChart cx="50%" cy="50%" outerRadius="60%" data={chartData}>
             <PolarGrid
               stroke="rgba(120,120,120,0.2)"
               strokeDasharray="3 3"

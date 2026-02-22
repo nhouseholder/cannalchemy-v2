@@ -29,7 +29,7 @@ export default function StrainCardExpanded({ strain }) {
   ]
 
   return (
-    <div className="space-y-5 pt-4 border-t border-gray-200 dark:border-white/[0.06]">
+    <div className="space-y-5 pt-4 border-t border-gray-200 dark:border-white/[0.06] overflow-hidden">
       {/* 1. Why This Match */}
       {strain.whyMatch && (
         <WhyMatchTooltip text={strain.whyMatch} />
