@@ -1,0 +1,126 @@
+import { useMemo } from 'react'
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
+import L from 'leaflet'
+import { MapPin } from 'lucide-react'
+
+const MATCH_COLORS = {
+  exact: '#32c864',
+  alternative: '#facc15',
+  none: '#9ca3af',
+}
+
+function createColoredIcon(matchType) {
+  const color = MATCH_COLORS[matchType] || MATCH_COLORS.none
+  return L.divIcon({
+    className: '',
+    iconSize: [24, 24],
+    iconAnchor: [12, 12],
+    popupAnchor: [0, -14],
+    html: `
+      <div style="
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: ${color};
+        border: 3px solid white;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.35);
+      "></div>
+    `,
+  })
+}
+
+export default function DispensaryMap({
+  dispensaries = [],
+  center,
+  zoom = 12,
+}) {
+  const hasValidCenter = center?.lat && center?.lng
+  const hasLocatedDispensaries = dispensaries.some((d) => d.lat && d.lng)
+
+  const icons = useMemo(() => ({
+    exact: createColoredIcon('exact'),
+    alternative: createColoredIcon('alternative'),
+    none: createColoredIcon('none'),
+  }), [])
+
+  if (!hasValidCenter && !hasLocatedDispensaries) {
+    return (
+      <div className="flex flex-col items-center justify-center h-[250px] md:h-[350px] rounded-2xl border border-gray-200 dark:border-surface-border bg-gray-50 dark:bg-surface text-center px-6">
+        <MapPin className="w-10 h-10 text-gray-300 dark:text-[#4a5a4e] mb-3" />
+        <p className="text-sm text-gray-500 dark:text-[#8a9a8e]">
+          Enable location to see dispensaries on the map
+        </p>
+      </div>
+    )
+  }
+
+  const mapCenter = hasValidCenter
+    ? [center.lat, center.lng]
+    : (() => {
+        const located = dispensaries.find((d) => d.lat && d.lng)
+        return located ? [located.lat, located.lng] : [39.8283, -98.5795]
+      })()
+
+  return (
+    <div className="rounded-2xl overflow-hidden border border-gray-200 dark:border-surface-border h-[250px] md:h-[350px]">
+      <MapContainer
+        center={mapCenter}
+        zoom={zoom}
+        scrollWheelZoom={false}
+        className="h-full w-full"
+        style={{ height: '100%', width: '100%' }}
+      >
+        <TileLayer
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        />
+
+        {dispensaries
+          .filter((d) => d.lat && d.lng)
+          .map((dispensary) => (
+            <Marker
+              key={dispensary.id}
+              position={[dispensary.lat, dispensary.lng]}
+              icon={icons[dispensary.matchType] || icons.none}
+            >
+              <Popup>
+                <div className="text-xs space-y-1 min-w-[160px]">
+                  <p className="font-bold text-sm text-gray-900">
+                    {dispensary.name}
+                  </p>
+
+                  {dispensary.distance && (
+                    <p className="text-gray-500">{dispensary.distance} away</p>
+                  )}
+
+                  {dispensary.matchedStrains?.length > 0 && (
+                    <div>
+                      <span className="font-semibold text-green-600">
+                        Has:{' '}
+                      </span>
+                      {dispensary.matchedStrains.join(', ')}
+                    </div>
+                  )}
+
+                  {dispensary.alternativeStrains?.length > 0 && (
+                    <div>
+                      <span className="font-semibold text-yellow-600">
+                        Similar:{' '}
+                      </span>
+                      {dispensary.alternativeStrains.join(', ')}
+                    </div>
+                  )}
+
+                  {dispensary.deals?.length > 0 && (
+                    <div className="text-amber-600 font-medium">
+                      {dispensary.deals[0]}
+                    </div>
+                  )}
+                </div>
+              </Popup>
+            </Marker>
+          ))}
+      </MapContainer>
+    </div>
+  )
+}

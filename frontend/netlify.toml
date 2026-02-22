@@ -1,0 +1,13 @@
+[build]
+  base = "frontend"
+  command = "npm run build"
+  publish = "dist"
+  functions = "netlify/functions"
+
+# SPA routing — all paths to index.html for React Router.
+# /api/anthropic is handled by the V2 function's config.path export
+# which takes priority over redirects.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

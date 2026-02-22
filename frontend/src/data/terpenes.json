@@ -1,0 +1,200 @@
+{
+  "myrcene": {
+    "name": "Myrcene",
+    "color": "#ff6b6b",
+    "effects": ["relaxation", "sleep", "pain_relief"],
+    "effectWeight": {
+      "relaxation": 0.9,
+      "sleep": 0.8,
+      "pain_relief": 0.7,
+      "anxiety_relief": 0.5,
+      "appetite": 0.4,
+      "euphoria": 0.3,
+      "energy": 0.0,
+      "focus": 0.0,
+      "creativity": 0.1,
+      "social": 0.1
+    },
+    "aroma": ["Earthy", "Musky", "Herbal"],
+    "boilingPoint": "168°C / 334°F",
+    "description": "The most abundant terpene in cannabis. Myrcene is responsible for the sedating, couch-lock effect often associated with indica strains. It enhances THC's ability to cross the blood-brain barrier.",
+    "alsoFoundIn": ["Mangoes", "Hops", "Lemongrass", "Thyme"],
+    "medicalResearch": "Studies suggest anti-inflammatory and analgesic properties. May increase cell membrane permeability, allowing more efficient absorption of cannabinoids."
+  },
+  "limonene": {
+    "name": "Limonene",
+    "color": "#ffd43b",
+    "effects": ["energy", "euphoria", "anxiety_relief"],
+    "effectWeight": {
+      "energy": 0.8,
+      "euphoria": 0.9,
+      "anxiety_relief": 0.7,
+      "relaxation": 0.3,
+      "sleep": 0.0,
+      "pain_relief": 0.2,
+      "focus": 0.5,
+      "creativity": 0.6,
+      "social": 0.7,
+      "appetite": 0.2
+    },
+    "aroma": ["Citrus", "Lemon", "Orange"],
+    "boilingPoint": "176°C / 349°F",
+    "description": "A mood-elevating terpene with a bright citrus scent. Limonene is known for its energizing and uplifting qualities, making it a hallmark of many sativa-dominant strains. It may also aid in the absorption of other terpenes and chemicals through the skin.",
+    "alsoFoundIn": ["Citrus rinds", "Juniper", "Peppermint", "Rosemary"],
+    "medicalResearch": "Research indicates potential anti-depressant and anxiolytic effects. Studies show promise as an anti-fungal agent and may help with gastric reflux and heartburn."
+  },
+  "linalool": {
+    "name": "Linalool",
+    "color": "#9775fa",
+    "effects": ["anxiety_relief", "relaxation", "sleep"],
+    "effectWeight": {
+      "anxiety_relief": 0.9,
+      "relaxation": 0.8,
+      "sleep": 0.7,
+      "pain_relief": 0.6,
+      "energy": 0.0,
+      "euphoria": 0.3,
+      "focus": 0.1,
+      "creativity": 0.2,
+      "social": 0.2,
+      "appetite": 0.1
+    },
+    "aroma": ["Floral", "Lavender", "Spicy"],
+    "boilingPoint": "198°C / 388°F",
+    "description": "Best known for its presence in lavender, linalool delivers calming and sedative effects. It is one of the most widely used terpenes in aromatherapy and is valued for its ability to temper the anxious edge that THC can produce.",
+    "alsoFoundIn": ["Lavender", "Birch bark", "Coriander", "Cinnamon"],
+    "medicalResearch": "Demonstrated anxiolytic and sedative effects in multiple studies. Shows promise as an anticonvulsant and may boost the immune system by reducing stress-induced changes."
+  },
+  "caryophyllene": {
+    "name": "Caryophyllene",
+    "color": "#ff922b",
+    "effects": ["pain_relief", "anxiety_relief"],
+    "effectWeight": {
+      "pain_relief": 0.9,
+      "anxiety_relief": 0.7,
+      "relaxation": 0.6,
+      "sleep": 0.3,
+      "energy": 0.1,
+      "euphoria": 0.2,
+      "focus": 0.2,
+      "creativity": 0.1,
+      "social": 0.2,
+      "appetite": 0.3
+    },
+    "aroma": ["Peppery", "Spicy", "Woody"],
+    "boilingPoint": "130°C / 266°F",
+    "description": "The only terpene known to directly bind to CB2 cannabinoid receptors, making it functionally a dietary cannabinoid. This unique property gives caryophyllene powerful anti-inflammatory and pain-relieving effects without any psychoactive impact.",
+    "alsoFoundIn": ["Black pepper", "Cloves", "Cinnamon", "Oregano"],
+    "medicalResearch": "Unique ability to activate CB2 receptors makes it a target for anti-inflammatory therapies. Studies suggest gastroprotective properties and potential for treating anxiety and depression."
+  },
+  "pinene": {
+    "name": "Pinene",
+    "color": "#51cf66",
+    "effects": ["focus", "energy", "pain_relief"],
+    "effectWeight": {
+      "focus": 0.9,
+      "energy": 0.7,
+      "pain_relief": 0.5,
+      "anxiety_relief": 0.4,
+      "relaxation": 0.2,
+      "sleep": 0.0,
+      "euphoria": 0.4,
+      "creativity": 0.5,
+      "social": 0.4,
+      "appetite": 0.1
+    },
+    "aroma": ["Pine", "Fresh", "Woodsy"],
+    "boilingPoint": "155°C / 311°F",
+    "description": "The most common terpene found in nature, responsible for the fresh scent of pine forests. Pinene is known for promoting alertness and memory retention, and may counteract some of THC's short-term memory impairment.",
+    "alsoFoundIn": ["Pine needles", "Rosemary", "Basil", "Parsley"],
+    "medicalResearch": "Research shows bronchodilator effects, potentially useful for asthma. May counteract THC-induced short-term memory loss and demonstrates anti-inflammatory properties."
+  },
+  "terpinolene": {
+    "name": "Terpinolene",
+    "color": "#22b8cf",
+    "effects": ["creativity", "energy", "sleep"],
+    "effectWeight": {
+      "creativity": 0.8,
+      "energy": 0.6,
+      "sleep": 0.5,
+      "euphoria": 0.7,
+      "relaxation": 0.4,
+      "anxiety_relief": 0.3,
+      "pain_relief": 0.2,
+      "focus": 0.5,
+      "social": 0.6,
+      "appetite": 0.2
+    },
+    "aroma": ["Floral", "Herbal", "Piney"],
+    "boilingPoint": "186°C / 367°F",
+    "description": "A complex, multifaceted terpene found in small amounts in many strains. Terpinolene is paradoxical: it is often described as uplifting and creative in low doses but can become sedating at higher concentrations. Strains dominant in terpinolene are relatively rare.",
+    "alsoFoundIn": ["Nutmeg", "Tea tree", "Apples", "Lilacs"],
+    "medicalResearch": "Studies indicate antioxidant and anticancer potential. Has shown sedative properties in animal studies despite frequently being associated with uplifting strains."
+  },
+  "humulene": {
+    "name": "Humulene",
+    "color": "#e67700",
+    "effects": ["pain_relief", "appetite"],
+    "effectWeight": {
+      "pain_relief": 0.7,
+      "appetite": -0.6,
+      "relaxation": 0.5,
+      "anxiety_relief": 0.4,
+      "energy": 0.2,
+      "sleep": 0.3,
+      "euphoria": 0.1,
+      "focus": 0.2,
+      "creativity": 0.1,
+      "social": 0.1
+    },
+    "aroma": ["Earthy", "Woody", "Hoppy"],
+    "boilingPoint": "198°C / 388°F",
+    "description": "Sharing a close relationship with caryophyllene, humulene is notable for its appetite-suppressing properties, making it unique among cannabis terpenes. It provides subtle earthy and woody notes and contributes to the overall entourage effect.",
+    "alsoFoundIn": ["Hops", "Sage", "Ginseng", "Basil"],
+    "medicalResearch": "Distinguished as an appetite suppressant, unlike most cannabis compounds. Studies show anti-inflammatory, antibacterial, and anti-tumor properties in early research."
+  },
+  "ocimene": {
+    "name": "Ocimene",
+    "color": "#f06595",
+    "effects": ["energy"],
+    "effectWeight": {
+      "energy": 0.7,
+      "euphoria": 0.5,
+      "creativity": 0.4,
+      "focus": 0.3,
+      "social": 0.4,
+      "relaxation": 0.1,
+      "sleep": 0.0,
+      "pain_relief": 0.3,
+      "anxiety_relief": 0.2,
+      "appetite": 0.1
+    },
+    "aroma": ["Sweet", "Herbal", "Woody"],
+    "boilingPoint": "100°C / 212°F",
+    "description": "A delicate, sweet-scented terpene often associated with uplifting effects. Ocimene is commonly found in plants used as natural decongestants and antiviral agents. In cannabis, it contributes to energizing and clear-headed experiences.",
+    "alsoFoundIn": ["Mint", "Parsley", "Orchids", "Kumquats"],
+    "medicalResearch": "Research highlights antiviral, antifungal, and decongestant properties. Shows potential as an anti-inflammatory agent and may provide antiseptic benefits."
+  },
+  "bisabolol": {
+    "name": "Bisabolol",
+    "color": "#a9e34b",
+    "effects": ["relaxation", "pain_relief"],
+    "effectWeight": {
+      "relaxation": 0.7,
+      "pain_relief": 0.6,
+      "anxiety_relief": 0.5,
+      "sleep": 0.5,
+      "energy": 0.0,
+      "euphoria": 0.2,
+      "focus": 0.1,
+      "creativity": 0.1,
+      "social": 0.1,
+      "appetite": 0.1
+    },
+    "aroma": ["Floral", "Sweet", "Chamomile"],
+    "boilingPoint": "153°C / 307°F",
+    "description": "A gentle, soothing terpene best known as the primary component of chamomile essential oil. Bisabolol is prized for its anti-irritation and healing properties, particularly for skin. In cannabis, it adds a subtle sweetness and contributes to calming effects.",
+    "alsoFoundIn": ["Chamomile", "Candeia tree", "Sage"],
+    "medicalResearch": "Well-documented anti-inflammatory and skin-healing properties. Studies demonstrate wound-healing acceleration, analgesic effects, and potential antimicrobial activity."
+  }
+}

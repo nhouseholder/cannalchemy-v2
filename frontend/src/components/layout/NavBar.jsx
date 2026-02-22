@@ -1,0 +1,67 @@
+import { NavLink } from 'react-router-dom'
+import { Search, BookOpen, LayoutDashboard, FlaskConical, GitCompareArrows, BookMarked } from 'lucide-react'
+import clsx from 'clsx'
+import ThemeToggle from './ThemeToggle'
+
+const navItems = [
+  { to: '/', icon: Search, label: 'Find' },
+  { to: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
+  { to: '/journal', icon: BookMarked, label: 'Journal' },
+  { to: '/compare', icon: GitCompareArrows, label: 'Compare' },
+  { to: '/learn', icon: BookOpen, label: 'Learn' },
+]
+
+export default function NavBar() {
+  return (
+    <>
+      {/* Desktop top bar */}
+      <nav className="hidden sm:flex items-center justify-between px-6 py-3 border-b border-gray-200 dark:border-white/[0.06] bg-white/80 dark:bg-leaf-900/80 backdrop-blur-md sticky top-0 z-40" role="navigation" aria-label="Main navigation">
+        <NavLink to="/" className="flex items-center gap-2 text-lg font-bold font-display text-gray-900 dark:text-[#e8f0ea]">
+          <span className="text-2xl">🌿</span>
+          <span className="bg-gradient-to-r from-leaf-500 to-leaf-400 bg-clip-text text-transparent">StrainFinder</span>
+        </NavLink>
+        <div className="flex items-center gap-1">
+          {navItems.map(({ to, icon: Icon, label }) => (
+            <NavLink
+              key={to}
+              to={to}
+              end={to === '/'}
+              className={({ isActive }) => clsx(
+                'flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-medium transition-colors',
+                isActive
+                  ? 'bg-leaf-500/10 text-leaf-500'
+                  : 'text-gray-500 dark:text-[#6a7a6e] hover:text-gray-700 dark:hover:text-[#b0c4b4] hover:bg-gray-100 dark:hover:bg-white/[0.04]'
+              )}
+            >
+              <Icon size={16} />
+              {label}
+            </NavLink>
+          ))}
+          <div className="ml-2 border-l border-gray-200 dark:border-white/[0.08] pl-2">
+            <ThemeToggle />
+          </div>
+        </div>
+      </nav>
+
+      {/* Mobile bottom bar */}
+      <nav className="sm:hidden fixed bottom-0 left-0 right-0 z-40 flex items-center justify-around px-2 py-1.5 border-t border-gray-200 dark:border-white/[0.06] bg-white/90 dark:bg-leaf-900/90 backdrop-blur-md safe-area-bottom" role="navigation" aria-label="Main navigation">
+        {navItems.map(({ to, icon: Icon, label }) => (
+          <NavLink
+            key={to}
+            to={to}
+            end={to === '/'}
+            className={({ isActive }) => clsx(
+              'flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-xl text-[10px] font-medium transition-colors min-w-[56px]',
+              isActive
+                ? 'text-leaf-500'
+                : 'text-gray-400 dark:text-[#4a5a4e]'
+            )}
+          >
+            <Icon size={20} />
+            {label}
+          </NavLink>
+        ))}
+      </nav>
+    </>
+  )
+}

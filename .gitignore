@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+
+# Node
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+
+# Data — keep the seeded database, ignore raw dumps and runtime files
+data/raw/
+data/models/*.onnx
+data/models/*.joblib
+*.db-shm
+*.db-wal
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Env
+.env
+.env.*

@@ -1,0 +1,199 @@
+import { Heart, Info, ChevronDown, ChevronUp, Star } from 'lucide-react'
+import clsx from 'clsx'
+import Card from '../../shared/Card'
+import { TypeBadge, EffectBadge } from '../../shared/Badge'
+import TerpBadge from '../../shared/TerpBadge'
+import ProgressBar from '../../shared/ProgressBar'
+import Tooltip from '../../shared/Tooltip'
+import { getTypeColor } from '../../utils/colors'
+import StrainCardExpanded from './StrainCardExpanded'
+
+function CannabinoidMiniGrid({ strain }) {
+  const items = [
+    { name: 'THC', value: strain.thc, color: '#32c864' },
+    { name: 'CBD', value: strain.cbd, color: '#3b82f6' },
+    { name: 'CBN', value: strain.cbn, color: '#a855f7' },
+    { name: 'CBG', value: strain.cbg, color: '#f59e0b' },
+  ].filter(c => c.value != null)
+
+  if (items.length === 0) return null
+
+  return (
+    <div className="grid grid-cols-2 gap-x-4 gap-y-0.5">
+      {items.map((c) => (
+        <ProgressBar
+          key={c.name}
+          label={c.name}
+          value={c.value}
+          max={c.name === 'THC' ? 35 : 20}
+          color={c.color}
+          height={4}
+        />
+      ))}
+    </div>
+  )
+}
+
+export default function StrainCard({ strain, expanded, onToggle, isFavorite, onFavorite }) {
+  const tc = getTypeColor(strain.type)
+  const topTerpenes = (strain.terpenes || []).slice(0, 3)
+
+  return (
+    <Card
+      className={clsx(
+        'p-4 transition-all duration-300',
+        expanded && 'border-leaf-500/30 dark:border-leaf-500/30'
+      )}
+    >
+      {/* Clickable header region */}
+      <div
+        className="cursor-pointer"
+        onClick={onToggle}
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault()
+            onToggle?.()
+          }
+        }}
+        aria-expanded={expanded}
+      >
+        {/* Row 1: Name, Type Badge, Match %, Favorite */}
+        <div className="flex items-start justify-between gap-3 mb-2">
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2 flex-wrap">
+              <h3
+                className="text-lg font-bold text-gray-900 dark:text-white truncate"
+                style={{ fontFamily: "'Playfair Display', serif" }}
+              >
+                {strain.name}
+              </h3>
+              <TypeBadge type={strain.type} />
+              {/* Why This Match - info icon tooltip */}
+              {strain.whyMatch && (
+                <Tooltip content={strain.whyMatch}>
+                  <Info size={14} className="text-leaf-400/60 hover:text-leaf-400 transition-colors" />
+                </Tooltip>
+              )}
+            </div>
+
+            {/* Genetics line */}
+            {strain.genetics && (
+              <p className="text-[11px] italic text-gray-400 dark:text-[#6a7a6e] mt-0.5 truncate">
+                {strain.genetics}
+              </p>
+            )}
+          </div>
+
+          {/* Match % + Favorite */}
+          <div className="flex items-center gap-2 flex-shrink-0">
+            {/* Match percentage box */}
+            {strain.matchPct != null && (
+              <div
+                className="flex items-center justify-center min-w-[48px] h-10 rounded-xl text-sm font-bold border"
+                style={{
+                  backgroundColor: `${tc.hex}18`,
+                  borderColor: `${tc.hex}44`,
+                  color: tc.hex,
+                }}
+              >
+                {Math.round(strain.matchPct)}%
+              </div>
+            )}
+
+            {/* Favorite button */}
+            <button
+              type="button"
+              className={clsx(
+                'flex items-center justify-center w-8 h-8 rounded-lg transition-all duration-200',
+                'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-leaf-500',
+                isFavorite
+                  ? 'text-red-400 bg-red-500/10 hover:bg-red-500/20'
+                  : 'text-gray-400 dark:text-[#6a7a6e] hover:text-red-400 hover:bg-red-500/10'
+              )}
+              onClick={(e) => {
+                e.stopPropagation()
+                onFavorite?.(strain.name)
+              }}
+              aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
+            >
+              <Heart size={16} fill={isFavorite ? 'currentColor' : 'none'} />
+            </button>
+          </div>
+        </div>
+
+        {/* Row 2: Effect tags */}
+        {strain.effects?.length > 0 && (
+          <div className="flex flex-wrap gap-1 mb-3">
+            {strain.effects.slice(0, 6).map((effect) => (
+              <EffectBadge key={effect} effect={effect} variant="positive" />
+            ))}
+          </div>
+        )}
+
+        {/* Row 3: Cannabinoid mini bars */}
+        <CannabinoidMiniGrid strain={strain} />
+
+        {/* Row 4: Top 3 terpenes + community sentiment */}
+        <div className="flex items-center justify-between mt-3">
+          {/* Terpenes */}
+          <div className="flex flex-wrap gap-1">
+            {topTerpenes.map((t) => (
+              <TerpBadge
+                key={t.name}
+                name={t.name}
+                pct={t.pct != null ? `${t.pct}%` : ''}
+              />
+            ))}
+          </div>
+
+          {/* Community sentiment + review count */}
+          {(strain.sentimentScore != null || strain.reviewCount != null) && (
+            <div className="flex items-center gap-1.5 flex-shrink-0">
+              {strain.sentimentScore != null && (
+                <div className="flex items-center gap-0.5">
+                  <Star size={11} className="text-amber-400" fill="currentColor" />
+                  <span className="text-[11px] font-semibold text-gray-700 dark:text-[#b0c4b4]">
+                    {typeof strain.sentimentScore === 'number'
+                      ? strain.sentimentScore.toFixed(1)
+                      : strain.sentimentScore}
+                  </span>
+                </div>
+              )}
+              {strain.reviewCount != null && (
+                <span className="text-[10px] text-gray-400 dark:text-[#6a7a6e]">
+                  ({strain.reviewCount})
+                </span>
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* Expand / Collapse indicator */}
+        <div className="flex items-center justify-center gap-1 mt-3 pt-2 border-t border-gray-100 dark:border-white/[0.04]">
+          {expanded ? (
+            <>
+              <ChevronUp size={14} className="text-leaf-400" />
+              <span className="text-[10px] text-gray-400 dark:text-[#6a7a6e]">
+                Click to collapse
+              </span>
+            </>
+          ) : (
+            <>
+              <ChevronDown size={14} className="text-gray-400 dark:text-[#6a7a6e]" />
+              <span className="text-[10px] text-gray-400 dark:text-[#6a7a6e]">
+                Click to expand full profile
+              </span>
+            </>
+          )}
+        </div>
+      </div>
+
+      {/* Expanded detail section */}
+      {expanded && (
+        <StrainCardExpanded strain={strain} />
+      )}
+    </Card>
+  )
+}
