@@ -14,7 +14,7 @@ export default function AppShell() {
         <Outlet />
       </main>
       <footer className="relative z-10 text-center py-6 pb-20 sm:pb-6 text-[10px] text-gray-300 dark:text-[#2a352c]">
-        StrainFinder &middot; AI-Powered Cannabis Recommendations &middot; v1.0
+        Cannalchemy &middot; AI-Powered Cannabis Science &middot; v2.8
       </footer>
     </div>
   )
