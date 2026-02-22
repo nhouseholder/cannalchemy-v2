@@ -1,4 +1,4 @@
-import ProgressBar from '../../shared/ProgressBar'
+import ProgressBar from '../shared/ProgressBar'
 
 const DEFAULT_CANNABINOIDS = [
   { name: 'THC', color: '#32c864' },

@@ -2,7 +2,7 @@ import { useState, useContext } from 'react'
 import { Sparkles } from 'lucide-react'
 import { ResultsContext } from '../../context/ResultsContext'
 import { useFavorites } from '../../hooks/useFavorites'
-import { TypeBadge } from '../../shared/Badge'
+import { TypeBadge } from '../shared/Badge'
 import StrainCard from './StrainCard'
 
 function MiniPickCard({ pick }) {

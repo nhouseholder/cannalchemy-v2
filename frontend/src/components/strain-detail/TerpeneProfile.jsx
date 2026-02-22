@@ -1,4 +1,4 @@
-import TerpBadge from '../../shared/TerpBadge'
+import TerpBadge from '../shared/TerpBadge'
 import { getTerpeneColor } from '../../utils/colors'
 
 function parsePct(val) {

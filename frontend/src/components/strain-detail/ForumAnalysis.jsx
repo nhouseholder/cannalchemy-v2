@@ -1,5 +1,5 @@
 import { Users, ThumbsUp, ThumbsDown } from 'lucide-react'
-import { ConfidenceBadge, EffectBadge } from '../../shared/Badge'
+import { ConfidenceBadge, EffectBadge } from '../shared/Badge'
 
 function EffectBar({ label, pct, baseline, variant = 'positive' }) {
   const color = variant === 'positive' ? '#32c864' : '#ef4444'
