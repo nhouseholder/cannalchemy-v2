@@ -1,9 +1,13 @@
 import { useContext } from 'react'
 import { QuizContext } from '../../context/QuizContext'
 import WhyMatchTooltip from '../strain-detail/WhyMatchTooltip'
+import ScienceExplanation from '../strain-detail/ScienceExplanation'
 import CannabinoidProfile from '../strain-detail/CannabinoidProfile'
 import TerpeneProfile from '../strain-detail/TerpeneProfile'
+import TerpeneRadar from '../strain-detail/TerpeneRadar'
 import MolecularScience from '../strain-detail/MolecularScience'
+import ReceptorMap from '../strain-detail/ReceptorMap'
+import EffectVerification from '../strain-detail/EffectVerification'
 import SommelierReview from '../strain-detail/SommelierReview'
 import ForumAnalysis from '../strain-detail/ForumAnalysis'
 import LineageTree from '../strain-detail/LineageTree'
@@ -31,15 +35,23 @@ export default function StrainCardExpanded({ strain }) {
         <WhyMatchTooltip text={strain.whyMatch} />
       )}
 
+      {/* 1b. AI Science Explanation (lazy-loaded on click) */}
+      <ScienceExplanation strain={strain} />
+
       {/* 2. Cannabinoid Profile */}
       <CannabinoidProfile cannabinoids={cannabinoids} />
 
-      {/* 3. Terpene Profile (all terpenes) */}
+      {/* 3. Terpene Profile (bars) */}
       {strain.terpenes?.length > 0 && (
         <TerpeneProfile terpenes={strain.terpenes} />
       )}
 
-      {/* 3b. Molecular Science (Cannalchemy receptor pathways) */}
+      {/* 3b. Terpene Radar Pentagon */}
+      {strain.terpenes?.length >= 3 && (
+        <TerpeneRadar terpenes={strain.terpenes} strainType={strain.type} />
+      )}
+
+      {/* 4. Molecular Science (effect probabilities + pathway chips) */}
       {(strain.effectPredictions?.length > 0 || strain.pathways?.length > 0) && (
         <MolecularScience
           effectPredictions={strain.effectPredictions}
@@ -47,7 +59,23 @@ export default function StrainCardExpanded({ strain }) {
         />
       )}
 
-      {/* 4. Sommelier Review */}
+      {/* 4b. Receptor Pathway Map (molecule → receptor → effect flow) */}
+      {strain.pathways?.length > 0 && (
+        <ReceptorMap
+          pathways={strain.pathways}
+          effectPredictions={strain.effectPredictions}
+        />
+      )}
+
+      {/* 4c. Effect Verification (predicted vs community) */}
+      {strain.effectPredictions?.length > 0 && strain.forumAnalysis && (
+        <EffectVerification
+          predictions={strain.effectPredictions}
+          forumData={strain.forumAnalysis}
+        />
+      )}
+
+      {/* 5. Sommelier Review */}
       {strain.sommelierScores && (
         <SommelierReview
           scores={strain.sommelierScores}
@@ -55,7 +83,7 @@ export default function StrainCardExpanded({ strain }) {
         />
       )}
 
-      {/* 5. Forum / Community Analysis */}
+      {/* 6. Forum / Community Analysis */}
       {(strain.forumAnalysis || strain.bestFor?.length > 0 || strain.sentimentScore != null) && (
         <ForumAnalysis
           data={strain.forumAnalysis}

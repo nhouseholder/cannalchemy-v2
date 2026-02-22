@@ -1,101 +1,127 @@
-// Demo dispensary search — returns sample dispensary data.
-// In production, this would use Google Places API or similar.
+/**
+ * Dispensary search using Claude web search for real-time pricing.
+ *
+ * Replaces the demo mock data with actual dispensary lookups via the
+ * Anthropic API with web_search tool. Results are cached in localStorage
+ * for 30 minutes to avoid repeated API calls.
+ */
+import { callAnthropic } from './anthropicApi'
+import { buildDispensaryPrompt } from './promptBuilder'
+
+const CACHE_PREFIX = 'dispensary_'
+const CACHE_TTL = 30 * 60 * 1000 // 30 minutes
 
 export async function searchDispensaries(location, strainNames) {
-  // Simulate a brief search delay
-  await new Promise(r => setTimeout(r, 1200))
-  return generateDemoDispensaries(strainNames)
+  // Check cache first
+  const cached = getCachedResults(location, strainNames)
+  if (cached) return cached
+
+  try {
+    const prompt = buildDispensaryPrompt(location, strainNames)
+    const rawText = await callAnthropic({ prompt, maxTokens: 4000, retries: 2 })
+    const parsed = parseDispensaryResponse(rawText)
+
+    const dispensaries = (parsed.dispensaries || []).map((d, i) => ({
+      id: `disp-${i}`,
+      name: d.name || 'Unknown Dispensary',
+      address: d.address || '',
+      lat: d.lat || null,
+      lng: d.lng || null,
+      distance: d.distance || '',
+      rating: d.rating || null,
+      reviewCount: d.reviewCount || d.review_count || 0,
+      delivery: !!d.delivery,
+      deliveryFee: d.deliveryFee || d.delivery_fee || null,
+      deliveryMin: d.deliveryMin || d.delivery_min || null,
+      deliveryEta: d.deliveryEta || d.delivery_eta || null,
+      matchedStrains: d.matchedStrains || d.matched_strains || [],
+      alternativeStrains: d.alternativeStrains || d.alternative_strains || [],
+      deals: d.deals || [],
+      priceRange: d.priceRange || d.price_range || '$$',
+      hours: d.hours || '',
+      phone: d.phone || '',
+      website: d.website || '',
+      menuUrl: d.menuUrl || d.menu_url || '',
+      matchType: (d.matchedStrains || d.matched_strains || []).length > 0 ? 'exact' : 'alternative',
+    }))
+
+    // Cache the results
+    setCachedResults(location, strainNames, dispensaries)
+
+    return dispensaries
+  } catch (err) {
+    console.error('Dispensary search failed:', err)
+    throw new Error(
+      'Could not find dispensaries right now. Try searching directly on Weedmaps or Leafly, or try again in a moment.'
+    )
+  }
 }
 
-function generateDemoDispensaries(strainNames) {
-  return [
-    {
-      id: 'disp-0',
-      name: 'Green Leaf Dispensary',
-      address: 'Nearby (enable location for real results)',
-      lat: null, lng: null,
-      distance: '~2 mi',
-      rating: 4.7,
-      reviewCount: 234,
-      delivery: true,
-      deliveryFee: '$5',
-      deliveryMin: '$35',
-      deliveryEta: '45-60 min',
-      matchedStrains: strainNames.slice(0, 2),
-      alternativeStrains: [],
-      deals: ['20% off first order'],
-      priceRange: '$$',
-      hours: '9am-9pm',
-      phone: '',
-      website: '',
-      menuUrl: '',
-      matchType: 'exact',
-    },
-    {
-      id: 'disp-1',
-      name: 'Herbal Wellness Co',
-      address: 'Nearby (enable location for real results)',
-      lat: null, lng: null,
-      distance: '~3 mi',
-      rating: 4.5,
-      reviewCount: 189,
-      delivery: true,
-      deliveryFee: null,
-      deliveryMin: '$50',
-      deliveryEta: '30-45 min',
-      matchedStrains: strainNames.slice(1, 3),
-      alternativeStrains: [],
-      deals: [],
-      priceRange: '$$',
-      hours: '10am-8pm',
-      phone: '',
-      website: '',
-      menuUrl: '',
-      matchType: 'exact',
-    },
-    {
-      id: 'disp-2',
-      name: 'The Flower Shop',
-      address: 'Nearby (enable location for real results)',
-      lat: null, lng: null,
-      distance: '~5 mi',
-      rating: 4.8,
-      reviewCount: 312,
-      delivery: false,
-      deliveryFee: null,
-      deliveryMin: null,
-      deliveryEta: null,
-      matchedStrains: strainNames.slice(0, 1),
-      alternativeStrains: strainNames.slice(3, 4),
-      deals: ['Buy 2 get 1 free eighths', 'Happy hour 4-6pm'],
-      priceRange: '$$$',
-      hours: '9am-10pm',
-      phone: '',
-      website: '',
-      menuUrl: '',
-      matchType: 'exact',
-    },
-    {
-      id: 'disp-3',
-      name: 'Cloud 9 Cannabis',
-      address: 'Nearby (enable location for real results)',
-      lat: null, lng: null,
-      distance: '~6 mi',
-      rating: 4.3,
-      reviewCount: 156,
-      delivery: true,
-      deliveryFee: '$3',
-      deliveryMin: '$25',
-      deliveryEta: '60-90 min',
-      matchedStrains: strainNames.slice(2, 4),
-      alternativeStrains: [],
-      deals: ['15% off all flower'],
-      priceRange: '$',
-      hours: '8am-10pm',
-      phone: '',
-      website: '',
-      menuUrl: '',
-      matchType: 'exact',
-    },
-  ]
+function parseDispensaryResponse(rawText) {
+  if (!rawText) throw new Error('Empty response')
+
+  // Strip markdown code fences if present
+  let cleaned = rawText.replace(/```json\s*/g, '').replace(/```\s*/g, '').trim()
+
+  // Find the outermost JSON object
+  const start = cleaned.indexOf('{')
+  const end = cleaned.lastIndexOf('}')
+  if (start === -1 || end === -1) {
+    // Try to find an array instead
+    const arrStart = cleaned.indexOf('[')
+    const arrEnd = cleaned.lastIndexOf(']')
+    if (arrStart !== -1 && arrEnd !== -1) {
+      const arr = JSON.parse(cleaned.slice(arrStart, arrEnd + 1))
+      return { dispensaries: arr }
+    }
+    throw new Error('No JSON found in dispensary response')
+  }
+
+  const json = cleaned.slice(start, end + 1)
+  const parsed = JSON.parse(json)
+
+  // Handle various response shapes
+  if (Array.isArray(parsed)) return { dispensaries: parsed }
+  if (parsed.dispensaries) return parsed
+  if (parsed.results) return { dispensaries: parsed.results }
+
+  // If it's a single object with dispensary-like fields, wrap it
+  if (parsed.name && parsed.address) return { dispensaries: [parsed] }
+
+  return parsed
+}
+
+function buildCacheKey(location, strainNames) {
+  const locStr = typeof location === 'string'
+    ? location
+    : location?.lat
+      ? `${location.lat.toFixed(2)},${location.lng.toFixed(2)}`
+      : 'unknown'
+  const strainsKey = (strainNames || []).sort().join(',').slice(0, 100)
+  return `${CACHE_PREFIX}${locStr}_${strainsKey}`
+}
+
+function getCachedResults(location, strainNames) {
+  try {
+    const key = buildCacheKey(location, strainNames)
+    const raw = localStorage.getItem(key)
+    if (!raw) return null
+    const { data, timestamp } = JSON.parse(raw)
+    if (Date.now() - timestamp > CACHE_TTL) {
+      localStorage.removeItem(key)
+      return null
+    }
+    return data
+  } catch {
+    return null
+  }
+}
+
+function setCachedResults(location, strainNames, data) {
+  try {
+    const key = buildCacheKey(location, strainNames)
+    localStorage.setItem(key, JSON.stringify({ data, timestamp: Date.now() }))
+  } catch {
+    /* localStorage full or unavailable */
+  }
 }

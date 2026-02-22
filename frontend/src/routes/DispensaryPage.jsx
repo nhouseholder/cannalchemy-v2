@@ -421,7 +421,10 @@ export default function DispensaryPage() {
         <div className="flex flex-col items-center justify-center py-16 gap-4 animate-fade-in">
           <div className="w-12 h-12 rounded-full border-2 border-leaf-500/20 border-t-leaf-500 animate-spin" />
           <p className="text-sm text-gray-500 dark:text-[#8a9a8e]">
-            Searching dispensaries...
+            Searching real dispensaries near you...
+          </p>
+          <p className="text-xs text-gray-400 dark:text-[#5a6a5e]">
+            This may take 15-30 seconds
           </p>
         </div>
       )}

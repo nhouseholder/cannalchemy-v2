@@ -1,4 +1,5 @@
-import { Heart, Info, ChevronDown, ChevronUp, Star } from 'lucide-react'
+import { Heart, Info, ChevronDown, ChevronUp, Star, MapPin } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 import clsx from 'clsx'
 import Card from '../../shared/Card'
 import { TypeBadge, EffectBadge } from '../../shared/Badge'
@@ -35,6 +36,7 @@ function CannabinoidMiniGrid({ strain }) {
 }
 
 export default function StrainCard({ strain, expanded, onToggle, isFavorite, onFavorite }) {
+  const navigate = useNavigate()
   const tc = getTypeColor(strain.type)
   const topTerpenes = (strain.terpenes || []).slice(0, 3)
 
@@ -101,6 +103,20 @@ export default function StrainCard({ strain, expanded, onToggle, isFavorite, onF
                 {Math.round(strain.matchPct)}%
               </div>
             )}
+
+            {/* Find Near Me button */}
+            <button
+              type="button"
+              className="flex items-center justify-center w-8 h-8 rounded-lg text-gray-400 dark:text-[#6a7a6e] hover:text-leaf-400 hover:bg-leaf-500/10 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-leaf-500"
+              onClick={(e) => {
+                e.stopPropagation()
+                navigate('/dispensary')
+              }}
+              aria-label="Find near me"
+              title="Find at nearby dispensaries"
+            >
+              <MapPin size={16} />
+            </button>
 
             {/* Favorite button */}
             <button

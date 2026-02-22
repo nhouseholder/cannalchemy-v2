@@ -39,9 +39,20 @@ function EffectBar({ label, pct, baseline, variant = 'positive' }) {
 export default function ForumAnalysis({ data, bestFor, notIdealFor, sentimentScore }) {
   if (!data && !bestFor?.length && sentimentScore == null) return null
 
-  const positiveEffects = data?.positiveEffects || []
-  const negativeEffects = data?.negativeEffects || []
-  const sourceCount = data?.sourceCount || data?.reviewCount || 0
+  // Backend sends pros/cons with {effect, pct, baseline} — normalize to {name, pct, baseline}
+  const positiveEffects = (data?.pros || data?.positiveEffects || []).map(p => ({
+    name: p.effect || p.name || p.label || '',
+    pct: p.pct || 0,
+    baseline: p.baseline,
+  }))
+  const negativeEffects = (data?.cons || data?.negativeEffects || []).map(c => ({
+    name: c.effect || c.name || c.label || '',
+    pct: c.pct || 0,
+    baseline: c.baseline,
+  }))
+  const sourceCount = typeof data?.totalReviews === 'string'
+    ? parseInt(data.totalReviews.replace(/[^0-9]/g, ''), 10) || 0
+    : data?.sourceCount || data?.reviewCount || 0
 
   const sentimentColor =
     sentimentScore >= 8

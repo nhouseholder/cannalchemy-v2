@@ -223,3 +223,38 @@ Return ONLY valid JSON:
 
 Return 5-8 trending strains and 3 favorites per category.`
 }
+
+export function buildScienceExplanation(strain, quizState) {
+  const terpStr = (strain.terpenes || [])
+    .map(t => `${t.name} (${t.pct})`)
+    .join(', ')
+
+  const cannabStr = (strain.cannabinoids || [])
+    .filter(c => c.value > 0)
+    .map(c => `${c.name}: ${c.value}%`)
+    .join(', ')
+
+  const pathwayStr = (strain.pathways || [])
+    .slice(0, 5)
+    .map(p => `${p.molecule} binds ${p.receptor} (Ki=${p.ki_nm}nM, ${p.action_type || 'modulator'})`)
+    .join('; ')
+
+  const forumPros = (strain.forumAnalysis?.pros || [])
+    .map(p => `${p.effect} (${p.pct}% of users)`)
+    .join(', ')
+
+  const userEffects = (quizState?.effects || []).join(', ')
+  const userAvoid = (quizState?.avoidEffects || []).join(', ') || 'none specified'
+
+  return `You are a cannabis pharmacology expert writing for a curious consumer. Explain in 2-3 sentences WHY this strain matches this specific user. Be conversational but scientifically grounded. Mention at least one terpene or cannabinoid by name, its receptor target, and the resulting effect. Keep it simple enough for a non-scientist.
+
+STRAIN: ${strain.name} (${strain.type}) — ${strain.matchPct}% match
+TERPENES: ${terpStr || 'No terpene data'}
+CANNABINOIDS: ${cannabStr || 'No cannabinoid data'}
+RECEPTOR PATHWAYS: ${pathwayStr || 'No pathway data'}
+COMMUNITY REPORTS: Top effects — ${forumPros || 'Limited data'}
+USER WANTS: ${userEffects || 'General wellness'}
+USER AVOIDS: ${userAvoid}
+
+Write ONLY the explanation. No JSON, no headers, no formatting.`
+}

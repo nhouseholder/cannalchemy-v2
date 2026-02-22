@@ -24,3 +24,16 @@ export function getTerpeneColor(name) {
 export function getTypeColor(type) {
   return TYPE_COLORS[type?.toLowerCase()] || TYPE_COLORS.hybrid;
 }
+
+export const RECEPTOR_COLORS = {
+  CB1: '#32c864',
+  CB2: '#3b82f6',
+  TRPV1: '#ef4444',
+  '5-HT1A': '#a855f7',
+  PPARgamma: '#f59e0b',
+  GPR55: '#22d3ee',
+};
+
+export function getReceptorColor(receptor) {
+  return RECEPTOR_COLORS[receptor] || '#6b7280';
+}

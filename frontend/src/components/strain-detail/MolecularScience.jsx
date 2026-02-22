@@ -1,13 +1,5 @@
 import { Atom, Zap } from 'lucide-react'
-
-const RECEPTOR_COLORS = {
-  CB1: '#32c864',
-  CB2: '#3b82f6',
-  TRPV1: '#ef4444',
-  '5-HT1A': '#a855f7',
-  PPARgamma: '#f59e0b',
-  GPR55: '#22d3ee',
-}
+import { RECEPTOR_COLORS } from '../../utils/colors'
 
 function EffectPredictionBar({ prediction }) {
   const pct = Math.round(prediction.probability * 100)
