@@ -17,9 +17,12 @@ export default memo(function CannabinoidProfile({ cannabinoids }) {
 
   return (
     <div>
-      <h4 className="text-[10px] font-bold uppercase tracking-wider text-gray-500 dark:text-[#6a7a6e] mb-3">
-        Cannabinoid Profile
+      <h4 className="text-[10px] font-bold uppercase tracking-wider text-gray-500 dark:text-[#6a7a6e] mb-1">
+        Cannabinoids
       </h4>
+      <p className="text-[9px] text-gray-400 dark:text-[#5a6a5e] mb-3">
+        The active compounds and their levels
+      </p>
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-4 gap-y-1">
         {items.map((c) => (
           <ProgressBar

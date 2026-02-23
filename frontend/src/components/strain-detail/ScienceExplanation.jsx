@@ -70,7 +70,7 @@ export default function ScienceExplanation({ strain }) {
           </div>
           <div className="min-w-0">
             <h4 className="text-[10px] font-bold uppercase tracking-wider text-purple-400 mb-1.5">
-              Science Says
+              AI Analysis
             </h4>
             <p className="text-xs leading-relaxed text-gray-600 dark:text-[#b0c4b4]">
               {explanation}

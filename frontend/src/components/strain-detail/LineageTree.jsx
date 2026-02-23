@@ -110,7 +110,7 @@ export default function LineageTree({ lineage, onNodeClick }) {
     <div>
       <h4 className="text-[10px] font-bold uppercase tracking-wider text-gray-500 dark:text-[#6a7a6e] mb-3 flex items-center gap-1.5">
         <GitBranch size={12} className="text-leaf-400" />
-        Lineage
+        Genetics & Lineage
       </h4>
       <div className="w-full overflow-x-auto">
         <svg

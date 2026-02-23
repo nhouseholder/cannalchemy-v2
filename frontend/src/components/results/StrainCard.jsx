@@ -87,6 +87,13 @@ function StrainCard({ strain, expanded, onToggle, isFavorite, onFavorite }) {
                 {strain.genetics}
               </p>
             )}
+
+            {/* Description tagline */}
+            {strain.description && (
+              <p className="text-[11px] text-gray-500 dark:text-[#8a9a8e] mt-1 line-clamp-1">
+                {strain.description}
+              </p>
+            )}
           </div>
 
           {/* Match % + Favorite */}
@@ -140,14 +147,20 @@ function StrainCard({ strain, expanded, onToggle, isFavorite, onFavorite }) {
           </div>
         </div>
 
-        {/* Row 2: Effect tags */}
-        {strain.effects?.length > 0 && (
-          <div className="flex flex-wrap gap-1 mb-3">
-            {strain.effects.slice(0, 6).map((effect) => (
-              <EffectBadge key={effect} effect={effect} variant="positive" />
-            ))}
-          </div>
-        )}
+        {/* Row 2: Best For tags + Effect tags */}
+        <div className="flex flex-wrap gap-1 mb-3">
+          {strain.bestFor?.slice(0, 4).map((tag) => (
+            <span
+              key={`bf-${tag}`}
+              className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold bg-leaf-500/12 text-leaf-500 dark:text-leaf-400 border border-leaf-500/20"
+            >
+              {tag}
+            </span>
+          ))}
+          {strain.effects?.slice(0, strain.bestFor?.length ? 3 : 6).map((effect) => (
+            <EffectBadge key={effect} effect={effect} variant="positive" />
+          ))}
+        </div>
 
         {/* Row 3: Cannabinoid mini bars */}
         <CannabinoidMiniGrid strain={strain} />

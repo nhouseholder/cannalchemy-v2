@@ -63,10 +63,15 @@ export default function ForumAnalysis({ data, bestFor, notIdealFor, sentimentSco
     <div>
       {/* Header */}
       <div className="flex items-center justify-between mb-3">
-        <h4 className="text-[10px] font-bold uppercase tracking-wider text-gray-500 dark:text-[#6a7a6e] flex items-center gap-1.5">
-          <Users size={12} className="text-blue-400" />
-          Community Meta-Analysis
-        </h4>
+        <div>
+          <h4 className="text-[10px] font-bold uppercase tracking-wider text-gray-500 dark:text-[#6a7a6e] flex items-center gap-1.5">
+            <Users size={12} className="text-blue-400" />
+            Community Reviews
+          </h4>
+          <p className="text-[9px] text-gray-400 dark:text-[#5a6a5e] mt-0.5 ml-[18px]">
+            What real users report about this strain
+          </p>
+        </div>
         <div className="flex items-center gap-2">
           {sourceCount > 0 && (
             <span className="text-[10px] text-gray-400 dark:text-[#6a7a6e]">

@@ -13,9 +13,12 @@ export default memo(function TerpeneProfile({ terpenes }) {
 
   return (
     <div>
-      <h4 className="text-[10px] font-bold uppercase tracking-wider text-gray-500 dark:text-[#6a7a6e] mb-3">
-        Terpene Profile
+      <h4 className="text-[10px] font-bold uppercase tracking-wider text-gray-500 dark:text-[#6a7a6e] mb-1">
+        Terpenes
       </h4>
+      <p className="text-[9px] text-gray-400 dark:text-[#5a6a5e] mb-3">
+        Aromatic compounds that shape flavor and effects
+      </p>
       <div className="space-y-2">
         {terpenes.map((t, idx) => {
           const color = getTerpeneColor(t.name)

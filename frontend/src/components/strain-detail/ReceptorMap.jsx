@@ -273,7 +273,7 @@ export default function ReceptorMap({ pathways, effectPredictions }) {
             <Network size={14} className="text-blue-400" />
           </div>
           <h4 className="text-[10px] font-bold uppercase tracking-wider text-gray-500 dark:text-[#8a9a8e]">
-            Molecular Pathway Graph
+            Molecular Pathways
           </h4>
         </div>
         {/* Legend */}

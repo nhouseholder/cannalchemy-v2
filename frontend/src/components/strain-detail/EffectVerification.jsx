@@ -63,7 +63,7 @@ export default function EffectVerification({ predictions, forumData }) {
             <FlaskConical size={14} className="text-amber-400" />
           </div>
           <h4 className="text-[10px] font-bold uppercase tracking-wider text-gray-500 dark:text-[#8a9a8e]">
-            Science vs Community
+            Predicted vs Reported
           </h4>
         </div>
         <div
