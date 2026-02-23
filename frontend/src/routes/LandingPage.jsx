@@ -1,5 +1,6 @@
 import { useEffect, useRef, useCallback } from 'react'
 import { useNavigate, NavLink } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
 import {
   FlaskConical, Fingerprint, BookMarked, ArrowRight, Sparkles,
   Search, Zap, BarChart3, ChevronRight, Star, Lock, Check,
@@ -365,10 +366,11 @@ function CTASection({ onGetStarted }) {
 /* ================================================================== */
 export default function LandingPage() {
   const navigate = useNavigate()
+  const { user } = useAuth()
 
   const handleGetStarted = useCallback(() => {
-    navigate('/signup')
-  }, [navigate])
+    navigate(user ? '/quiz' : '/signup')
+  }, [navigate, user])
 
   return (
     <div className="min-h-screen relative bg-white dark:bg-[#0a0f0c]">
@@ -379,12 +381,21 @@ export default function LandingPage() {
           <span className="bg-gradient-to-r from-leaf-500 to-leaf-400 bg-clip-text text-transparent">Cannalchemy</span>
         </NavLink>
         <div className="flex items-center gap-2">
-          <Button variant="ghost" size="sm" onClick={() => navigate('/login')}>
-            Log In
-          </Button>
-          <Button size="sm" onClick={() => navigate('/signup')}>
-            Sign Up
-          </Button>
+          {user ? (
+            <Button size="sm" onClick={() => navigate('/quiz')}>
+              Go to App
+              <ArrowRight size={14} />
+            </Button>
+          ) : (
+            <>
+              <Button variant="ghost" size="sm" onClick={() => navigate('/login')}>
+                Log In
+              </Button>
+              <Button size="sm" onClick={() => navigate('/signup')}>
+                Sign Up
+              </Button>
+            </>
+          )}
         </div>
       </nav>
 

@@ -1,17 +1,39 @@
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
 import Button from '../components/shared/Button'
 import Card from '../components/shared/Card'
 
 export default function LoginPage() {
   const navigate = useNavigate()
+  const location = useLocation()
+  const { signIn, user } = useAuth()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [error, setError] = useState(null)
+  const [loading, setLoading] = useState(false)
 
-  const handleSubmit = (e) => {
+  // If already logged in, redirect
+  if (user) {
+    const from = location.state?.from?.pathname || '/quiz'
+    navigate(from, { replace: true })
+    return null
+  }
+
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    // Placeholder — will wire to Supabase in Phase 2
-    navigate('/quiz')
+    setError(null)
+    setLoading(true)
+
+    try {
+      await signIn(email, password)
+      const from = location.state?.from?.pathname || '/quiz'
+      navigate(from, { replace: true })
+    } catch (err) {
+      setError(err.message || 'Sign in failed. Check your email and password.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -64,8 +86,12 @@ export default function LoginPage() {
               />
             </div>
 
-            <Button type="submit" size="lg" className="w-full">
-              Sign In
+            {error && (
+              <p className="text-xs text-red-400 text-center">{error}</p>
+            )}
+
+            <Button type="submit" size="lg" className="w-full" disabled={loading}>
+              {loading ? 'Signing in...' : 'Sign In'}
             </Button>
           </form>
         </Card>

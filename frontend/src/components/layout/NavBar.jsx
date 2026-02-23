@@ -1,7 +1,8 @@
-import { NavLink } from 'react-router-dom'
-import { Search, BookOpen, LayoutDashboard, FlaskConical, GitCompareArrows, BookMarked } from 'lucide-react'
+import { NavLink, useNavigate } from 'react-router-dom'
+import { Search, BookOpen, LayoutDashboard, GitCompareArrows, BookMarked, LogOut, Shield } from 'lucide-react'
 import clsx from 'clsx'
 import ThemeToggle from './ThemeToggle'
+import { useAuth } from '../../context/AuthContext'
 
 const navItems = [
   { to: '/quiz', icon: Search, label: 'Find' },
@@ -12,6 +13,16 @@ const navItems = [
 ]
 
 export default function NavBar() {
+  const { user, profile, isAdmin, signOut } = useAuth()
+  const navigate = useNavigate()
+
+  const handleSignOut = async () => {
+    await signOut()
+    navigate('/')
+  }
+
+  const initial = user?.email?.[0]?.toUpperCase() || '?'
+
   return (
     <>
       {/* Desktop top bar */}
@@ -37,8 +48,48 @@ export default function NavBar() {
               {label}
             </NavLink>
           ))}
-          <div className="ml-2 border-l border-gray-200 dark:border-white/[0.08] pl-2">
+
+          {/* Admin link */}
+          {isAdmin && (
+            <NavLink
+              to="/admin"
+              className={({ isActive }) => clsx(
+                'flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-medium transition-colors',
+                isActive
+                  ? 'bg-purple-500/10 text-purple-500'
+                  : 'text-purple-400/60 hover:text-purple-400 hover:bg-purple-500/10'
+              )}
+            >
+              <Shield size={16} />
+              Admin
+            </NavLink>
+          )}
+
+          <div className="ml-2 border-l border-gray-200 dark:border-white/[0.08] pl-2 flex items-center gap-2">
             <ThemeToggle />
+
+            {user ? (
+              <div className="flex items-center gap-2">
+                {/* User initial badge */}
+                <div className="w-7 h-7 rounded-full bg-leaf-500/15 flex items-center justify-center text-xs font-bold text-leaf-500" title={user.email}>
+                  {initial}
+                </div>
+                <button
+                  onClick={handleSignOut}
+                  className="flex items-center gap-1 px-2 py-1.5 rounded-lg text-xs font-medium text-gray-500 dark:text-[#6a7a6e] hover:text-red-400 hover:bg-red-500/10 transition-colors"
+                  title="Sign out"
+                >
+                  <LogOut size={14} />
+                </button>
+              </div>
+            ) : (
+              <NavLink
+                to="/login"
+                className="px-3 py-1.5 rounded-lg text-xs font-medium text-leaf-500 hover:bg-leaf-500/10 transition-colors"
+              >
+                Log In
+              </NavLink>
+            )}
           </div>
         </div>
       </nav>
@@ -49,7 +100,7 @@ export default function NavBar() {
           <NavLink
             key={to}
             to={to}
-            end={to === '/'}
+            end={to === '/quiz'}
             className={({ isActive }) => clsx(
               'flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-xl text-[10px] font-medium transition-colors min-w-[56px]',
               isActive

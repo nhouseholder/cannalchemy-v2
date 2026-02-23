@@ -4,8 +4,10 @@ import { ThemeProvider } from './context/ThemeContext'
 import { QuizProvider } from './context/QuizContext'
 import { ResultsProvider } from './context/ResultsContext'
 import { UserProvider } from './context/UserContext'
+import { AuthProvider } from './context/AuthContext'
 import AppShell from './components/layout/AppShell'
 import ErrorBoundary from './components/shared/ErrorBoundary'
+import ProtectedRoute from './components/shared/ProtectedRoute'
 
 const LandingPage = lazy(() => import('./routes/LandingPage'))
 const QuizPage = lazy(() => import('./routes/QuizPage'))
@@ -17,6 +19,7 @@ const ComparePage = lazy(() => import('./routes/ComparePage'))
 const LearnPage = lazy(() => import('./routes/LearnPage'))
 const LoginPage = lazy(() => import('./routes/LoginPage'))
 const SignupPage = lazy(() => import('./routes/SignupPage'))
+const AdminPage = lazy(() => import('./routes/AdminPage'))
 
 function LoadingFallback() {
   return (
@@ -29,34 +32,42 @@ function LoadingFallback() {
 export default function App() {
   return (
     <ErrorBoundary>
-      <ThemeProvider>
-        <UserProvider>
-          <QuizProvider>
-            <ResultsProvider>
-              <Suspense fallback={<LoadingFallback />}>
-                <Routes>
-                  {/* Public pages — own layout (no AppShell) */}
-                  <Route index element={<LandingPage />} />
-                  <Route path="login" element={<LoginPage />} />
-                  <Route path="signup" element={<SignupPage />} />
+      <AuthProvider>
+        <ThemeProvider>
+          <UserProvider>
+            <QuizProvider>
+              <ResultsProvider>
+                <Suspense fallback={<LoadingFallback />}>
+                  <Routes>
+                    {/* Public pages — own layout (no AppShell) */}
+                    <Route index element={<LandingPage />} />
+                    <Route path="login" element={<LoginPage />} />
+                    <Route path="signup" element={<SignupPage />} />
 
-                  {/* App pages — inside AppShell with NavBar */}
-                  <Route element={<AppShell />}>
-                    <Route path="quiz" element={<QuizPage />} />
-                    <Route path="results" element={<ResultsPage />} />
-                    <Route path="dispensaries" element={<DispensaryPage />} />
-                    <Route path="dashboard" element={<DashboardPage />} />
-                    <Route path="journal" element={<JournalPage />} />
-                    <Route path="compare" element={<ComparePage />} />
-                    <Route path="learn" element={<LearnPage />} />
-                    <Route path="learn/:topic" element={<LearnPage />} />
-                  </Route>
-                </Routes>
-              </Suspense>
-            </ResultsProvider>
-          </QuizProvider>
-        </UserProvider>
-      </ThemeProvider>
+                    {/* App pages — inside AppShell with NavBar */}
+                    <Route element={<AppShell />}>
+                      {/* Protected routes — require login */}
+                      <Route path="quiz" element={<ProtectedRoute><QuizPage /></ProtectedRoute>} />
+                      <Route path="results" element={<ProtectedRoute><ResultsPage /></ProtectedRoute>} />
+                      <Route path="dispensaries" element={<ProtectedRoute><DispensaryPage /></ProtectedRoute>} />
+                      <Route path="dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
+                      <Route path="journal" element={<ProtectedRoute><JournalPage /></ProtectedRoute>} />
+                      <Route path="compare" element={<ProtectedRoute><ComparePage /></ProtectedRoute>} />
+
+                      {/* Public — SEO funnel, accessible without login */}
+                      <Route path="learn" element={<LearnPage />} />
+                      <Route path="learn/:topic" element={<LearnPage />} />
+
+                      {/* Admin — protected + requires admin role */}
+                      <Route path="admin" element={<ProtectedRoute><AdminPage /></ProtectedRoute>} />
+                    </Route>
+                  </Routes>
+                </Suspense>
+              </ResultsProvider>
+            </QuizProvider>
+          </UserProvider>
+        </ThemeProvider>
+      </AuthProvider>
     </ErrorBoundary>
   )
 }
