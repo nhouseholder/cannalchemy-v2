@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import { Atom, Zap, ArrowRight, Brain, Shield, Flame, Heart, Bone, Activity } from 'lucide-react'
 import { RECEPTOR_COLORS } from '../../utils/colors'
 
@@ -107,7 +108,7 @@ function ReceptorCard({ receptor, molecules, isActive }) {
   )
 }
 
-export default function MolecularScience({ effectPredictions, pathways }) {
+export default memo(function MolecularScience({ effectPredictions, pathways }) {
   if (!effectPredictions?.length && !pathways?.length) return null
 
   // Group pathways by receptor
@@ -197,4 +198,4 @@ export default function MolecularScience({ effectPredictions, pathways }) {
       )}
     </div>
   )
-}
+})

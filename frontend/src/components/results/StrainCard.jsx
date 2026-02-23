@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import { Heart, Info, ChevronDown, ChevronUp, Star, MapPin } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import clsx from 'clsx'
@@ -35,7 +36,7 @@ function CannabinoidMiniGrid({ strain }) {
   )
 }
 
-export default function StrainCard({ strain, expanded, onToggle, isFavorite, onFavorite }) {
+function StrainCard({ strain, expanded, onToggle, isFavorite, onFavorite }) {
   const navigate = useNavigate()
   const tc = getTypeColor(strain.type)
   const topTerpenes = (strain.terpenes || []).slice(0, 3)
@@ -213,3 +214,5 @@ export default function StrainCard({ strain, expanded, onToggle, isFavorite, onF
     </Card>
   )
 }
+
+export default memo(StrainCard)

@@ -251,7 +251,7 @@ def _build_forum_analysis(strain_id: int) -> ForumAnalysis:
             sentimentScore=5.0,
             pros=[ForumPro(effect="Community reported", pct=50, baseline=50)],
             cons=[ForumCon(effect="Limited reviews", pct=10, baseline=15)],
-            sources="Strain Tracker community data",
+            sources="Cannalchemy community data",
         )
 
     total = sum(r[2] for r in rows)
@@ -294,7 +294,7 @@ def _build_forum_analysis(strain_id: int) -> ForumAnalysis:
         sentimentScore=sentiment,
         pros=pros,
         cons=cons,
-        sources="Strain Tracker community data (24,853 strains)",
+        sources="Cannalchemy community data (24,853 strains)",
     )
 
 

@@ -1,4 +1,4 @@
-import { createContext, useReducer, useEffect, useCallback } from 'react'
+import { createContext, useReducer, useEffect, useCallback, useMemo } from 'react'
 
 const STORAGE_KEY = 'ca-quiz'
 
@@ -97,8 +97,10 @@ export function QuizProvider({ children }) {
     localStorage.removeItem(STORAGE_KEY)
   }, [])
 
+  const value = useMemo(() => ({ state, dispatch, reset }), [state, reset])
+
   return (
-    <QuizContext.Provider value={{ state, dispatch, reset }}>
+    <QuizContext.Provider value={value}>
       {children}
     </QuizContext.Provider>
   )

@@ -1,4 +1,4 @@
-import { useContext, useState, useMemo } from 'react'
+import { useContext, useState, useMemo, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ResultsContext } from '../context/ResultsContext'
 import { useFavorites } from '../hooks/useFavorites'
@@ -18,9 +18,9 @@ export default function ResultsPage() {
 
   const sortedStrains = useMemo(() => getSortedStrains(), [getSortedStrains])
 
-  const handleToggle = (strainName) => {
+  const handleToggle = useCallback((strainName) => {
     setExpandedStrain((prev) => (prev === strainName ? null : strainName))
-  }
+  }, [])
 
   /* Empty state */
   if (!state.strains || state.strains.length === 0) {

@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import TerpBadge from '../shared/TerpBadge'
 import { getTerpeneColor } from '../../utils/colors'
 
@@ -5,7 +6,7 @@ function parsePct(val) {
   return parseFloat(String(val || 0).replace('%', '')) || 0
 }
 
-export default function TerpeneProfile({ terpenes }) {
+export default memo(function TerpeneProfile({ terpenes }) {
   if (!terpenes?.length) return null
 
   const maxPct = Math.max(...terpenes.map(t => parsePct(t.pct)), 0.01)
@@ -42,4 +43,4 @@ export default function TerpeneProfile({ terpenes }) {
       </div>
     </div>
   )
-}
+})

@@ -1,4 +1,4 @@
-import { createContext, useReducer, useEffect, useCallback } from 'react'
+import { createContext, useReducer, useEffect, useCallback, useMemo } from 'react'
 
 const KEYS = {
   FAVORITES: 'ca-user-favorites',
@@ -123,8 +123,13 @@ export function UserProvider({ children }) {
     return { avgRating, topEffects, typeCounts, avgByType, totalEntries: entries.length }
   }, [state.journal])
 
+  const value = useMemo(
+    () => ({ state, dispatch, isFavorite, getJournalForStrain, getJournalStats }),
+    [state, isFavorite, getJournalForStrain, getJournalStats]
+  )
+
   return (
-    <UserContext.Provider value={{ state, dispatch, isFavorite, getJournalForStrain, getJournalStats }}>
+    <UserContext.Provider value={value}>
       {children}
     </UserContext.Provider>
   )

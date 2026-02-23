@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import ProgressBar from '../shared/ProgressBar'
 
 const DEFAULT_CANNABINOIDS = [
@@ -9,7 +10,7 @@ const DEFAULT_CANNABINOIDS = [
   { name: 'CBC', color: '#22d3ee' },
 ]
 
-export default function CannabinoidProfile({ cannabinoids }) {
+export default memo(function CannabinoidProfile({ cannabinoids }) {
   const items = cannabinoids?.length
     ? cannabinoids
     : DEFAULT_CANNABINOIDS.map(d => ({ ...d, value: 0 }))
@@ -32,4 +33,4 @@ export default function CannabinoidProfile({ cannabinoids }) {
       </div>
     </div>
   )
-}
+})

@@ -1,4 +1,4 @@
-import { createContext, useReducer, useCallback } from 'react'
+import { createContext, useReducer, useCallback, useMemo } from 'react'
 
 const initialState = {
   strains: [],
@@ -41,8 +41,10 @@ export function ResultsProvider({ children }) {
     return [...state.strains].sort((a, b) => (b.matchPct || 0) - (a.matchPct || 0))
   }, [state.strains])
 
+  const value = useMemo(() => ({ state, dispatch, getSortedStrains }), [state, getSortedStrains])
+
   return (
-    <ResultsContext.Provider value={{ state, dispatch, getSortedStrains }}>
+    <ResultsContext.Provider value={value}>
       {children}
     </ResultsContext.Provider>
   )

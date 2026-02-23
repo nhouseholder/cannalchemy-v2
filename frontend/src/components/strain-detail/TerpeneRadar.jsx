@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { memo, useMemo } from 'react'
 import {
   RadarChart,
   PolarGrid,
@@ -39,7 +39,7 @@ function CustomTooltip({ active, payload }) {
   )
 }
 
-export default function TerpeneRadar({ terpenes, strainType = 'hybrid' }) {
+export default memo(function TerpeneRadar({ terpenes, strainType = 'hybrid' }) {
   const { data, maxVal } = useMemo(() => {
     if (!terpenes?.length) return { data: [], maxVal: 0 }
 
@@ -112,4 +112,4 @@ export default function TerpeneRadar({ terpenes, strainType = 'hybrid' }) {
       </div>
     </div>
   )
-}
+})
