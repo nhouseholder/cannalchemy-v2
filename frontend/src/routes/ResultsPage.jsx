@@ -1,4 +1,4 @@
-import { useContext, useState, useMemo, useCallback } from 'react'
+import { useContext, useState, useMemo, useCallback, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ResultsContext } from '../context/ResultsContext'
 import { useFavorites } from '../hooks/useFavorites'
@@ -19,8 +19,17 @@ export default function ResultsPage() {
   const { toggleFavorite, isFavorite } = useFavorites()
   const { canViewResult, isPremium, isGuest, FREE_LIMIT } = useSubscription()
   const [expandedStrain, setExpandedStrain] = useState(null)
+  const hasAutoExpanded = useRef(false)
 
   const sortedStrains = useMemo(() => getSortedStrains(), [getSortedStrains])
+
+  // Auto-expand the first card for free/guest users so they see the full analysis
+  useEffect(() => {
+    if (!hasAutoExpanded.current && !isPremium && sortedStrains.length > 0) {
+      setExpandedStrain(sortedStrains[0].name)
+      hasAutoExpanded.current = true
+    }
+  }, [isPremium, sortedStrains])
 
   const handleToggle = useCallback((strainName, index) => {
     // Don't allow expanding paywalled cards

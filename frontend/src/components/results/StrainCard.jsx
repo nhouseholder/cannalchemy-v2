@@ -200,24 +200,29 @@ function StrainCard({ strain, expanded, onToggle, isFavorite, onFavorite }) {
           )}
         </div>
 
-        {/* Expand / Collapse indicator */}
-        <div className="flex items-center justify-center gap-1 mt-3 pt-2 border-t border-gray-100 dark:border-white/[0.04]">
-          {expanded ? (
-            <>
-              <ChevronUp size={14} className="text-leaf-400" />
-              <span className="text-[10px] text-gray-400 dark:text-[#6a7a6e]">
-                Click to collapse
+        {/* Expand / Collapse button */}
+        {expanded ? (
+          <div className="flex items-center justify-center gap-1.5 mt-3 pt-2 border-t border-gray-100 dark:border-white/[0.04]">
+            <ChevronUp size={14} className="text-leaf-400" />
+            <span className="text-[10px] text-gray-400 dark:text-[#6a7a6e]">
+              Collapse
+            </span>
+          </div>
+        ) : (
+          <div className="mt-3 pt-3 border-t border-gray-100 dark:border-white/[0.04]">
+            <div
+              className="flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-gradient-to-r from-leaf-500/[0.08] via-purple-500/[0.06] to-leaf-500/[0.08] border border-leaf-500/20 hover:border-leaf-500/40 hover:from-leaf-500/[0.14] hover:via-purple-500/[0.10] hover:to-leaf-500/[0.14] transition-all duration-300 group"
+            >
+              <span className="text-xs font-semibold text-leaf-500 dark:text-leaf-400 group-hover:text-leaf-400">
+                View Full Science Profile
               </span>
-            </>
-          ) : (
-            <>
-              <ChevronDown size={14} className="text-gray-400 dark:text-[#6a7a6e]" />
-              <span className="text-[10px] text-gray-400 dark:text-[#6a7a6e]">
-                Click to expand full profile
-              </span>
-            </>
-          )}
-        </div>
+              <ChevronDown
+                size={16}
+                className="text-leaf-500 dark:text-leaf-400 group-hover:translate-y-0.5 transition-transform duration-200"
+              />
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Expanded detail section */}
