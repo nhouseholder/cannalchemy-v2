@@ -348,13 +348,13 @@ export default function DispensaryPage() {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] px-6 animate-fade-in">
         <div className="w-16 h-16 rounded-full bg-gray-100 dark:bg-white/[0.04] flex items-center justify-center mb-4">
-          <MapPin size={28} className="text-gray-300 dark:text-[#3a4a3e]" />
+          <Search size={28} className="text-gray-300 dark:text-[#3a4a3e]" />
         </div>
         <h2 className="text-xl font-bold text-gray-900 dark:text-[#e8f0ea] mb-2">
-          Find Dispensaries
+          Find Your Strain
         </h2>
         <p className="text-sm text-gray-500 dark:text-[#8a9a8e] text-center max-w-xs mb-6">
-          Take the quiz first to get strain recommendations, then we'll help you find them nearby.
+          Take the quiz to get personalized strain recommendations backed by real science.
         </p>
         <Button onClick={() => navigate('/')}>
           Take the Quiz

@@ -70,7 +70,7 @@ export default function QuizPage() {
   const quizState = useQuizState()
   const { currentStep, setStep, reset } = quizState
   const { dispatch: resultsDispatch } = useContext(ResultsContext)
-  const { state: userState, dispatch: userDispatch, getJournalStats } = useContext(UserContext)
+  const { state: userState, dispatch: userDispatch } = useContext(UserContext)
 
   const [loadingPhase, setLoadingPhase] = useState(0)
   const [loadingMsg, setLoadingMsg] = useState(LOADING_PHASES[0])
