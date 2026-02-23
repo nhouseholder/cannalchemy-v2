@@ -1,9 +1,10 @@
-import { useEffect, useRef, useCallback } from 'react'
+import { useEffect, useRef, useCallback, useState } from 'react'
 import { useNavigate, NavLink } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import {
   FlaskConical, Fingerprint, BookMarked, ArrowRight, Sparkles,
   Search, Zap, BarChart3, ChevronRight, Star, Lock, Check,
+  ThumbsUp, ThumbsDown, Users, Wine, Lightbulb, ChevronDown,
 } from 'lucide-react'
 import Button from '../components/shared/Button'
 import Card from '../components/shared/Card'
@@ -141,89 +142,256 @@ function FeaturesSection() {
 }
 
 /* ------------------------------------------------------------------ */
-/*  Section 3: Demo strain card                                       */
+/*  Section 3: Animated strain showcase                               */
 /* ------------------------------------------------------------------ */
+const DEMO_PANELS = [
+  { id: 'card', label: 'Strain Card' },
+  { id: 'expect', label: 'What To Expect' },
+  { id: 'cannabinoids', label: 'Cannabinoids' },
+  { id: 'terpenes', label: 'Terpenes' },
+  { id: 'community', label: 'Community' },
+  { id: 'taste', label: 'Taste' },
+]
+
 function DemoSection() {
   const ref = useScrollReveal()
+  const [active, setActive] = useState(0)
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true)
+  const intervalRef = useRef(null)
+
+  useEffect(() => {
+    if (!isAutoPlaying) return
+    intervalRef.current = setInterval(() => {
+      setActive(prev => (prev + 1) % DEMO_PANELS.length)
+    }, 3500)
+    return () => clearInterval(intervalRef.current)
+  }, [isAutoPlaying])
+
+  const handleTab = (i) => {
+    setActive(i)
+    setIsAutoPlaying(false)
+    clearInterval(intervalRef.current)
+    // Resume auto-play after 12s of inactivity
+    setTimeout(() => setIsAutoPlaying(true), 12000)
+  }
+
   return (
-    <section className="py-24 px-6 overflow-hidden" ref={ref}>
+    <section className="py-24 px-6 overflow-hidden bg-leaf-500/[0.02]" ref={ref}>
       <div className="max-w-4xl mx-auto">
-        <h2
-          className="text-3xl sm:text-4xl font-bold text-center text-gray-900 dark:text-[#e8f0ea] mb-4"
-          style={{ fontFamily: "'Playfair Display', serif" }}
-        >
+        <h2 className="text-3xl sm:text-4xl font-bold text-center text-gray-900 dark:text-[#e8f0ea] mb-4" style={{ fontFamily: "'Playfair Display', serif" }}>
           Every strain, decoded
         </h2>
-        <p className="text-center text-gray-500 dark:text-[#6a7a6e] mb-12 max-w-lg mx-auto">
-          See exactly what you're getting — cannabinoids, terpenes, predicted effects, and community reviews.
+        <p className="text-center text-gray-500 dark:text-[#6a7a6e] mb-10 max-w-lg mx-auto">
+          See exactly what you get — cannabinoids, terpenes, predicted effects, and community reviews.
         </p>
 
-        <div className="max-w-md mx-auto" style={{ perspective: '1200px' }}>
-          <Card
-            className="p-4"
-            style={{ transform: 'rotateY(-2deg) rotateX(1deg)', transition: 'transform 0.6s ease' }}
-          >
-            {/* Mock strain header */}
-            <div className="flex items-start justify-between gap-3 mb-2">
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2 flex-wrap">
-                  <h3
-                    className="text-lg font-bold text-gray-900 dark:text-white"
-                    style={{ fontFamily: "'Playfair Display', serif" }}
-                  >
-                    Blue Dream
-                  </h3>
-                  <TypeBadge type="hybrid" />
-                </div>
-                <p className="text-[11px] italic text-gray-400 dark:text-[#6a7a6e] mt-0.5">Blueberry x Haze</p>
-                <p className="text-[11px] text-gray-500 dark:text-[#8a9a8e] mt-1 line-clamp-1">
-                  A balanced hybrid known for gentle euphoria and full-body relaxation
-                </p>
-              </div>
-              <div className="flex items-center justify-center min-w-[48px] h-10 rounded-xl text-sm font-bold border" style={{ backgroundColor: '#32c86418', borderColor: '#32c86444', color: '#32c864' }}>
-                94%
-              </div>
-            </div>
-
-            {/* Best For + Effects */}
-            <div className="flex flex-wrap gap-1 mb-3">
-              {['Relaxation', 'Creativity'].map(t => (
-                <span key={t} className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold bg-leaf-500/12 text-leaf-500 dark:text-leaf-400 border border-leaf-500/20">{t}</span>
-              ))}
-              {['Euphoric', 'Uplifted', 'Happy'].map(e => (
-                <EffectBadge key={e} effect={e} variant="positive" />
-              ))}
-            </div>
-
-            {/* Cannabinoid mini */}
-            <div className="grid grid-cols-2 gap-x-4 gap-y-0.5 mb-3">
-              <ProgressBar label="THC" value={21} max={35} color="#32c864" height={4} />
-              <ProgressBar label="CBD" value={2} max={20} color="#3b82f6" height={4} />
-              <ProgressBar label="CBN" value={0.3} max={20} color="#a855f7" height={4} />
-              <ProgressBar label="CBG" value={1.1} max={20} color="#f59e0b" height={4} />
-            </div>
-
-            {/* Terpenes + sentiment */}
-            <div className="flex items-center justify-between">
-              <div className="flex flex-wrap gap-1">
-                <TerpBadge name="Myrcene" pct="0.4%" />
-                <TerpBadge name="Limonene" pct="0.2%" />
-                <TerpBadge name="Caryophyllene" pct="0.1%" />
-              </div>
-              <div className="flex items-center gap-0.5">
-                <Star size={11} className="text-amber-400" fill="currentColor" />
-                <span className="text-[11px] font-semibold text-gray-700 dark:text-[#b0c4b4]">8.7</span>
-                <span className="text-[10px] text-gray-400 dark:text-[#6a7a6e]">(842)</span>
-              </div>
-            </div>
-
-            {/* Fake expand indicator */}
-            <div className="flex items-center justify-center gap-1 mt-3 pt-2 border-t border-gray-100 dark:border-white/[0.04]">
-              <ChevronRight size={14} className="text-leaf-400" />
-              <span className="text-[10px] text-gray-400 dark:text-[#6a7a6e]">Tap to explore full profile</span>
-            </div>
-          </Card>
+        {/* Panel tabs */}
+        <div className="flex items-center justify-center gap-1.5 mb-6 flex-wrap">
+          {DEMO_PANELS.map((p, i) => (
+            <button key={p.id} onClick={() => handleTab(i)} className={`px-3 py-1.5 rounded-full text-[11px] font-medium transition-all ${active === i ? 'bg-leaf-500 text-white shadow-md shadow-leaf-500/30' : 'bg-gray-100 dark:bg-white/[0.04] text-gray-500 dark:text-[#6a7a6e] hover:bg-gray-200 dark:hover:bg-white/[0.08]'}`}>
+              {p.label}
+            </button>
+          ))}
         </div>
+
+        {/* Animated panel container */}
+        <div className="max-w-md mx-auto relative" style={{ minHeight: '360px' }}>
+          {/* Progress bar */}
+          <div className="flex gap-1 mb-4">
+            {DEMO_PANELS.map((_, i) => (
+              <div key={i} className="flex-1 h-0.5 rounded-full bg-gray-200 dark:bg-white/[0.06] overflow-hidden">
+                <div className={`h-full rounded-full transition-all duration-300 ${i < active ? 'w-full bg-leaf-500' : i === active ? 'bg-leaf-400 animate-progress-fill' : 'w-0'}`} style={i === active && isAutoPlaying ? { animation: 'progressFill 3.5s linear forwards' } : i < active ? { width: '100%' } : { width: '0%' }} />
+              </div>
+            ))}
+          </div>
+
+          {/* Panel 0: Strain Card */}
+          <div className={`transition-all duration-500 ${active === 0 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 absolute inset-0 pointer-events-none'}`}>
+            <Card className="p-4">
+              <div className="flex items-start justify-between gap-3 mb-2">
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <h3 className="text-lg font-bold text-gray-900 dark:text-white" style={{ fontFamily: "'Playfair Display', serif" }}>Blue Dream</h3>
+                    <TypeBadge type="hybrid" />
+                  </div>
+                  <p className="text-[11px] italic text-gray-400 dark:text-[#6a7a6e] mt-0.5">Blueberry x Haze</p>
+                  <p className="text-[11px] text-gray-500 dark:text-[#8a9a8e] mt-1">A balanced hybrid known for gentle euphoria and full-body relaxation</p>
+                </div>
+                <div className="flex items-center justify-center min-w-[48px] h-10 rounded-xl text-sm font-bold border" style={{ backgroundColor: '#32c86418', borderColor: '#32c86444', color: '#32c864' }}>94%</div>
+              </div>
+              <div className="flex flex-wrap gap-1 mb-3">
+                {['Relaxation', 'Creativity'].map(t => (<span key={t} className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold bg-leaf-500/12 text-leaf-500 dark:text-leaf-400 border border-leaf-500/20">{t}</span>))}
+                {['Euphoric', 'Uplifted', 'Happy'].map(e => (<EffectBadge key={e} effect={e} variant="positive" />))}
+              </div>
+              <div className="grid grid-cols-2 gap-x-4 gap-y-0.5 mb-3">
+                <ProgressBar label="THC" value={21} max={35} color="#32c864" height={4} />
+                <ProgressBar label="CBD" value={2} max={20} color="#3b82f6" height={4} />
+                <ProgressBar label="CBN" value={0.3} max={20} color="#a855f7" height={4} />
+                <ProgressBar label="CBG" value={1.1} max={20} color="#f59e0b" height={4} />
+              </div>
+              <div className="flex items-center justify-between">
+                <div className="flex flex-wrap gap-1">
+                  <TerpBadge name="Myrcene" pct="0.4%" />
+                  <TerpBadge name="Limonene" pct="0.2%" />
+                  <TerpBadge name="Caryophyllene" pct="0.1%" />
+                </div>
+                <div className="flex items-center gap-0.5">
+                  <Star size={11} className="text-amber-400" fill="currentColor" />
+                  <span className="text-[11px] font-semibold text-gray-700 dark:text-[#b0c4b4]">8.7</span>
+                  <span className="text-[10px] text-gray-400 dark:text-[#6a7a6e]">(842)</span>
+                </div>
+              </div>
+            </Card>
+          </div>
+
+          {/* Panel 1: What To Expect */}
+          <div className={`transition-all duration-500 ${active === 1 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 absolute inset-0 pointer-events-none'}`}>
+            <Card className="p-4 border-leaf-500/10">
+              <div className="flex items-center gap-2 mb-4">
+                <Zap size={16} className="text-leaf-400" />
+                <h4 className="text-sm font-bold text-gray-900 dark:text-[#e8f0ea]">What To Expect</h4>
+              </div>
+              <div className="grid grid-cols-2 gap-3 mb-4">
+                <div>
+                  <div className="flex items-center gap-1 mb-2"><ThumbsUp size={12} className="text-leaf-400" /><span className="text-[10px] font-semibold text-gray-500 dark:text-[#6a7a6e] uppercase">Best For</span></div>
+                  {['Daytime Use', 'Creativity', 'Social Settings'].map(t => (<span key={t} className="block mb-1 px-2 py-0.5 rounded-md text-[10px] bg-leaf-500/8 text-leaf-500 dark:text-leaf-400 border border-leaf-500/15 w-fit">{t}</span>))}
+                </div>
+                <div>
+                  <div className="flex items-center gap-1 mb-2"><ThumbsDown size={12} className="text-red-400" /><span className="text-[10px] font-semibold text-gray-500 dark:text-[#6a7a6e] uppercase">Not Ideal For</span></div>
+                  {['Sleep', 'Deep Relaxation'].map(t => (<span key={t} className="block mb-1 px-2 py-0.5 rounded-md text-[10px] bg-red-500/8 text-red-400 border border-red-500/15 w-fit">{t}</span>))}
+                </div>
+              </div>
+              <div className="space-y-2">
+                <p className="text-[10px] font-semibold text-gray-500 dark:text-[#6a7a6e] uppercase">Predicted Effects</p>
+                {[{ e: 'Focused', s: 3 }, { e: 'Creative', s: 3 }, { e: 'Energetic', s: 2 }, { e: 'Uplifted', s: 2 }, { e: 'Social', s: 2 }].map(({ e, s }) => (
+                  <div key={e} className="flex items-center justify-between">
+                    <span className="text-xs text-gray-700 dark:text-[#b0c4b4]">{e}</span>
+                    <div className="flex gap-0.5">{[1,2,3].map(d => (<div key={d} className={`w-2 h-2 rounded-full ${d <= s ? 'bg-leaf-400' : 'bg-gray-200 dark:bg-white/[0.06]'}`} />))}</div>
+                  </div>
+                ))}
+              </div>
+            </Card>
+          </div>
+
+          {/* Panel 2: Cannabinoids */}
+          <div className={`transition-all duration-500 ${active === 2 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 absolute inset-0 pointer-events-none'}`}>
+            <Card className="p-4">
+              <div className="flex items-center gap-2 mb-1">
+                <FlaskConical size={16} className="text-leaf-400" />
+                <h4 className="text-sm font-bold text-gray-900 dark:text-[#e8f0ea]">Cannabinoids</h4>
+              </div>
+              <p className="text-[10px] text-gray-400 dark:text-[#5a6a5e] mb-4">Full molecular breakdown of active compounds</p>
+              <div className="space-y-3">
+                {[{ n: 'THC', v: 21, m: 35, c: '#32c864', d: 'Primary psychoactive — euphoria, pain relief' }, { n: 'CBD', v: 2.0, m: 20, c: '#3b82f6', d: 'Non-psychoactive — anti-anxiety, anti-inflammatory' }, { n: 'CBN', v: 0.3, m: 5, c: '#a855f7', d: 'Mildly sedative — may support sleep' }, { n: 'CBG', v: 1.1, m: 5, c: '#f59e0b', d: 'Neuroprotective — anti-inflammatory precursor' }, { n: 'THCV', v: 0.2, m: 5, c: '#ef4444', d: 'Appetite suppressant — short-acting stimulant' }, { n: 'CBC', v: 0.4, m: 5, c: '#22d3ee', d: 'Anti-depressant — works with other cannabinoids' }].map(({ n, v, m, c, d }) => (
+                  <div key={n}>
+                    <div className="flex items-center justify-between mb-0.5">
+                      <span className="text-xs font-semibold text-gray-700 dark:text-[#b0c4b4]">{n}</span>
+                      <span className="text-[10px] font-bold" style={{ color: c }}>{v}%</span>
+                    </div>
+                    <div className="h-2 rounded-full bg-gray-100 dark:bg-white/[0.04] overflow-hidden">
+                      <div className="h-full rounded-full transition-all duration-1000" style={{ width: `${(v / m) * 100}%`, backgroundColor: c }} />
+                    </div>
+                    <p className="text-[9px] text-gray-400 dark:text-[#5a6a5e] mt-0.5">{d}</p>
+                  </div>
+                ))}
+              </div>
+            </Card>
+          </div>
+
+          {/* Panel 3: Terpenes */}
+          <div className={`transition-all duration-500 ${active === 3 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 absolute inset-0 pointer-events-none'}`}>
+            <Card className="p-4">
+              <div className="flex items-center gap-2 mb-1">
+                <span className="text-sm">🧪</span>
+                <h4 className="text-sm font-bold text-gray-900 dark:text-[#e8f0ea]">Terpenes</h4>
+              </div>
+              <p className="text-[10px] text-gray-400 dark:text-[#5a6a5e] mb-4">Aromatic compounds that shape effects, flavor, and synergy</p>
+              <div className="space-y-3">
+                {[{ n: 'Myrcene', p: 1.2, c: '#22c55e', a: 'Earthy, musky', e: 'Sedation, pain relief, anti-inflammatory' }, { n: 'Limonene', p: 0.8, c: '#facc15', a: 'Citrus, lemon', e: 'Mood elevation, anti-anxiety, anti-fungal' }, { n: 'Caryophyllene', p: 0.6, c: '#f97316', a: 'Peppery, spicy', e: 'Anti-inflammatory, pain relief (CB2 agonist)' }, { n: 'Pinene', p: 0.4, c: '#10b981', a: 'Pine, herbal', e: 'Alertness, memory retention, bronchodilator' }, { n: 'Humulene', p: 0.2, c: '#8b5cf6', a: 'Hoppy, woody', e: 'Appetite suppressant, anti-bacterial' }].map(({ n, p, c, a, e }) => (
+                  <div key={n} className="flex items-start gap-3">
+                    <TerpBadge name={n} pct={`${p}%`} />
+                    <div className="flex-1 min-w-0">
+                      <div className="h-1.5 rounded-full bg-gray-100 dark:bg-white/[0.04] overflow-hidden mb-1">
+                        <div className="h-full rounded-full" style={{ width: `${(p / 1.2) * 100}%`, backgroundColor: c }} />
+                      </div>
+                      <p className="text-[9px] text-gray-400 dark:text-[#5a6a5e]"><span className="font-medium text-gray-500 dark:text-[#6a7a6e]">{a}</span> — {e}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </Card>
+          </div>
+
+          {/* Panel 4: Community Reviews */}
+          <div className={`transition-all duration-500 ${active === 4 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 absolute inset-0 pointer-events-none'}`}>
+            <Card className="p-4">
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-2">
+                  <Users size={16} className="text-blue-400" />
+                  <h4 className="text-sm font-bold text-gray-900 dark:text-[#e8f0ea]">Community Reviews</h4>
+                </div>
+                <div className="flex items-center gap-1 px-2 py-0.5 rounded-lg bg-leaf-500/10 border border-leaf-500/20">
+                  <Star size={10} className="text-amber-400 fill-amber-400" />
+                  <span className="text-xs font-bold text-leaf-500">8.7</span>
+                  <span className="text-[9px] text-gray-400">/10</span>
+                </div>
+              </div>
+              <p className="text-[10px] font-semibold text-gray-500 dark:text-[#6a7a6e] uppercase mb-2">Reported Positive Effects</p>
+              {[{ e: 'Uplifting', p: 78 }, { e: 'Creative', p: 72 }, { e: 'Focused', p: 68 }, { e: 'Happy', p: 65 }].map(({ e, p }) => (
+                <div key={e} className="flex items-center gap-2 mb-1.5">
+                  <span className="text-[10px] text-gray-700 dark:text-[#b0c4b4] w-16">{e}</span>
+                  <div className="flex-1 h-1.5 rounded-full bg-gray-100 dark:bg-white/[0.04] overflow-hidden">
+                    <div className="h-full rounded-full bg-leaf-400" style={{ width: `${p}%` }} />
+                  </div>
+                  <span className="text-[10px] font-semibold text-leaf-500 w-8 text-right">{p}%</span>
+                </div>
+              ))}
+              <p className="text-[10px] font-semibold text-gray-500 dark:text-[#6a7a6e] uppercase mt-3 mb-2">Common Side Effects</p>
+              {[{ e: 'Dry Mouth', p: 42 }, { e: 'Dry Eyes', p: 28 }].map(({ e, p }) => (
+                <div key={e} className="flex items-center gap-2 mb-1.5">
+                  <span className="text-[10px] text-gray-700 dark:text-[#b0c4b4] w-16">{e}</span>
+                  <div className="flex-1 h-1.5 rounded-full bg-gray-100 dark:bg-white/[0.04] overflow-hidden">
+                    <div className="h-full rounded-full bg-red-400/60" style={{ width: `${p}%` }} />
+                  </div>
+                  <span className="text-[10px] font-semibold text-red-400 w-8 text-right">{p}%</span>
+                </div>
+              ))}
+              <p className="text-[9px] text-gray-400 dark:text-[#5a6a5e] mt-2 text-center">Based on 842 community reports</p>
+            </Card>
+          </div>
+
+          {/* Panel 5: Taste & Experience */}
+          <div className={`transition-all duration-500 ${active === 5 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 absolute inset-0 pointer-events-none'}`}>
+            <Card className="p-4">
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-2">
+                  <Wine size={16} className="text-purple-400" />
+                  <h4 className="text-sm font-bold text-gray-900 dark:text-[#e8f0ea]">Taste & Experience</h4>
+                </div>
+                <span className="text-xs font-bold text-purple-400">7.6 / 10</span>
+              </div>
+              <div className="space-y-3">
+                {[{ l: 'Taste', v: 8, c: '#a855f7', n: 'Sweet blueberry with pine undertones' }, { l: 'Aroma', v: 7.5, c: '#8b5cf6', n: 'Strong fruity nose with floral hints' }, { l: 'Smoothness', v: 7, c: '#6366f1', n: 'Clean smoke, minimal irritation' }, { l: 'Throat Feel', v: 6.5, c: '#818cf8', n: 'Mild hit, mostly smooth' }, { l: 'Burn Quality', v: 8.5, c: '#a78bfa', n: 'Slow, even burn with white ash' }].map(({ l, v, c, n }) => (
+                  <div key={l}>
+                    <div className="flex items-center justify-between mb-0.5">
+                      <span className="text-[11px] font-medium text-gray-700 dark:text-[#b0c4b4]">{l}</span>
+                      <span className="text-[10px] font-bold" style={{ color: c }}>{v}/10</span>
+                    </div>
+                    <div className="h-1.5 rounded-full bg-gray-100 dark:bg-white/[0.04] overflow-hidden mb-0.5">
+                      <div className="h-full rounded-full" style={{ width: `${v * 10}%`, backgroundColor: c }} />
+                    </div>
+                    <p className="text-[9px] text-gray-400 dark:text-[#5a6a5e]">{n}</p>
+                  </div>
+                ))}
+              </div>
+            </Card>
+          </div>
+        </div>
+
+        {/* Caption */}
+        <p className="text-center text-[11px] text-gray-400 dark:text-[#5a6a5e] mt-4">
+          This is real data from our 77-strain database — every recommendation includes all of this.
+        </p>
       </div>
     </section>
   )

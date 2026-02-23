@@ -93,6 +93,12 @@ export default function LoginPage() {
             <Button type="submit" size="lg" className="w-full" disabled={loading}>
               {loading ? 'Signing in...' : 'Sign In'}
             </Button>
+
+            <div className="text-center">
+              <Link to="/forgot-password" className="text-xs text-gray-400 dark:text-[#6a7a6e] hover:text-leaf-500 transition-colors">
+                Forgot your password?
+              </Link>
+            </div>
           </form>
         </Card>
 

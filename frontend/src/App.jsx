@@ -20,6 +20,8 @@ const LearnPage = lazy(() => import('./routes/LearnPage'))
 const LoginPage = lazy(() => import('./routes/LoginPage'))
 const SignupPage = lazy(() => import('./routes/SignupPage'))
 const AdminPage = lazy(() => import('./routes/AdminPage'))
+const CheckoutSuccessPage = lazy(() => import('./routes/CheckoutSuccessPage'))
+const ForgotPasswordPage = lazy(() => import('./routes/ForgotPasswordPage'))
 
 function LoadingFallback() {
   return (
@@ -43,6 +45,8 @@ export default function App() {
                     <Route index element={<LandingPage />} />
                     <Route path="login" element={<LoginPage />} />
                     <Route path="signup" element={<SignupPage />} />
+                    <Route path="forgot-password" element={<ForgotPasswordPage />} />
+                    <Route path="checkout-success" element={<ProtectedRoute><CheckoutSuccessPage /></ProtectedRoute>} />
 
                     {/* App pages — inside AppShell with NavBar */}
                     <Route element={<AppShell />}>

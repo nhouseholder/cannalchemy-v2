@@ -94,6 +94,11 @@ h1, h2, h3 {
 }
 .animate-reveal-up { animation: revealUp 0.8s ease forwards; }
 
+@keyframes progressFill {
+  from { width: 0%; }
+  to { width: 100%; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
