@@ -1,7 +1,7 @@
 // Netlify serverless function: Handle Stripe Webhook Events
 // POST /.netlify/functions/stripe-webhook
 
-import crypto from 'crypto'
+import { createHmac } from 'node:crypto'
 
 function constructEvent(payload, sigHeader, secret) {
   const elements = sigHeader.split(',')
@@ -11,8 +11,7 @@ function constructEvent(payload, sigHeader, secret) {
   if (!timestamp || !signature) throw new Error('Invalid signature header')
 
   const signedPayload = `${timestamp}.${payload}`
-  const expectedSig = crypto
-    .createHmac('sha256', secret)
+  const expectedSig = createHmac('sha256', secret)
     .update(signedPayload)
     .digest('hex')
 
