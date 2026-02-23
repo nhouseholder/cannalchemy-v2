@@ -30,60 +30,21 @@ export default function StrainCardExpanded({ strain }) {
 
   return (
     <div className="space-y-5 pt-4 border-t border-gray-200 dark:border-white/[0.06] overflow-hidden">
-      {/* 1. Why This Match */}
+      {/* ── BASIC INFO ─────────────────────────────────────── */}
+
+      {/* 1. Why This Match — plain-language explanation */}
       {strain.whyMatch && (
         <WhyMatchTooltip text={strain.whyMatch} />
       )}
 
-      {/* 1b. AI Science Explanation (lazy-loaded on click) */}
-      <ScienceExplanation strain={strain} />
+      {/* 2. Dosage Guide — practical usage info */}
+      <DosageGuide
+        strain={strain}
+        tolerance={tolerance}
+        method={method}
+      />
 
-      {/* 2. Cannabinoid Profile */}
-      <CannabinoidProfile cannabinoids={cannabinoids} />
-
-      {/* 3. Terpene Profile (bars) */}
-      {strain.terpenes?.length > 0 && (
-        <TerpeneProfile terpenes={strain.terpenes} />
-      )}
-
-      {/* 3b. Terpene Radar Pentagon */}
-      {strain.terpenes?.length >= 3 && (
-        <TerpeneRadar terpenes={strain.terpenes} strainType={strain.type} />
-      )}
-
-      {/* 4. Molecular Science (effect probabilities + pathway chips) */}
-      {(strain.effectPredictions?.length > 0 || strain.pathways?.length > 0) && (
-        <MolecularScience
-          effectPredictions={strain.effectPredictions}
-          pathways={strain.pathways}
-        />
-      )}
-
-      {/* 4b. Receptor Pathway Map (molecule → receptor → effect flow) */}
-      {strain.pathways?.length > 0 && (
-        <ReceptorMap
-          pathways={strain.pathways}
-          effectPredictions={strain.effectPredictions}
-        />
-      )}
-
-      {/* 4c. Effect Verification (predicted vs community) */}
-      {strain.effectPredictions?.length > 0 && strain.forumAnalysis && (
-        <EffectVerification
-          predictions={strain.effectPredictions}
-          forumData={strain.forumAnalysis}
-        />
-      )}
-
-      {/* 5. Sommelier Review */}
-      {strain.sommelierScores && (
-        <SommelierReview
-          scores={strain.sommelierScores}
-          notes={strain.sommelierNotes}
-        />
-      )}
-
-      {/* 6. Forum / Community Analysis */}
+      {/* 3. Forum / Community Analysis — crowd-sourced data */}
       {(strain.forumAnalysis || strain.bestFor?.length > 0 || strain.sentimentScore != null) && (
         <ForumAnalysis
           data={strain.forumAnalysis}
@@ -93,17 +54,60 @@ export default function StrainCardExpanded({ strain }) {
         />
       )}
 
-      {/* 6. Lineage Tree */}
+      {/* 4. Sommelier Review — expert-style scoring */}
+      {strain.sommelierScores && (
+        <SommelierReview
+          scores={strain.sommelierScores}
+          notes={strain.sommelierNotes}
+        />
+      )}
+
+      {/* 5. Lineage Tree — genetics & heritage */}
       {strain.lineage && (
         <LineageTree lineage={strain.lineage} />
       )}
 
-      {/* 7. Dosage Guide */}
-      <DosageGuide
-        strain={strain}
-        tolerance={tolerance}
-        method={method}
-      />
+      {/* ── SCIENCE ────────────────────────────────────────── */}
+
+      {/* 6. Cannabinoid Profile — THC/CBD/CBN bars */}
+      <CannabinoidProfile cannabinoids={cannabinoids} />
+
+      {/* 7. Terpene Profile (bars) */}
+      {strain.terpenes?.length > 0 && (
+        <TerpeneProfile terpenes={strain.terpenes} />
+      )}
+
+      {/* 8. Terpene Radar Pentagon */}
+      {strain.terpenes?.length >= 3 && (
+        <TerpeneRadar terpenes={strain.terpenes} strainType={strain.type} />
+      )}
+
+      {/* 9. Effect Verification (predicted vs community) */}
+      {strain.effectPredictions?.length > 0 && strain.forumAnalysis && (
+        <EffectVerification
+          predictions={strain.effectPredictions}
+          forumData={strain.forumAnalysis}
+        />
+      )}
+
+      {/* 10. Molecular Science (effect probabilities + pathway chips) */}
+      {(strain.effectPredictions?.length > 0 || strain.pathways?.length > 0) && (
+        <MolecularScience
+          effectPredictions={strain.effectPredictions}
+          pathways={strain.pathways}
+        />
+      )}
+
+      {/* 11. Receptor Pathway Map (molecule → receptor → effect flow) */}
+      {strain.pathways?.length > 0 && (
+        <ReceptorMap
+          pathways={strain.pathways}
+          effectPredictions={strain.effectPredictions}
+        />
+      )}
+
+      {/* 12. AI Science Explanation (deep dive, lazy-loaded) */}
+      <ScienceExplanation strain={strain} />
     </div>
   )
 }
