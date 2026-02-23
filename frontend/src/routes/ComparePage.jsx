@@ -4,7 +4,6 @@ import { ResultsContext } from '../context/ResultsContext'
 import Card from '../components/shared/Card'
 import Button from '../components/shared/Button'
 import { TypeBadge, EffectBadge } from '../components/shared/Badge'
-import ProgressBar from '../components/shared/ProgressBar'
 import { getTerpeneColor, getTypeColor } from '../utils/colors'
 import { MAX_COMPARE_STRAINS } from '../utils/constants'
 import {
@@ -15,7 +14,7 @@ import {
   ResponsiveContainer,
   Legend,
 } from 'recharts'
-import { X, Plus, Search, GitCompareArrows, ArrowRight } from 'lucide-react'
+import { X, Plus, Search, GitCompareArrows } from 'lucide-react'
 
 /* ------------------------------------------------------------------ */
 /*  Color palette for compared strains                                */

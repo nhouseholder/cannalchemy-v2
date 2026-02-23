@@ -14,8 +14,6 @@ import {
   Plus,
   ArrowRight,
   BookOpen,
-  Leaf,
-  Trash2,
   RotateCcw,
 } from 'lucide-react'
 import Button from '../components/shared/Button'
