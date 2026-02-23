@@ -440,13 +440,32 @@ function HowItWorksSection() {
 /* ------------------------------------------------------------------ */
 function PricingSection({ onGetStarted }) {
   const ref = useScrollReveal()
+  const navigate = useNavigate()
   const { user, isPremium } = useAuth()
+  const [upgradeLoading, setUpgradeLoading] = useState(false)
 
   const free = ['Top strain recommendation per quiz', 'Basic cannabinoid profiles', 'Community reviews']
   const premium = ['Unlimited recommendations', 'Full receptor science & pathways', 'Terpene radar & molecular maps', 'Personal journal & compare tool', 'AI strain analysis', 'Priority support']
 
+  const handlePremiumClick = async () => {
+    if (isPremium) { navigate('/quiz'); return }
+    if (!user) { navigate('/signup'); return }
+    // Logged-in free user → Stripe Checkout
+    setUpgradeLoading(true)
+    try {
+      const res = await fetch('/.netlify/functions/stripe-checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: user.email, userId: user.id, returnUrl: window.location.origin + '/checkout-success' }),
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error)
+      window.location.href = data.url
+    } catch { setUpgradeLoading(false) }
+  }
+
   return (
-    <section className="py-24 px-6" ref={ref}>
+    <section id="pricing" className="py-24 px-6" ref={ref}>
       <div className="max-w-4xl mx-auto">
         <h2
           className="text-3xl sm:text-4xl font-bold text-center text-gray-900 dark:text-[#e8f0ea] mb-4"
@@ -493,9 +512,9 @@ function PricingSection({ onGetStarted }) {
                 </li>
               ))}
             </ul>
-            <Button size="full" className="shadow-lg shadow-leaf-500/25" onClick={onGetStarted}>
-              {isPremium ? 'Go to App' : user ? 'Upgrade Now' : 'Start Premium'}
-              {isPremium ? <ArrowRight size={16} /> : <Sparkles size={16} />}
+            <Button size="full" className="shadow-lg shadow-leaf-500/25" onClick={handlePremiumClick} disabled={upgradeLoading}>
+              {upgradeLoading ? 'Loading...' : isPremium ? 'Go to App' : user ? 'Upgrade Now' : 'Start Premium'}
+              {!upgradeLoading && (isPremium ? <ArrowRight size={16} /> : <Sparkles size={16} />)}
             </Button>
           </Card>
         </div>
