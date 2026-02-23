@@ -9,6 +9,18 @@ export default defineConfig({
       '@': '/src',
     },
   },
+  build: {
+    target: 'es2020',
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // Split heavy vendor libraries into separate cacheable chunks
+          recharts: ['recharts'],
+          leaflet: ['leaflet', 'react-leaflet'],
+        },
+      },
+    },
+  },
   server: {
     proxy: {
       '/api/v1': {
