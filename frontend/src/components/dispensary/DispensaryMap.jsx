@@ -1,7 +1,22 @@
-import { useMemo } from 'react'
+import { useMemo, useEffect } from 'react'
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import L from 'leaflet'
 import { MapPin } from 'lucide-react'
+
+// Dynamically load Leaflet CSS only when this component mounts
+const LEAFLET_CSS = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css'
+let leafletCssLoaded = false
+function useLeafletCSS() {
+  useEffect(() => {
+    if (leafletCssLoaded) return
+    if (document.querySelector(`link[href="${LEAFLET_CSS}"]`)) { leafletCssLoaded = true; return }
+    const link = document.createElement('link')
+    link.rel = 'stylesheet'
+    link.href = LEAFLET_CSS
+    document.head.appendChild(link)
+    leafletCssLoaded = true
+  }, [])
+}
 
 const MATCH_COLORS = {
   exact: '#32c864',
@@ -34,6 +49,7 @@ export default function DispensaryMap({
   center,
   zoom = 12,
 }) {
+  useLeafletCSS()
   const hasValidCenter = center?.lat && center?.lng
   const hasLocatedDispensaries = dispensaries.some((d) => d.lat && d.lng)
 

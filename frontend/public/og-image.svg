@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a0f0c"/>
+      <stop offset="100%" style="stop-color:#121a14"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#22c55e"/>
+      <stop offset="100%" style="stop-color:#4ade80"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="45%" r="40%">
+      <stop offset="0%" style="stop-color:#22c55e;stop-opacity:0.15"/>
+      <stop offset="100%" style="stop-color:#22c55e;stop-opacity:0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+
+  <!-- Subtle grid lines -->
+  <g opacity="0.04" stroke="#22c55e" stroke-width="1">
+    <line x1="0" y1="157" x2="1200" y2="157"/>
+    <line x1="0" y1="315" x2="1200" y2="315"/>
+    <line x1="0" y1="473" x2="1200" y2="473"/>
+    <line x1="300" y1="0" x2="300" y2="630"/>
+    <line x1="600" y1="0" x2="600" y2="630"/>
+    <line x1="900" y1="0" x2="900" y2="630"/>
+  </g>
+
+  <!-- Leaf icon -->
+  <text x="600" y="220" font-size="80" text-anchor="middle" dominant-baseline="middle">🌿</text>
+
+  <!-- Title -->
+  <text x="600" y="310" font-family="Georgia, 'Times New Roman', serif" font-size="56" font-weight="700" fill="#e8f0ea" text-anchor="middle">
+    Strain Finder
+  </text>
+
+  <!-- Accent line -->
+  <rect x="500" y="335" width="200" height="3" rx="1.5" fill="url(#accent)"/>
+
+  <!-- Tagline -->
+  <text x="600" y="390" font-family="'Helvetica Neue', Arial, sans-serif" font-size="24" fill="#8a9a8e" text-anchor="middle">
+    Cannabis Science, Personalized
+  </text>
+
+  <!-- Stats bar -->
+  <g font-family="'Helvetica Neue', Arial, sans-serif" font-size="16" fill="#6a7a6e" text-anchor="middle">
+    <text x="350" y="480">1,000+ Strains</text>
+    <text x="490" y="480" fill="#2a3a2e">•</text>
+    <text x="600" y="480">Receptor Pharmacology</text>
+    <text x="710" y="480" fill="#2a3a2e">•</text>
+    <text x="850" y="480">Terpene Science</text>
+  </g>
+
+  <!-- Bottom border accent -->
+  <rect x="0" y="620" width="1200" height="10" fill="url(#accent)" opacity="0.6"/>
+</svg>
