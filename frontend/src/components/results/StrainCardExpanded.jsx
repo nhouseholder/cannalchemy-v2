@@ -61,7 +61,7 @@ export default function StrainCardExpanded({ strain }) {
         />
       )}
 
-      {/* 7. Scientifically Predicted Effects */}
+      {/* 7. Community-Reported Effect Predictions */}
       <WhatToExpect
         bestFor={strain.bestFor}
         notIdealFor={strain.notIdealFor}

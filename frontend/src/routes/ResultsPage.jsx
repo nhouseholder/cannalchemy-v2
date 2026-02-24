@@ -8,6 +8,7 @@ import usePageTitle from '../hooks/usePageTitle'
 import StrainCard from '../components/results/StrainCard'
 import AiPicksSection from '../components/results/AiPicksSection'
 import DispensaryDrawer from '../components/dispensary/DispensaryDrawer'
+import LegalConsent from '../components/shared/LegalConsent'
 import Button from '../components/shared/Button'
 import { MapPin, RotateCcw, ArrowRight, Store, Loader2 } from 'lucide-react'
 import { BUDGETS } from '../data/budgets'
@@ -97,6 +98,7 @@ export default function ResultsPage() {
   }
 
   return (
+    <LegalConsent>
     <div className="w-full max-w-2xl mx-auto px-4 pt-4 animate-fade-in">
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
@@ -203,7 +205,7 @@ export default function ResultsPage() {
       {/* Legal disclaimer */}
       <div className="max-w-xl mx-auto px-2 pb-6">
         <p className="text-[9px] text-gray-400 dark:text-[#3a4a3e] leading-relaxed text-center">
-          <strong className="text-gray-500 dark:text-[#5a6a5e]">Disclaimer:</strong> These results are for informational and educational purposes only, based on community-reported data. They do not constitute medical advice. Individual experiences vary. Always consult a healthcare professional before using cannabis. Verify all product details with your licensed dispensary.
+          <strong className="text-gray-500 dark:text-[#5a6a5e]">Disclaimer:</strong> These AI-generated suggestions are for informational and educational purposes only, based on community-reported data and publicly available information. They may contain inaccuracies. They do not constitute medical, legal, or professional advice. MyStrain+ does not sell or distribute cannabis. Individual experiences vary widely. Always consult a healthcare professional before using cannabis. Do not use cannabis if pregnant or nursing. Verify all product details with your licensed dispensary.
         </p>
       </div>
 
@@ -215,5 +217,6 @@ export default function ResultsPage() {
         highlightStrain={drawerHighlightStrain}
       />
     </div>
+    </LegalConsent>
   )
 }

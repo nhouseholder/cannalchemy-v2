@@ -57,8 +57,8 @@ export default function PaywallOverlay() {
         </h3>
         <p className="text-xs text-gray-500 dark:text-[#8a9a8e] mb-4 leading-relaxed">
           {user
-            ? 'Unlock all strain matches, full science data, journal sync, and more.'
-            : 'Create a free account or go premium to unlock all strain matches.'}
+            ? 'Unlock access to all informational strain suggestions, detailed data profiles, and premium software features.'
+            : 'Create a free account or go premium to access all informational strain suggestions.'}
         </p>
 
         {user ? (
@@ -104,6 +104,10 @@ export default function PaywallOverlay() {
             </button>
           </div>
         )}
+
+        <p className="text-[8px] text-gray-300 dark:text-[#2a352c] mt-3 leading-relaxed">
+          Subscription is for software access only &mdash; not a purchase of cannabis products. Informational purposes only.
+        </p>
       </div>
     </div>
   )

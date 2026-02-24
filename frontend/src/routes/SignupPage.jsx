@@ -15,6 +15,8 @@ export default function SignupPage() {
   const [error, setError] = useState(null)
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
+  const [agreedToTerms, setAgreedToTerms] = useState(false)
+  const [confirmed21, setConfirmed21] = useState(false)
 
   // If already logged in, redirect
   if (user) {
@@ -26,6 +28,14 @@ export default function SignupPage() {
     e.preventDefault()
     setError(null)
 
+    if (!agreedToTerms) {
+      setError('You must agree to the Terms of Service and Privacy Policy to create an account.')
+      return
+    }
+    if (!confirmed21) {
+      setError('You must confirm that you are at least 21 years old.')
+      return
+    }
     if (password !== confirm) {
       setError('Passwords do not match')
       return
@@ -90,7 +100,7 @@ export default function SignupPage() {
             Create your account
           </h1>
           <p className="text-xs text-gray-500 dark:text-[#8a9a8e] text-center mb-6">
-            Get personalized cannabis recommendations backed by science
+            Explore cannabis information based on community data and publicly available research
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -143,13 +153,35 @@ export default function SignupPage() {
               <p className="text-xs text-red-400 text-center">{error}</p>
             )}
 
-            <p className="text-[10px] text-gray-400 dark:text-[#5a6a5e] text-center leading-relaxed">
-              By creating an account, you agree to our{' '}
-              <Link to="/terms" className="text-leaf-500 hover:text-leaf-400 underline">Terms of Service</Link>
-              {' '}and{' '}
-              <Link to="/privacy" className="text-leaf-500 hover:text-leaf-400 underline">Privacy Policy</Link>.
-              You confirm you are at least 21 years old.
-            </p>
+            {/* Explicit consent checkboxes */}
+            <div className="space-y-2.5 text-left">
+              <label className="flex items-start gap-2 cursor-pointer group">
+                <input
+                  type="checkbox"
+                  checked={agreedToTerms}
+                  onChange={(e) => { setAgreedToTerms(e.target.checked); setError(null) }}
+                  className="mt-0.5 w-4 h-4 rounded border-gray-300 dark:border-white/20 text-leaf-500 focus:ring-leaf-500/40 flex-shrink-0"
+                />
+                <span className="text-[10px] text-gray-400 dark:text-[#5a6a5e] leading-relaxed">
+                  I have read and agree to the{' '}
+                  <Link to="/terms" target="_blank" className="text-leaf-500 hover:text-leaf-400 underline">Terms of Service</Link>
+                  {' '}and{' '}
+                  <Link to="/privacy" target="_blank" className="text-leaf-500 hover:text-leaf-400 underline">Privacy Policy</Link>.
+                  I understand that MyStrain+ is an informational platform only and does not provide medical advice, sell cannabis, or guarantee outcomes.
+                </span>
+              </label>
+              <label className="flex items-start gap-2 cursor-pointer group">
+                <input
+                  type="checkbox"
+                  checked={confirmed21}
+                  onChange={(e) => { setConfirmed21(e.target.checked); setError(null) }}
+                  className="mt-0.5 w-4 h-4 rounded border-gray-300 dark:border-white/20 text-leaf-500 focus:ring-leaf-500/40 flex-shrink-0"
+                />
+                <span className="text-[10px] text-gray-400 dark:text-[#5a6a5e] leading-relaxed">
+                  I confirm that I am <strong className="text-gray-500 dark:text-[#8a9a8e]">at least 21 years of age</strong> and that cannabis use is legal in my jurisdiction. I am solely responsible for complying with all applicable laws.
+                </span>
+              </label>
+            </div>
 
             <Button type="submit" size="lg" className="w-full" disabled={loading}>
               {loading ? 'Creating account...' : 'Create Account'}

@@ -18,7 +18,7 @@ export default function PrivacyPage() {
         <h1 className="text-3xl font-bold text-gray-900 dark:text-[#e8f0ea] mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>
           Privacy Policy
         </h1>
-        <p className="text-xs text-gray-400 dark:text-[#5a6a5e] mb-8">Last updated: February 23, 2026</p>
+        <p className="text-xs text-gray-400 dark:text-[#5a6a5e] mb-8">Last updated: February 24, 2026</p>
 
         <section className="space-y-6 text-sm text-gray-600 dark:text-[#8a9a8e] leading-relaxed">
           <div>
@@ -61,6 +61,8 @@ export default function PrivacyPage() {
               <li><strong className="text-gray-800 dark:text-[#b0c4b4]">Supabase</strong> — Authentication and user profile storage (email and account status only)</li>
               <li><strong className="text-gray-800 dark:text-[#b0c4b4]">Plausible Analytics</strong> — Privacy-friendly, cookieless website analytics. No personal data collected. GDPR and CCPA compliant. No data shared with advertisers.</li>
               <li><strong className="text-gray-800 dark:text-[#b0c4b4]">Netlify</strong> — Website hosting and serverless functions</li>
+              <li><strong className="text-gray-800 dark:text-[#b0c4b4]">Stripe</strong> — Payment processing for optional premium subscriptions. Stripe handles all credit card data directly and is PCI-DSS Level 1 certified. We never see, store, or process your full credit card number.</li>
+              <li><strong className="text-gray-800 dark:text-[#b0c4b4]">Anthropic (Claude AI)</strong> — AI-powered dispensary discovery feature. Location queries (zip codes, city names) may be processed by Anthropic's Claude AI to search for nearby dispensary information. No personal identity data is shared with Anthropic.</li>
             </ul>
             <p className="mt-2">We do not use Google Analytics, Facebook Pixel, or any tracking-based analytics service.</p>
           </div>
@@ -123,14 +125,37 @@ export default function PrivacyPage() {
           </div>
 
           <div>
-            <h2 className="text-base font-bold text-gray-900 dark:text-[#e8f0ea] mb-2">11. Changes to This Policy</h2>
+            <h2 className="text-base font-bold text-gray-900 dark:text-[#e8f0ea] mb-2">11. NOT a Healthcare Provider &mdash; Not HIPAA Compliant</h2>
+            <p>
+              <strong className="text-gray-800 dark:text-[#b0c4b4]">MyStrain+ is NOT a healthcare provider, medical facility, or covered entity under the Health Insurance Portability and Accountability Act (HIPAA).</strong> We do not collect, store, or process Protected Health Information (PHI) as defined by HIPAA. Your quiz responses, strain preferences, and usage data are NOT medical records. We do not maintain medical records or patient files of any kind.
+            </p>
+            <p className="mt-2">
+              If you share health-related information with us (e.g., via quiz responses about desired effects), this data is treated as general preference information and is NOT protected under HIPAA or any healthcare privacy regulation. Do not share sensitive medical information through our platform. For medical advice, consult a licensed healthcare professional.
+            </p>
+          </div>
+
+          <div>
+            <h2 className="text-base font-bold text-gray-900 dark:text-[#e8f0ea] mb-2">12. AI &amp; Machine Learning Data Processing</h2>
+            <p>
+              MyStrain+ uses artificial intelligence and machine learning algorithms to generate strain recommendations and informational content. Here is how your data interacts with our AI systems:
+            </p>
+            <ul className="list-disc pl-5 mt-2 space-y-1">
+              <li>Quiz responses are processed by our matching algorithm in real-time to generate informational suggestions. This processing happens server-side and results are not used to train external AI models.</li>
+              <li>Dispensary search queries (zip codes, city names) may be processed by third-party AI services (Anthropic Claude) to discover nearby dispensary information. Only location data is shared &mdash; no personal identity information.</li>
+              <li>AI-generated content (effect predictions, strain analyses) may contain inaccuracies. All AI outputs are for informational purposes only.</li>
+              <li>We do not sell, share, or provide your quiz responses or preference data to any third-party AI training datasets.</li>
+            </ul>
+          </div>
+
+          <div>
+            <h2 className="text-base font-bold text-gray-900 dark:text-[#e8f0ea] mb-2">13. Changes to This Policy</h2>
             <p>
               We may update this Privacy Policy from time to time. We will make reasonable efforts to notify you of material changes via email or in-app notification. Your continued use of the Service after changes constitutes acceptance of the updated policy.
             </p>
           </div>
 
           <div>
-            <h2 className="text-base font-bold text-gray-900 dark:text-[#e8f0ea] mb-2">12. Contact</h2>
+            <h2 className="text-base font-bold text-gray-900 dark:text-[#e8f0ea] mb-2">14. Contact</h2>
             <p>
               Questions about privacy? Contact us at <a href="mailto:mystrainplus@gmail.com" className="text-leaf-500 hover:text-leaf-400">mystrainplus@gmail.com</a>.
             </p>

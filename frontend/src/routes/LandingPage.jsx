@@ -51,7 +51,7 @@ function HeroSection({ onGetStarted }) {
       <div className="relative z-10 max-w-2xl animate-fade-in">
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-leaf-500/10 border border-leaf-500/20 mb-8">
           <Sparkles size={14} className="text-leaf-400" />
-          <span className="text-xs font-medium text-leaf-400">Powered by receptor science</span>
+          <span className="text-xs font-medium text-leaf-400">Educational cannabis information platform</span>
         </div>
 
         <h1
@@ -65,7 +65,7 @@ function HeroSection({ onGetStarted }) {
         </h1>
 
         <p className="text-lg sm:text-xl text-gray-500 dark:text-[#8a9a8e] mb-10 max-w-lg mx-auto leading-relaxed">
-          Find your perfect strain based on molecular pathways, terpene profiles, and real community data.
+          Explore cannabis strain information based on publicly available terpene profiles, cannabinoid data, and community reports.
         </p>
 
         <div className="flex flex-col sm:flex-row items-center gap-4 justify-center">
@@ -97,19 +97,19 @@ function FeaturesSection() {
     {
       icon: FlaskConical,
       title: 'Receptor Science',
-      desc: 'Our matching engine scores strains across 6 receptor pathways — CB1, CB2, TRPV1, 5-HT1A, and more — using real binding affinity data.',
+      desc: 'Our informational tool references publicly available data on 6 receptor pathways — CB1, CB2, TRPV1, 5-HT1A, and more — using community-sourced binding affinity information.',
       color: 'text-leaf-400 bg-leaf-500/10',
     },
     {
       icon: Fingerprint,
       title: 'Personalized Matching',
-      desc: 'A 5-layer algorithm weighs your desired effects, tolerance, budget, and preferences to find your ideal strain match.',
+      desc: 'A multi-factor algorithm weighs your preferences, reported effects, and publicly available data to suggest strains you may want to explore.',
       color: 'text-purple-400 bg-purple-500/10',
     },
     {
       icon: BookMarked,
       title: 'Track & Learn',
-      desc: 'Log your experiences in a personal journal, compare strains side-by-side, and learn the science behind every recommendation.',
+      desc: 'Log your personal experiences in a private journal, compare strains side-by-side, and explore the publicly available data behind each suggestion.',
       color: 'text-blue-400 bg-blue-500/10',
     },
   ]
@@ -124,7 +124,7 @@ function FeaturesSection() {
           Science meets simplicity
         </h2>
         <p className="text-center text-gray-500 dark:text-[#6a7a6e] mb-16 max-w-lg mx-auto">
-          Every recommendation is backed by pharmacology data, not just vibes.
+          Informational recommendations informed by publicly available pharmacology data and community reports.
         </p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {features.map((f) => (
@@ -391,7 +391,7 @@ function DemoSection() {
 
         {/* Caption */}
         <p className="text-center text-[11px] text-gray-400 dark:text-[#5a6a5e] mt-4">
-          This is real data from our 1,000+ strain database — every recommendation includes all of this.
+          Sample data from our 1,000+ strain database. All information is community-sourced, for educational purposes only, and may not reflect actual product characteristics.
         </p>
       </div>
     </section>
@@ -405,8 +405,8 @@ function HowItWorksSection() {
   const ref = useScrollReveal()
   const steps = [
     { num: '01', title: 'Take the Quiz', desc: 'Tell us what effects you want, your tolerance, and preferences. Takes 60 seconds.', icon: Search },
-    { num: '02', title: 'Get Matched', desc: 'Our 5-layer algorithm scores every strain across molecular pathways, terpene profiles, and community data.', icon: Zap },
-    { num: '03', title: 'Explore the Science', desc: 'Dive into cannabinoid charts, receptor maps, predicted effects, and real user reviews for every match.', icon: FlaskConical },
+    { num: '02', title: 'Get Suggestions', desc: 'Our algorithm references publicly available data on terpene profiles, reported effects, and community reviews to suggest strains to explore.', icon: Zap },
+    { num: '03', title: 'Explore the Data', desc: 'Browse cannabinoid info, terpene data, community-reported effects, and user reviews for each suggestion. All data is informational only.', icon: FlaskConical },
   ]
 
   return (
@@ -444,8 +444,8 @@ function PricingSection({ onGetStarted }) {
   const { user, isPremium } = useAuth()
   const [upgradeLoading, setUpgradeLoading] = useState(false)
 
-  const free = ['Top strain recommendation per quiz', 'Basic cannabinoid profiles', 'Community reviews']
-  const premium = ['Unlimited recommendations', 'Full receptor science & pathways', 'Terpene radar & molecular maps', 'Personal journal & compare tool', 'AI strain analysis', 'Priority support']
+  const free = ['Top strain suggestion per quiz', 'Basic cannabinoid info', 'Community-reported reviews']
+  const premium = ['Unlimited informational suggestions', 'Full data profiles & pathways', 'Terpene & cannabinoid details', 'Personal journal & compare tool', 'AI-generated analysis (may contain errors)', 'Priority support']
 
   const handlePremiumClick = async () => {
     if (isPremium) { navigate('/quiz'); return }
@@ -503,7 +503,7 @@ function PricingSection({ onGetStarted }) {
             </div>
             <h3 className="text-xl font-bold text-gray-900 dark:text-[#e8f0ea] mb-1">Premium</h3>
             <p className="text-3xl font-bold text-gray-900 dark:text-[#e8f0ea] mb-1">$0.99<span className="text-sm font-normal text-gray-400">/mo</span></p>
-            <p className="text-xs text-gray-400 dark:text-[#6a7a6e] mb-6">Full access to every feature</p>
+            <p className="text-xs text-gray-400 dark:text-[#6a7a6e] mb-6">Full software access &mdash; not a purchase of cannabis products</p>
             <ul className="space-y-3 mb-8">
               {premium.map(p => (
                 <li key={p} className="flex items-start gap-2 text-sm text-gray-600 dark:text-[#8a9a8e]">
@@ -539,7 +539,7 @@ function CTASection({ onGetStarted }) {
           Ready to find your strain?
         </h2>
         <p className="text-gray-500 dark:text-[#8a9a8e] mb-8">
-          Make smarter cannabis choices backed by real science.
+          Explore cannabis information informed by community data and publicly available research.
         </p>
         <Button size="lg" className="shadow-xl shadow-leaf-500/25" onClick={onGetStarted}>
           Take the Quiz
@@ -610,10 +610,22 @@ export default function LandingPage() {
       <PricingSection onGetStarted={handleGetStarted} />
       <CTASection onGetStarted={handleGetStarted} />
 
-      {/* Disclaimer */}
-      <div className="max-w-2xl mx-auto px-6 py-6 text-center">
+      {/* Platform Identity & Disclaimer */}
+      <div className="max-w-2xl mx-auto px-6 pt-6 pb-2 text-center">
+        <div className="rounded-xl border border-gray-200 dark:border-white/[0.06] bg-gray-50 dark:bg-white/[0.02] p-4 mb-4">
+          <p className="text-[11px] font-bold text-gray-500 dark:text-[#6a7a6e] uppercase tracking-wider mb-2">Important Notice</p>
+          <p className="text-[11px] text-gray-500 dark:text-[#5a6a5e] leading-relaxed">
+            <strong className="text-gray-600 dark:text-[#8a9a8e]">MyStrain+ is an informational and educational software platform only.</strong> We are <strong className="text-gray-600 dark:text-[#8a9a8e]">not</strong> a cannabis retailer, dispensary, distributor, or medical provider. We do not sell, deliver, prescribe, or facilitate the sale of any cannabis products. All recommendations are AI-generated based on community-sourced data and may contain inaccuracies. Premium subscriptions provide access to our recommendation software only &mdash; not to cannabis products.
+          </p>
+        </div>
+        <p className="text-[10px] text-gray-400 dark:text-[#3a4a3e] leading-relaxed mb-3">
+          <strong className="text-gray-500 dark:text-[#5a6a5e]">Medical Disclaimer:</strong> MyStrain+ does not provide medical advice, diagnoses, or treatment recommendations. No information on this site should be interpreted as a claim that any cannabis product can treat, cure, prevent, or diagnose any disease or medical condition. Individual experiences vary widely. Always consult a qualified healthcare professional before using cannabis, especially if you are pregnant or nursing, have a mental health condition, take prescription medications, or have a history of substance use disorder.
+        </p>
+        <p className="text-[10px] text-gray-400 dark:text-[#3a4a3e] leading-relaxed mb-3">
+          <strong className="text-gray-500 dark:text-[#5a6a5e]">Health Warnings:</strong> Cannabis may impair cognitive and motor function. Do not drive or operate machinery while under the influence. Cannabis use during pregnancy or breastfeeding may harm fetal or infant development. Individuals with a personal or family history of psychosis, schizophrenia, or other mental health conditions should use extreme caution. Cannabis use carries a risk of dependence and may interact with medications.
+        </p>
         <p className="text-[10px] text-gray-400 dark:text-[#3a4a3e] leading-relaxed">
-          <strong className="text-gray-500 dark:text-[#5a6a5e]">Disclaimer:</strong> MyStrain+ provides general educational and informational content only. It does not provide medical advice, diagnoses, or treatment recommendations. All strain data is based on community-reported information and may not reflect actual products. Individual experiences vary. Always consult a qualified healthcare professional before using cannabis. Cannabis is a Schedule I substance under federal law; legality varies by jurisdiction — you are solely responsible for knowing and complying with your local laws. Do not drive or operate machinery while under the influence. Must be 21+ to use this site. By using MyStrain+ you agree to our <a href="/terms" class="underline hover:text-gray-600 dark:hover:text-[#6a7a6e]">Terms of Service</a>.
+          <strong className="text-gray-500 dark:text-[#5a6a5e]">Legal Notice:</strong> Cannabis remains a Schedule I substance under federal law. Legality varies by jurisdiction &mdash; you are solely responsible for knowing and complying with all applicable local, state, and federal laws. Must be 21+ to use this site. By using MyStrain+ you agree to our <a href="/terms" className="underline hover:text-gray-600 dark:hover:text-[#6a7a6e]">Terms of Service</a> and <a href="/privacy" className="underline hover:text-gray-600 dark:hover:text-[#6a7a6e]">Privacy Policy</a>.
         </p>
       </div>
 

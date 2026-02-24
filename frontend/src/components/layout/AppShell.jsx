@@ -14,8 +14,11 @@ export default function AppShell() {
         <Outlet />
       </main>
       <footer className="relative z-10 text-center py-6 pb-20 sm:pb-6">
+        <p className="text-[9px] text-gray-300 dark:text-[#2a352c] mb-1 max-w-lg mx-auto px-4 leading-relaxed font-semibold">
+          MyStrain+ is an informational software platform only. We do not sell, distribute, or deliver cannabis products. We are not a medical provider.
+        </p>
         <p className="text-[9px] text-gray-300 dark:text-[#2a352c] mb-1.5 max-w-lg mx-auto px-4 leading-relaxed">
-          For adults 21+ in legal markets only. For educational and informational purposes only &mdash; not medical, legal, or professional advice. Cannabis remains a Schedule I substance under federal law. Individual experiences vary. Always consult a healthcare professional before using cannabis.
+          For adults 21+ in legal jurisdictions only. For educational and informational purposes only &mdash; not medical, legal, or professional advice. Cannabis remains a Schedule I substance under federal law. Individual experiences vary. Always consult a healthcare professional before using cannabis. Do not use cannabis if pregnant or nursing.
         </p>
         <div className="flex items-center justify-center gap-3 text-[10px] text-gray-300 dark:text-[#2a352c]">
           <Link to="/terms" className="hover:text-gray-500 dark:hover:text-[#5a6a5e] transition-colors">Terms</Link>

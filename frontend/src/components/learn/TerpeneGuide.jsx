@@ -144,13 +144,13 @@ function TerpeneCard({ terpeneKey, terp }) {
                 </p>
               </div>
 
-              {/* Medical research */}
+              {/* Published research (informational only) */}
               {terp.medicalResearch && (
                 <div>
                   <div className="flex items-center gap-1.5 mb-1">
                     <Beaker size={11} className="text-purple-400" />
                     <span className="text-[10px] uppercase tracking-wider font-semibold text-gray-500 dark:text-[#6a7a6e]">
-                      Medical Research
+                      Published Research (Informational)
                     </span>
                   </div>
                   <p className="text-xs text-gray-600 dark:text-[#8a9a8e] leading-relaxed">
@@ -215,7 +215,7 @@ export function TerpeneGuide() {
       <p className="text-sm text-gray-600 dark:text-[#8a9a8e] mb-6 leading-relaxed max-w-2xl">
         Terpenes are aromatic compounds produced by cannabis and many other plants. They shape
         the taste, smell, and -- most importantly -- the effects of each strain. Click any card
-        to explore the full profile, including medical research and effect breakdown.
+        to explore the full profile, including published research summaries and community-reported effect information.
       </p>
 
       <div
