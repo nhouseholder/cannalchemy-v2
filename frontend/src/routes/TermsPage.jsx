@@ -10,7 +10,7 @@ export default function TermsPage() {
       <nav className="sticky top-0 z-50 flex items-center justify-between px-6 py-3 bg-white/80 dark:bg-[#0a0f0c]/80 backdrop-blur-md border-b border-gray-200/50 dark:border-white/[0.04]">
         <Link to="/" className="flex items-center gap-2 text-lg font-bold" style={{ fontFamily: "'Playfair Display', serif" }}>
           <span className="text-2xl">{'\u{1F33F}'}</span>
-          <span className="bg-gradient-to-r from-leaf-500 to-leaf-400 bg-clip-text text-transparent">Strain Finder</span>
+          <span className="bg-gradient-to-r from-leaf-500 to-leaf-400 bg-clip-text text-transparent">MyStrain+</span>
         </Link>
       </nav>
 
@@ -24,28 +24,28 @@ export default function TermsPage() {
           <div>
             <h2 className="text-base font-bold text-gray-900 dark:text-[#e8f0ea] mb-2">1. Acceptance of Terms</h2>
             <p>
-              By accessing or using Strain Finder ("the Service"), you agree to be bound by these Terms of Service. If you do not agree, do not use the Service. You must be at least 21 years of age to use this Service.
+              By accessing or using MyStrain+ ("the Service"), you agree to be bound by these Terms of Service. If you do not agree, do not use the Service. You must be at least 21 years of age to use this Service.
             </p>
           </div>
 
           <div>
             <h2 className="text-base font-bold text-gray-900 dark:text-[#e8f0ea] mb-2">2. Service Description</h2>
             <p>
-              Strain Finder provides AI-powered cannabis strain recommendations based on molecular and pharmacological data. The Service includes a quiz-based matching engine, strain comparison tools, a personal journal, and dispensary search functionality.
+              MyStrain+ provides AI-powered cannabis strain recommendations based on molecular and pharmacological data. The Service includes a quiz-based matching engine, strain comparison tools, a personal journal, and dispensary search functionality.
             </p>
           </div>
 
           <div>
             <h2 className="text-base font-bold text-gray-900 dark:text-[#e8f0ea] mb-2">3. Not Medical Advice</h2>
             <p>
-              <strong className="text-gray-900 dark:text-[#e8f0ea]">The Service does not provide medical advice.</strong> All information, recommendations, and content are for educational and informational purposes only. Strain Finder is not a substitute for professional medical advice, diagnosis, or treatment. Always consult a qualified healthcare provider before using cannabis products, especially if you have a medical condition, take medications, or are pregnant or nursing.
+              <strong className="text-gray-900 dark:text-[#e8f0ea]">The Service does not provide medical advice.</strong> All information, recommendations, and content are for educational and informational purposes only. MyStrain+ is not a substitute for professional medical advice, diagnosis, or treatment. Always consult a qualified healthcare provider before using cannabis products, especially if you have a medical condition, take medications, or are pregnant or nursing.
             </p>
           </div>
 
           <div>
             <h2 className="text-base font-bold text-gray-900 dark:text-[#e8f0ea] mb-2">4. Legal Compliance</h2>
             <p>
-              Cannabis laws vary by jurisdiction. You are solely responsible for understanding and complying with all applicable local, state, and federal laws regarding cannabis use, purchase, and possession. The Service does not sell, distribute, or facilitate the sale of cannabis products. Strain Finder makes no claims regarding the legality of cannabis in your jurisdiction.
+              Cannabis laws vary by jurisdiction. You are solely responsible for understanding and complying with all applicable local, state, and federal laws regarding cannabis use, purchase, and possession. The Service does not sell, distribute, or facilitate the sale of cannabis products. MyStrain+ makes no claims regarding the legality of cannabis in your jurisdiction.
             </p>
           </div>
 
@@ -80,7 +80,7 @@ export default function TermsPage() {
           <div>
             <h2 className="text-base font-bold text-gray-900 dark:text-[#e8f0ea] mb-2">9. Limitation of Liability</h2>
             <p>
-              The Service is provided "as is" without warranties of any kind. To the maximum extent permitted by law, Strain Finder shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising from your use of the Service or reliance on any information provided.
+              The Service is provided "as is" without warranties of any kind. To the maximum extent permitted by law, MyStrain+ shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising from your use of the Service or reliance on any information provided.
             </p>
           </div>
 
@@ -106,7 +106,7 @@ export default function TermsPage() {
           <span>&middot;</span>
           <Link to="/privacy" className="hover:text-gray-600 dark:hover:text-[#6a7a6e] transition-colors">Privacy Policy</Link>
           <span>&middot;</span>
-          <span>Strain Finder &copy; {new Date().getFullYear()}</span>
+          <span>MyStrain+ &copy; {new Date().getFullYear()}</span>
         </div>
       </footer>
     </div>

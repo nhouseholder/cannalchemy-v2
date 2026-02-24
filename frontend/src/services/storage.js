@@ -26,7 +26,7 @@ export function clearAllAppStorage() {
   keys.forEach(k => localStorage.removeItem(k))
 }
 
-/** Migrate legacy ca-* keys to sf-* (Cannalchemy → Strain Finder rebrand) */
+/** Migrate legacy ca-* keys to sf-* (Cannalchemy → MyStrain+ rebrand) */
 export function migrateStorageKeys() {
   const map = [
     ['ca-theme', 'sf-theme'],

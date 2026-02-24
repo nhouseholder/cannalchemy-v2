@@ -22,7 +22,7 @@ export default function AppShell() {
           <span>&middot;</span>
           <Link to="/privacy" className="hover:text-gray-500 dark:hover:text-[#5a6a5e] transition-colors">Privacy</Link>
           <span>&middot;</span>
-          <span>Strain Finder &copy; {new Date().getFullYear()}</span>
+          <span>MyStrain+ &copy; {new Date().getFullYear()}</span>
         </div>
       </footer>
     </div>

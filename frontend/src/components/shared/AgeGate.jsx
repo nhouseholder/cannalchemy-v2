@@ -36,7 +36,7 @@ export default function AgeGate({ children }) {
       <div className="fixed inset-0 z-[100] flex items-center justify-center bg-[#0a0f0c] px-6">
         <div className="max-w-sm text-center">
           <p className="text-lg font-bold text-[#e8f0ea] mb-4" style={{ fontFamily: "'Playfair Display', serif" }}>
-            Sorry, you must be 21 or older to use Strain Finder.
+            Sorry, you must be 21 or older to use MyStrain+.
           </p>
           <p className="text-sm text-[#8a9a8e] mb-6">
             Cannabis products are restricted to adults of legal age in your jurisdiction.
@@ -62,7 +62,7 @@ export default function AgeGate({ children }) {
           style={{ fontFamily: "'Playfair Display', serif" }}
         >
           <span className="bg-gradient-to-r from-leaf-500 to-leaf-400 bg-clip-text text-transparent">
-            Strain Finder
+            MyStrain+
           </span>
         </h1>
 
@@ -97,7 +97,7 @@ export default function AgeGate({ children }) {
             </li>
             <li className="flex items-start gap-2">
               <span className="text-leaf-500 mt-0.5 flex-shrink-0">&bull;</span>
-              <span>Strain Finder provides <strong className="text-[#8a9a8e]">recommendations, not prescriptions</strong>. Individual experiences vary. Always consult a healthcare professional before using cannabis for medical purposes.</span>
+              <span>MyStrain+ provides <strong className="text-[#8a9a8e]">recommendations, not prescriptions</strong>. Individual experiences vary. Always consult a healthcare professional before using cannabis for medical purposes.</span>
             </li>
             <li className="flex items-start gap-2">
               <span className="text-leaf-500 mt-0.5 flex-shrink-0">&bull;</span>

@@ -1,6 +1,6 @@
 {
-  "name": "Strain Finder",
-  "short_name": "StrainFinder",
+  "name": "MyStrain+",
+  "short_name": "MyStrain+",
   "description": "AI-powered cannabis strain recommendations backed by receptor science",
   "start_url": "/",
   "display": "standalone",

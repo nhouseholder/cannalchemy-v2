@@ -576,7 +576,7 @@ export default function LandingPage() {
       <nav className="sticky top-0 z-50 flex items-center justify-between px-6 py-3 bg-white/80 dark:bg-[#0a0f0c]/80 backdrop-blur-md border-b border-gray-200/50 dark:border-white/[0.04]">
         <NavLink to="/" className="flex items-center gap-2 text-lg font-bold" style={{ fontFamily: "'Playfair Display', serif" }}>
           <span className="text-2xl">{'\u{1F33F}'}</span>
-          <span className="bg-gradient-to-r from-leaf-500 to-leaf-400 bg-clip-text text-transparent">Strain Finder</span>
+          <span className="bg-gradient-to-r from-leaf-500 to-leaf-400 bg-clip-text text-transparent">MyStrain+</span>
         </NavLink>
         <div className="flex items-center gap-2">
           {user ? (
@@ -613,7 +613,7 @@ export default function LandingPage() {
       {/* Disclaimer */}
       <div className="max-w-2xl mx-auto px-6 py-6 text-center">
         <p className="text-[10px] text-gray-400 dark:text-[#3a4a3e] leading-relaxed">
-          <strong className="text-gray-500 dark:text-[#5a6a5e]">Disclaimer:</strong> Strain Finder provides educational information only and does not constitute medical advice. Always consult a healthcare professional before using cannabis. Cannabis products are only legal in certain jurisdictions — you are responsible for knowing your local laws. Do not drive or operate machinery while under the influence.
+          <strong className="text-gray-500 dark:text-[#5a6a5e]">Disclaimer:</strong> MyStrain+ provides educational information only and does not constitute medical advice. Always consult a healthcare professional before using cannabis. Cannabis products are only legal in certain jurisdictions — you are responsible for knowing your local laws. Do not drive or operate machinery while under the influence.
         </p>
       </div>
 
@@ -624,7 +624,7 @@ export default function LandingPage() {
           <span>&middot;</span>
           <NavLink to="/privacy" className="hover:text-gray-600 dark:hover:text-[#6a7a6e] transition-colors">Privacy</NavLink>
           <span>&middot;</span>
-          <span>Strain Finder &copy; {new Date().getFullYear()}</span>
+          <span>MyStrain+ &copy; {new Date().getFullYear()}</span>
         </div>
       </footer>
     </div>

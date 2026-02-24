@@ -5,7 +5,7 @@ import { getReceptorColor, RECEPTOR_COLORS } from '../../utils/colors'
 /**
  * PathwayGraph — Interactive 2D force-layout molecular pathway visualization.
  *
- * Renders a Strain Finder-style graph showing:
+ * Renders a MyStrain+-style graph showing:
  *   Molecule nodes → Receptor nodes → Effect nodes
  * with animated links colored by receptor type.
  *
