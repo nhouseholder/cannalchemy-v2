@@ -26,15 +26,10 @@ export default function StrainCardExpanded({ strain }) {
         <WhyMatchTooltip text={strain.whyMatch} />
       )}
 
-      {/* 2. What To Expect — bestFor/notIdealFor + predicted effects summary */}
-      <WhatToExpect
-        bestFor={strain.bestFor}
-        notIdealFor={strain.notIdealFor}
-        effectPredictions={strain.effectPredictions}
-        effects={strain.effects}
-      />
+      {/* 2. What's Inside — Cannabinoids */}
+      <CannabinoidProfile cannabinoids={cannabinoids} />
 
-      {/* 3. What People Say — community reviews (right after predicted effects) */}
+      {/* 3. What People Say — community reviews */}
       {(strain.forumAnalysis || strain.sentimentScore != null) && (
         <ForumAnalysis
           data={strain.forumAnalysis}
@@ -44,8 +39,13 @@ export default function StrainCardExpanded({ strain }) {
         />
       )}
 
-      {/* 4. What's Inside — Cannabinoids */}
-      <CannabinoidProfile cannabinoids={cannabinoids} />
+      {/* 4. Predicted Effects — bestFor/notIdealFor + effect probability bars */}
+      <WhatToExpect
+        bestFor={strain.bestFor}
+        notIdealFor={strain.notIdealFor}
+        effectPredictions={strain.effectPredictions}
+        effects={strain.effects}
+      />
 
       {/* 5. What's Inside — Terpenes */}
       {strain.terpenes?.length > 0 && (
