@@ -172,17 +172,7 @@ export function generateExperienceDescription(strain) {
 
   const parts = []
 
-  /* ---- 1. APPEARANCE ---- */
-  const appear  = TYPE_APPEARANCE[type] || TYPE_APPEARANCE.hybrid
-  const colors  = TERPENE_COLORS[terpNames[0]] || DEFAULT_COLORS
-  const shape   = hashPick(appear.shape, name)
-  const density = hashPick(appear.density, name + 'density')
-
-  parts.push(
-    `The buds are ${colors.bud}, dressed in ${colors.trichomes} trichomes with ${colors.pistils} pistils threading through — ${shape}, ${density}.`
-  )
-
-  /* ---- 2. FLAVOR (specific) ---- */
+  /* ---- 1. FLAVOR ---- */
   const rawFlavors = (strain.flavors || []).slice(0, 3)
   if (rawFlavors.length > 0) {
     const specific = rawFlavors.map(f => specifyFlavor(f, name))
@@ -194,14 +184,14 @@ export function generateExperienceDescription(strain) {
     }
   }
 
-  /* ---- 3. AROMA ---- */
+  /* ---- 2. AROMA ---- */
   const terpAroma = terpNames.slice(0, 2).map(t => TERPENE_VIBES[t]?.aroma).filter(Boolean)
   if (terpAroma.length > 0) {
     const aromaStr = joinNatural(terpAroma)
     parts.push(`Break a bud open and the nose fills with ${aromaStr}.`)
   }
 
-  /* ---- 4. THE HIGH — onset, peak, fade ---- */
+  /* ---- 3. THE HIGH — onset, peak, fade ---- */
   if (isTop) {
     parts.push(tp.onset)
     if (effects.length >= 2) {
@@ -221,7 +211,7 @@ export function generateExperienceDescription(strain) {
     }
   }
 
-  /* ---- 5. THC context ---- */
+  /* ---- 4. THC context ---- */
   if (thc >= 25) {
     parts.push(`At ${thc}% THC, approach with a little respect — this one doesn't whisper.`)
   } else if (thc >= 18) {
@@ -229,6 +219,16 @@ export function generateExperienceDescription(strain) {
   } else if (thc >= 10) {
     parts.push(`At ${thc}% THC it's a lighter touch — good for staying functional and clear.`)
   }
+
+  /* ---- 5. APPEARANCE (the closer) ---- */
+  const appear  = TYPE_APPEARANCE[type] || TYPE_APPEARANCE.hybrid
+  const colors  = TERPENE_COLORS[terpNames[0]] || DEFAULT_COLORS
+  const shape   = hashPick(appear.shape, name)
+  const density = hashPick(appear.density, name + 'density')
+
+  parts.push(
+    `The buds are ${colors.bud}, dressed in ${colors.trichomes} trichomes with ${colors.pistils} pistils threading through — ${shape}, ${density}.`
+  )
 
   return parts.join(' ')
 }
