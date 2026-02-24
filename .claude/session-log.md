@@ -2,20 +2,41 @@
 
 This file is updated by Claude at the end of work sessions to preserve context across restarts.
 
-## Session: 2026-02-23 (final) — DEPLOYED & PRODUCTION-READY
+## Session: 2026-02-24 — FULLY LIVE & OPERATIONAL
 
 ### Current State
 - **Live URL:** https://strain-finder.netlify.app
 - **GitHub (both synced):** origin → nhouseholder/Strain-Finder-Front-Cannalchemy-Back, cannalchemy-v2 → nhouseholder/cannalchemy-v2
-- **Latest commit:** `04dcad0` — Performance + production hardening
-- **Status:** Code-complete. All automated work done. Waiting on Nick's manual tasks for live payments.
+- **Latest commit:** `bf4cde6` — Rename domain to strain-finder.netlify.app
+- **Status:** FULLY OPERATIONAL. Stripe live, auth working, admin account active.
+
+### Admin Account
+- **Email:** nikhouseholdr@gmail.com
+- **User ID:** 6ea77df4-0b56-4e1e-b18c-6f727390718b
+- **Admin:** true
+- **Subscription:** active
+
+### What Was Done This Session
+1. **Domain rename**: `strain-finder-cannalchemy-2.netlify.app` → `strain-finder.netlify.app`
+   - Updated 7 source files (index.html, sitemap, robots, stripe-checkout, stripe-portal, setup.sh, session-log)
+   - Updated Stripe webhook URL via API
+   - Redeployed to Netlify
+   - Pushed to both GitHub remotes
+2. **Fixed Supabase trigger**: `handle_new_user()` was crashing all user creation (missing `SET search_path = public` and permissions for `supabase_auth_admin`)
+3. **Created admin account**: nikhouseholdr@gmail.com with confirmed email, admin=true, subscription=active
+4. **Verified login**: Auth working via Supabase anon key
+5. **Verified all 6 functions**: Quiz (1,094 strains), Stripe checkout (live cs_live_ sessions), portal, webhook, anthropic proxy
 
 ### Commits This Session
-1. `6c38220` — Launch readiness: strain registry (1,094 strains), legal compliance, security hardening, cost protection
-2. `9777f2d` — SEO + performance polish: OG image, structured data, dynamic Leaflet CSS
-3. `04dcad0` — Performance + production hardening: chunk splitting, error handlers, CSP update
+1. `bf4cde6` — Rename domain to strain-finder.netlify.app
 
-### Everything Built & Deployed
+### Stripe (LIVE MODE)
+- **Account:** acct_1T443qQBM4GMGA1H
+- **Product:** prod_U2EJU1VRpfDuSj ("Strain Finder Premium")
+- **Price:** price_1T49qYQBM4GMGA1H8WRzNkOn ($9.99/month)
+- **Webhook:** we_1T49qgQBM4GMGA1HryppTWQn → https://strain-finder.netlify.app/.netlify/functions/stripe-webhook
+
+### Everything Built & Deployed (Cumulative)
 - **1,094 strains** (up from 77) with import scripts + one-command rebuild
 - **Age gate** (21+ verification, localStorage persistence)
 - **Terms of Service** + **Privacy Policy** (full legal pages)
@@ -37,26 +58,19 @@ This file is updated by Claude at the end of work sessions to preserve context a
 - **Sitemap.xml** + **robots.txt**
 - **Plausible analytics** script (cookieless, GDPR-compliant)
 
-### Full Audit — All Passed
-- All 16 pages: usePageTitle ✓, error handling ✓, loading states ✓
-- No TODO/FIXME/HACK comments, no stray console.log
-- All 6 Netlify functions responding (quiz, strain-data, anthropic, stripe-checkout, stripe-portal, stripe-webhook)
-- Quiz engine verified: returns scored results from all 1,094 strains
-- All security headers verified live via curl
-- /learn/:topic dynamic routes working (6 topics)
-- ForgotPasswordPage properly wired to Supabase
-
-### Nick's Manual Tasks Remaining
-1. Switch Stripe test → live keys (pk_live, sk_live, live price_id)
-2. Enable Stripe Billing Portal (Dashboard → Settings → Customer Portal)
-3. Create live Stripe webhook → `/.netlify/functions/stripe-webhook`
-4. Set Netlify env vars with live keys, then trigger redeploy
-5. Make admin account: `UPDATE profiles SET is_admin = true, subscription_status = 'active' WHERE email = '...'`
-6. Sign up for Plausible.io, add domain
-7. Test real $9.99 payment end-to-end
-8. Eventually: custom domain
+### Nick's Remaining Tasks
+1. ✅ ~~Switch Stripe test → live keys~~ (done)
+2. ✅ ~~Enable Stripe Billing Portal~~ (done)
+3. ✅ ~~Create live Stripe webhook~~ (done via API)
+4. ✅ ~~Set Netlify env vars with live keys~~ (done)
+5. ✅ ~~Make admin account~~ (done)
+6. ✅ ~~Sign up for Plausible.io~~ (done)
+7. **Test real $9.99 payment end-to-end** — Log in, take quiz, hit paywall, complete Stripe checkout with real card
+8. **Update Plausible domain** — Change from old domain to strain-finder.netlify.app in Plausible dashboard
+9. **Eventually: custom domain** — Buy domain, add to Netlify + Stripe + Supabase
 
 ### Previous Sessions
+- **2026-02-23 (final)**: Domain rename, trigger fix, admin account creation
 - **2026-02-23 (evening)**: 429 handling, bundle optimization, security headers
 - **2026-02-23 (afternoon)**: Strain Registry (1,094 strains), Stripe portal, rate limiting, SEO, analytics
 - **2026-02-23 (morning)**: 14-commit SaaS sprint, Auth + Stripe + landing page
