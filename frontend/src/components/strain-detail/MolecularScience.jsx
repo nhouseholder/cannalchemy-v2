@@ -1,5 +1,5 @@
 import { memo } from 'react'
-import { Atom, Zap, ArrowRight, Brain, Shield, Flame, Heart, Bone, Activity } from 'lucide-react'
+import { Atom, Brain, Shield, Flame, Heart, Bone, Activity } from 'lucide-react'
 import { RECEPTOR_COLORS } from '../../utils/colors'
 
 /**
@@ -12,42 +12,6 @@ const RECEPTOR_INFO = {
   '5-HT1A': { icon: Heart, label: 'Serotonin (Mood)', desc: 'Linked to anxiety relief and emotional balance', color: RECEPTOR_COLORS['5-HT1A'] },
   PPARgamma: { icon: Shield, label: 'Anti-Inflammatory', desc: 'Reduces chronic inflammation', color: RECEPTOR_COLORS.PPARgamma },
   GPR55: { icon: Bone, label: 'Bone & Blood Pressure', desc: 'Helps regulate bone density and circulation', color: RECEPTOR_COLORS.GPR55 },
-}
-
-function PredictedEffectCard({ prediction }) {
-  const pct = Math.round((prediction.probability || 0) * 100)
-  const displayName = prediction.effect.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
-
-  const barColor = pct > 70
-    ? 'linear-gradient(90deg, #32c864, #28a854)'
-    : pct > 40
-      ? 'linear-gradient(90deg, #f59e0b, #d97706)'
-      : 'linear-gradient(90deg, #9ca3af, #6b7280)'
-
-  const strengthLabel = pct > 70 ? 'Strong' : pct > 40 ? 'Moderate' : 'Mild'
-  const strengthColor = pct > 70 ? 'text-leaf-400' : pct > 40 ? 'text-amber-400' : 'text-gray-400'
-
-  return (
-    <div className="flex items-center gap-3 py-1.5">
-      <div className="w-24 flex-shrink-0">
-        <span className="text-[11px] font-semibold text-gray-700 dark:text-[#c0d4c6] block truncate" title={displayName}>
-          {displayName}
-        </span>
-      </div>
-      <div className="flex-1">
-        <div className="h-2 bg-gray-100 dark:bg-white/[0.06] rounded-full overflow-hidden">
-          <div
-            className="h-full rounded-full transition-all duration-700"
-            style={{ width: `${pct}%`, background: barColor }}
-          />
-        </div>
-      </div>
-      <div className="w-16 text-right flex-shrink-0">
-        <span className={`text-[10px] font-bold ${strengthColor}`}>{strengthLabel}</span>
-        <span className="text-[9px] text-gray-400 dark:text-[#6a7a6e] ml-1">{pct}%</span>
-      </div>
-    </div>
-  )
 }
 
 function ReceptorCard({ receptor, molecules, isActive }) {
@@ -109,7 +73,7 @@ function ReceptorCard({ receptor, molecules, isActive }) {
 }
 
 export default memo(function MolecularScience({ effectPredictions, pathways }) {
-  if (!effectPredictions?.length && !pathways?.length) return null
+  if (!pathways?.length) return null
 
   // Group pathways by receptor
   const receptorGroups = {}
@@ -142,31 +106,6 @@ export default memo(function MolecularScience({ effectPredictions, pathways }) {
 
   return (
     <div className="space-y-4">
-      {/* Predicted Effects */}
-      {effectPredictions?.length > 0 && (
-        <div className="rounded-2xl border border-gray-200 dark:border-white/[0.06] bg-white dark:bg-white/[0.02] p-4">
-          <div className="flex items-center gap-2 mb-3">
-            <div className="w-6 h-6 rounded-md bg-leaf-500/10 flex items-center justify-center">
-              <Zap size={14} className="text-leaf-400" />
-            </div>
-            <div>
-              <h4 className="text-[10px] font-bold uppercase tracking-wider text-gray-500 dark:text-[#8a9a8e]">
-                Predicted Effects
-              </h4>
-              <p className="text-[9px] text-gray-400 dark:text-[#5a6a5e]">
-                Based on molecular pathways + community data
-              </p>
-            </div>
-          </div>
-
-          <div className="space-y-0.5">
-            {effectPredictions.slice(0, 6).map((pred) => (
-              <PredictedEffectCard key={pred.effect} prediction={pred} />
-            ))}
-          </div>
-        </div>
-      )}
-
       {/* Receptors Activated */}
       {Object.keys(receptorGroups).length > 0 && (
         <div className="rounded-2xl border border-gray-200 dark:border-white/[0.06] bg-white dark:bg-white/[0.02] p-4">

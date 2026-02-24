@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 import { FlaskConical, CheckCircle2 } from 'lucide-react'
+import { getEffectDisplayName } from '../../utils/effectDisplayName'
 
 /**
  * EffectVerification — Side-by-side predicted vs actual effect comparison
@@ -33,9 +34,7 @@ export default function EffectVerification({ predictions, forumData }) {
     }
 
     for (const pred of predictions.slice(0, 5)) {
-      const displayName = pred.effect
-        .replace(/-/g, ' ')
-        .replace(/\b\w/g, (c) => c.toUpperCase())
+      const displayName = getEffectDisplayName(pred.effect)
 
       // Try multiple matching strategies:
       // 1. Normalized display name match

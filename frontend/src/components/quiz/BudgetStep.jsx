@@ -7,7 +7,7 @@ import { MapPin } from 'lucide-react'
 export default function BudgetStep() {
   const { budget, openToDeals, zipCode, setBudget, setOpenToDeals, setZipCode, setStep } = useQuizState()
 
-  const canContinue = budget !== null
+  const canContinue = true // budget is optional
 
   return (
     <div className="space-y-8">
@@ -19,7 +19,7 @@ export default function BudgetStep() {
           </div>
           <div>
             <p className="text-sm font-semibold text-gray-900 dark:text-white">
-              Find cannabis deals near you
+              Find cannabis deals near you <span className="text-xs font-normal text-gray-400 dark:text-[#6a7a6e]">(Optional)</span>
             </p>
             <p className="text-[11px] text-gray-500 dark:text-[#6a7a6e] leading-snug">
               Enter your zip code so we can find real prices and nearby dispensaries
@@ -48,10 +48,10 @@ export default function BudgetStep() {
       {/* Heading */}
       <div className="text-center">
         <h2 className="text-2xl sm:text-3xl font-display text-gray-900 dark:text-white mb-2">
-          What's your budget?
+          What's your budget? <span className="text-lg font-normal text-gray-400 dark:text-[#6a7a6e]">(Optional)</span>
         </h2>
         <p className="text-sm text-gray-500 dark:text-[#8a9a8e]">
-          Price per eighth (3.5g). This helps us match quality and value.
+          Price per eighth (3.5g). This helps us match quality and value. Skip if you prefer.
         </p>
       </div>
 

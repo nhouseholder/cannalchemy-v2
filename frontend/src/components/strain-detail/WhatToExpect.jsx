@@ -1,6 +1,7 @@
 import { memo } from 'react'
 import { Zap, ThumbsUp, ThumbsDown } from 'lucide-react'
 import { EffectBadge } from '../shared/Badge'
+import { getEffectDisplayName } from '../../utils/effectDisplayName'
 
 function ProbabilityBar({ label, probability, pathway }) {
   const pct = Math.round((probability ?? 0) * 100)
@@ -78,9 +79,7 @@ export default memo(function WhatToExpect({ bestFor, notIdealFor, effectPredicti
       {topPredictions.length > 0 && (
         <div className="space-y-2.5 mb-4">
           {topPredictions.map(pred => {
-            const displayName = (pred.effect || '')
-              .replace(/-/g, ' ')
-              .replace(/\b\w/g, c => c.toUpperCase())
+            const displayName = getEffectDisplayName(pred.effect)
             return (
               <ProbabilityBar
                 key={pred.effect}
