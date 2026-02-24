@@ -39,31 +39,31 @@ export default function StrainCardExpanded({ strain }) {
         />
       )}
 
-      {/* 4. Predicted Effects — bestFor/notIdealFor + effect probability bars */}
-      <WhatToExpect
-        bestFor={strain.bestFor}
-        notIdealFor={strain.notIdealFor}
-        effectPredictions={strain.effectPredictions}
-        effects={strain.effects}
-      />
-
-      {/* 5. What's Inside — Terpenes */}
+      {/* 4. What's Inside — Terpenes */}
       {strain.terpenes?.length > 0 && (
         <TerpeneProfile terpenes={strain.terpenes} />
       )}
 
-      {/* 6. Terpene Shape — radar visualization */}
+      {/* 5. Terpene Shape — radar visualization */}
       {strain.terpenes?.length >= 3 && (
         <TerpeneRadar terpenes={strain.terpenes} strainType={strain.type} />
       )}
 
-      {/* 7. Taste & Experience — sommelier review */}
+      {/* 6. Taste & Experience — sommelier review */}
       {strain.sommelierScores && (
         <SommelierReview
           scores={strain.sommelierScores}
           notes={strain.sommelierNotes}
         />
       )}
+
+      {/* 7. Scientifically Predicted Effects — bestFor/notIdealFor + effect probability bars */}
+      <WhatToExpect
+        bestFor={strain.bestFor}
+        notIdealFor={strain.notIdealFor}
+        effectPredictions={strain.effectPredictions}
+        effects={strain.effects}
+      />
 
       {/* 8. Deep Science — collapsible accordion with all advanced sections */}
       <DeepScience strain={strain} />

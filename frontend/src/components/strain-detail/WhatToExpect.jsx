@@ -67,7 +67,7 @@ export default memo(function WhatToExpect({ bestFor, notIdealFor, effectPredicti
         </div>
         <div>
           <h4 className="text-[11px] font-bold uppercase tracking-wider text-leaf-400">
-            Predicted Effects
+            Scientifically Predicted Effects
           </h4>
           <p className="text-[9px] text-gray-400 dark:text-[#5a6a5e]">
             Based on molecular profile &amp; receptor activity
