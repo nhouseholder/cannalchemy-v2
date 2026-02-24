@@ -556,9 +556,16 @@ function CTASection({ onGetStarted }) {
 export default function LandingPage() {
   usePageTitle('Cannabis Science, Personalized')
   const navigate = useNavigate()
-  const { user } = useAuth()
+  const { user, loading } = useAuth()
 
-  // Always go straight to quiz — auth is optional
+  // Logged-in users go straight to dashboard (skip marketing page)
+  useEffect(() => {
+    if (!loading && user) {
+      navigate('/dashboard', { replace: true })
+    }
+  }, [user, loading, navigate])
+
+  // Smart navigation — results if available, otherwise quiz
   const handleGetStarted = useCallback(() => {
     navigate('/quiz')
   }, [navigate])
@@ -573,7 +580,7 @@ export default function LandingPage() {
         </NavLink>
         <div className="flex items-center gap-2">
           {user ? (
-            <Button size="sm" onClick={() => navigate('/quiz')}>
+            <Button size="sm" onClick={() => navigate('/dashboard')}>
               Go to App
               <ArrowRight size={14} />
             </Button>

@@ -1,11 +1,32 @@
-import { createContext, useReducer, useCallback, useMemo } from 'react'
+import { createContext, useReducer, useCallback, useMemo, useEffect } from 'react'
 
-const initialState = {
+const STORAGE_KEY = 'sf-results'
+
+const emptyState = {
   strains: [],
   aiPicks: [],
   idealProfile: null,
   isLoading: false,
   error: null,
+}
+
+// Load persisted results from localStorage on init
+function getInitialState() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY)
+    if (saved) {
+      const parsed = JSON.parse(saved)
+      if (parsed.strains?.length > 0) {
+        return {
+          ...emptyState,
+          strains: parsed.strains,
+          aiPicks: parsed.aiPicks || [],
+          idealProfile: parsed.idealProfile || null,
+        }
+      }
+    }
+  } catch { /* ignore */ }
+  return emptyState
 }
 
 function resultsReducer(state, action) {
@@ -26,7 +47,7 @@ function resultsReducer(state, action) {
     case 'DISMISS_STRAIN':
       return { ...state, strains: state.strains.filter(s => s.name !== action.payload) }
     case 'RESET':
-      return initialState
+      return emptyState
     default:
       return state
   }
@@ -35,13 +56,30 @@ function resultsReducer(state, action) {
 export const ResultsContext = createContext(null)
 
 export function ResultsProvider({ children }) {
-  const [state, dispatch] = useReducer(resultsReducer, initialState)
+  const [state, dispatch] = useReducer(resultsReducer, null, getInitialState)
+
+  // Persist results to localStorage whenever they change
+  useEffect(() => {
+    if (state.strains.length > 0) {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({
+          strains: state.strains,
+          aiPicks: state.aiPicks,
+          idealProfile: state.idealProfile,
+        }))
+      } catch { /* storage full or unavailable */ }
+    } else {
+      localStorage.removeItem(STORAGE_KEY)
+    }
+  }, [state.strains, state.aiPicks, state.idealProfile])
 
   const getSortedStrains = useCallback(() => {
     return [...state.strains].sort((a, b) => (b.matchPct || 0) - (a.matchPct || 0))
   }, [state.strains])
 
-  const value = useMemo(() => ({ state, dispatch, getSortedStrains }), [state, getSortedStrains])
+  const hasResults = state.strains.length > 0
+
+  const value = useMemo(() => ({ state, dispatch, getSortedStrains, hasResults }), [state, getSortedStrains, hasResults])
 
   return (
     <ResultsContext.Provider value={value}>

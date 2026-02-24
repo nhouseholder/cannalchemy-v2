@@ -30,7 +30,7 @@ export default function DashboardPage() {
   usePageTitle('Dashboard')
   const navigate = useNavigate()
   const { state: userState, dispatch: userDispatch, getJournalStats } = useContext(UserContext)
-  const { dispatch: resultsDispatch } = useContext(ResultsContext)
+  const { dispatch: resultsDispatch, hasResults } = useContext(ResultsContext)
   const { isPremium, profile } = useAuth()
   const [portalLoading, setPortalLoading] = useState(false)
 
@@ -84,14 +84,35 @@ export default function DashboardPage() {
           recommendations, then save favorites, log your experiences, and track what works best for you.
         </p>
 
-        <Button
-          size="lg"
-          className="shadow-xl shadow-leaf-500/25 hover:scale-[1.02] active:scale-[0.98] transition-all"
-          onClick={() => navigate('/quiz')}
-        >
-          <Search size={18} />
-          Find My Strain
-        </Button>
+        {hasResults ? (
+          <div className="flex flex-col sm:flex-row items-center gap-3">
+            <Button
+              size="lg"
+              className="shadow-xl shadow-leaf-500/25 hover:scale-[1.02] active:scale-[0.98] transition-all"
+              onClick={() => navigate('/results')}
+            >
+              <Star size={18} />
+              View My Results
+            </Button>
+            <Button
+              variant="ghost"
+              size="lg"
+              onClick={() => { resultsDispatch({ type: 'RESET' }); navigate('/quiz') }}
+            >
+              <RotateCcw size={16} />
+              New Search
+            </Button>
+          </div>
+        ) : (
+          <Button
+            size="lg"
+            className="shadow-xl shadow-leaf-500/25 hover:scale-[1.02] active:scale-[0.98] transition-all"
+            onClick={() => navigate('/quiz')}
+          >
+            <Search size={18} />
+            Find My Strain
+          </Button>
+        )}
 
         <div className="flex items-center gap-4 mt-6 text-xs text-gray-400 dark:text-[#6a7a6e]">
           <Link
@@ -131,11 +152,31 @@ export default function DashboardPage() {
         </p>
       </div>
 
+      {/* View Results banner — shown when user has existing results */}
+      {hasResults && (
+        <Card
+          hoverable
+          onClick={() => navigate('/results')}
+          className="p-4 mb-4 border-leaf-500/20 bg-leaf-500/[0.04]"
+        >
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-leaf-500/15 flex items-center justify-center flex-shrink-0">
+              <Star size={18} className="text-leaf-500" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-semibold text-gray-900 dark:text-[#e8f0ea]">View My Results</p>
+              <p className="text-[11px] text-gray-500 dark:text-[#6a7a6e]">Your latest strain matches are ready</p>
+            </div>
+            <ArrowRight size={16} className="text-leaf-500 flex-shrink-0" />
+          </div>
+        </Card>
+      )}
+
       {/* Quick Actions ------------------------------------------------ */}
       <div className="grid grid-cols-3 gap-3 mb-8">
         <Card
           hoverable
-          onClick={() => navigate('/quiz')}
+          onClick={() => { resultsDispatch({ type: 'RESET' }); navigate('/quiz') }}
           className="p-4 text-center"
         >
           <div className="w-10 h-10 rounded-xl bg-leaf-500/10 flex items-center justify-center mx-auto mb-2">

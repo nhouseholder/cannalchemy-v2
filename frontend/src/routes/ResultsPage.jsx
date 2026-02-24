@@ -37,10 +37,10 @@ export default function ResultsPage() {
     setExpandedStrain((prev) => (prev === strainName ? null : strainName))
   }, [canViewResult])
 
-  /* No results — redirect to home page */
+  /* No results — redirect to quiz */
   useEffect(() => {
     if (!state.strains || state.strains.length === 0) {
-      navigate('/', { replace: true })
+      navigate('/quiz', { replace: true })
     }
   }, [state.strains, navigate])
 
