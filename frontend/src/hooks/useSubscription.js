@@ -1,12 +1,12 @@
 import { useAuth } from '../context/AuthContext'
 
-const FREE_LIMIT = 1
+// Paywall disabled — all results are free for now
+const FREE_LIMIT = Infinity
 
 export function useSubscription() {
   const { isPremium, user } = useAuth()
 
-  // Guest users (no login) and free users both get 1 result
-  const canViewResult = (index) => isPremium || index < FREE_LIMIT
+  const canViewResult = () => true
 
   return {
     isPremium,
