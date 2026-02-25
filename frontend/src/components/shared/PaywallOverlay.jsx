@@ -21,7 +21,7 @@ export default function PaywallOverlay() {
     setError(null)
 
     try {
-      const res = await fetch('/.netlify/functions/stripe-checkout', {
+      const res = await fetch('/api/stripe-checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

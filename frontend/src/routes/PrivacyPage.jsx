@@ -60,7 +60,7 @@ export default function PrivacyPage() {
             <ul className="list-disc pl-5 mt-2 space-y-1">
               <li><strong className="text-gray-800 dark:text-[#b0c4b4]">Supabase</strong> — Authentication and user profile storage (email and account status only)</li>
               <li><strong className="text-gray-800 dark:text-[#b0c4b4]">Plausible Analytics</strong> — Privacy-friendly, cookieless website analytics. No personal data collected. GDPR and CCPA compliant. No data shared with advertisers.</li>
-              <li><strong className="text-gray-800 dark:text-[#b0c4b4]">Netlify</strong> — Website hosting and serverless functions</li>
+              <li><strong className="text-gray-800 dark:text-[#b0c4b4]">Cloudflare</strong> — Website hosting and serverless functions</li>
               <li><strong className="text-gray-800 dark:text-[#b0c4b4]">Stripe</strong> — Payment processing for optional premium subscriptions. Stripe handles all credit card data directly and is PCI-DSS Level 1 certified. We never see, store, or process your full credit card number.</li>
               <li><strong className="text-gray-800 dark:text-[#b0c4b4]">Anthropic (Claude AI)</strong> — AI-powered dispensary discovery feature. Location queries (zip codes, city names) may be processed by Anthropic's Claude AI to search for nearby dispensary information. No personal identity data is shared with Anthropic.</li>
             </ul>

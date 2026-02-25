@@ -1,38 +1,47 @@
-// Netlify serverless function: Create Stripe Checkout Session
-// POST /.netlify/functions/stripe-checkout
+// Cloudflare Pages Function: Create Stripe Checkout Session
+// POST /api/stripe-checkout
 
-const SITE_URL = 'https://mystrainplus.netlify.app'
+const SITE_URL = 'https://mystrainplus.pages.dev'
 
-export async function handler(event) {
-  // CORS preflight
-  if (event.httpMethod === 'OPTIONS') {
-    return { statusCode: 204, headers: corsHeaders() }
+function corsHeaders() {
+  return {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Headers': 'Content-Type',
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
   }
+}
 
-  if (event.httpMethod !== 'POST') {
-    return { statusCode: 405, ...json({ error: 'Method not allowed' }) }
-  }
+function jsonResponse(data, status = 200) {
+  return new Response(JSON.stringify(data), {
+    status,
+    headers: { 'Content-Type': 'application/json', ...corsHeaders() },
+  })
+}
 
-  const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY
-  const STRIPE_PRICE_ID = process.env.STRIPE_PRICE_ID
+export async function onRequestOptions() {
+  return new Response(null, { status: 204, headers: corsHeaders() })
+}
+
+export async function onRequestPost(context) {
+  const { request, env } = context
+
+  const STRIPE_SECRET_KEY = env.STRIPE_SECRET_KEY
+  const STRIPE_PRICE_ID = env.STRIPE_PRICE_ID
 
   if (!STRIPE_SECRET_KEY || !STRIPE_PRICE_ID) {
-    return {
-      statusCode: 500,
-      ...json({ error: 'Stripe not configured. Set STRIPE_SECRET_KEY and STRIPE_PRICE_ID.' }),
-    }
+    return jsonResponse({ error: 'Stripe not configured. Set STRIPE_SECRET_KEY and STRIPE_PRICE_ID.' }, 500)
   }
 
   try {
-    const { email, userId, returnUrl } = JSON.parse(event.body || '{}')
+    const { email, userId, returnUrl } = await request.json()
 
     if (!email || !userId) {
-      return { statusCode: 400, ...json({ error: 'Missing email or userId' }) }
+      return jsonResponse({ error: 'Missing email or userId' }, 400)
     }
 
     // Check if user already has an active subscription in Supabase
-    const SUPABASE_URL = process.env.VITE_SUPABASE_URL
-    const SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY
+    const SUPABASE_URL = env.VITE_SUPABASE_URL
+    const SERVICE_ROLE_KEY = env.SUPABASE_SERVICE_ROLE_KEY
     if (SUPABASE_URL && SERVICE_ROLE_KEY) {
       try {
         const profileRes = await fetch(
@@ -46,7 +55,7 @@ export async function handler(event) {
         )
         const profiles = await profileRes.json()
         if (profiles?.[0]?.subscription_status === 'active') {
-          return { statusCode: 400, ...json({ error: 'You already have an active subscription! Refresh the page to see your premium features.' }) }
+          return jsonResponse({ error: 'You already have an active subscription! Refresh the page to see your premium features.' }, 400)
         }
       } catch (e) {
         console.warn('Could not check existing subscription:', e.message)
@@ -55,7 +64,9 @@ export async function handler(event) {
     }
 
     // Derive origin from request, fallback to configured site URL
-    const origin = event.headers.origin || event.headers.referer?.replace(/\/[^/]*$/, '') || SITE_URL
+    const origin = request.headers.get('origin')
+      || request.headers.get('referer')?.replace(/\/[^/]*$/, '')
+      || SITE_URL
     const successUrl = `${returnUrl || origin + '/checkout-success'}?session_id={CHECKOUT_SESSION_ID}`
     const cancelUrl = `${origin}/results`
 
@@ -84,32 +95,12 @@ export async function handler(event) {
 
     if (!response.ok) {
       console.error('Stripe error:', session)
-      return { statusCode: 400, ...json({ error: session.error?.message || 'Stripe checkout failed' }) }
+      return jsonResponse({ error: session.error?.message || 'Stripe checkout failed' }, 400)
     }
 
-    return { statusCode: 200, ...json({ url: session.url, sessionId: session.id }) }
+    return jsonResponse({ url: session.url, sessionId: session.id })
   } catch (err) {
     console.error('Checkout function error:', err)
-    return { statusCode: 500, ...json({ error: 'Internal server error' }) }
-  }
-}
-
-function corsHeaders() {
-  return {
-    headers: {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Headers': 'Content-Type',
-      'Access-Control-Allow-Methods': 'POST, OPTIONS',
-    },
-  }
-}
-
-function json(data) {
-  return {
-    headers: {
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-    },
-    body: JSON.stringify(data),
+    return jsonResponse({ error: 'Internal server error' }, 500)
   }
 }

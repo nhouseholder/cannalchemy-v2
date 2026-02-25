@@ -1,7 +1,7 @@
 /**
  * Dispensary search — Two-layer cache:
  *   1. localStorage (30 min, per-device)
- *   2. Netlify Blobs regional cache (24 hours, shared across ALL users)
+ *   2. Cloudflare KV regional cache (24 hours, shared across ALL users)
  * Falls back to demo data when API is unavailable.
  */
 import { callAnthropic, RateLimitError } from './anthropicApi'
@@ -29,7 +29,7 @@ export function getRegionKey(location) {
 }
 
 /* ------------------------------------------------------------------ */
-/*  Regional cache (Netlify Blobs via edge function)                  */
+/*  Regional cache (Cloudflare KV via Pages Function)                 */
 /* ------------------------------------------------------------------ */
 async function checkRegionalCache(regionKey, strainNames) {
   try {
@@ -91,7 +91,7 @@ export async function searchDispensaries(location, strainNames, options = {}) {
   const cached = getCachedResults(location, strainNames)
   if (cached) return cached
 
-  // Layer 2: Check regional cache (Netlify Blobs — shared across users)
+  // Layer 2: Check regional cache (Cloudflare KV — shared across users)
   const regionKey = getRegionKey(location)
   if (regionKey) {
     const regionalHit = await checkRegionalCache(regionKey, strainNames)

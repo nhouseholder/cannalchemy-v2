@@ -1,4 +1,4 @@
-// In production, calls go to the Netlify edge function at /api/anthropic
+// In production, calls go to the Cloudflare Pages Function at /api/anthropic
 // which proxies to the Anthropic API with the key server-side.
 // In dev, Vite proxy forwards /api/anthropic/v1/messages to the Anthropic API.
 const API_URL = '/api/anthropic'
@@ -39,7 +39,7 @@ export async function callAnthropic({ prompt, maxTokens = 8000, retries = 2 }) {
   throw lastError
 }
 
-// Production: call Netlify edge function which returns plain JSON
+// Production: call Cloudflare Pages Function which returns plain JSON
 async function callAnthropicViaFunction({ prompt, maxTokens }) {
   const response = await fetch(API_URL, {
     method: 'POST',

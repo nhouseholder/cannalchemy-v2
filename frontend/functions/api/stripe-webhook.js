@@ -1,5 +1,6 @@
-// Netlify serverless function: Handle Stripe Webhook Events
-// POST /.netlify/functions/stripe-webhook
+// Cloudflare Pages Function: Handle Stripe Webhook Events
+// POST /api/stripe-webhook
+// Requires nodejs_compat flag in wrangler.toml for node:crypto
 
 import { createHmac } from 'node:crypto'
 
@@ -20,9 +21,9 @@ function constructEvent(payload, sigHeader, secret) {
   return JSON.parse(payload)
 }
 
-async function updateProfile(userId, updates) {
-  const SUPABASE_URL = process.env.VITE_SUPABASE_URL
-  const SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY
+async function updateProfile(userId, updates, env) {
+  const SUPABASE_URL = env.VITE_SUPABASE_URL
+  const SERVICE_ROLE_KEY = env.SUPABASE_SERVICE_ROLE_KEY
 
   if (!SUPABASE_URL || !SERVICE_ROLE_KEY) {
     throw new Error('Supabase not configured for webhook')
@@ -45,19 +46,19 @@ async function updateProfile(userId, updates) {
   }
 }
 
-export async function handler(event) {
-  if (event.httpMethod !== 'POST') {
-    return { statusCode: 405, body: 'Method not allowed' }
-  }
+export async function onRequestPost(context) {
+  const { request, env } = context
 
-  const WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET
+  const WEBHOOK_SECRET = env.STRIPE_WEBHOOK_SECRET
   if (!WEBHOOK_SECRET) {
-    return { statusCode: 500, body: 'Webhook secret not configured' }
+    return new Response('Webhook secret not configured', { status: 500 })
   }
 
   try {
-    const sig = event.headers['stripe-signature']
-    const stripeEvent = constructEvent(event.body, sig, WEBHOOK_SECRET)
+    // Must read raw text body for HMAC verification (not JSON)
+    const rawBody = await request.text()
+    const sig = request.headers.get('stripe-signature')
+    const stripeEvent = constructEvent(rawBody, sig, WEBHOOK_SECRET)
 
     console.log(`Stripe webhook: ${stripeEvent.type}`)
 
@@ -71,7 +72,7 @@ export async function handler(event) {
           await updateProfile(userId, {
             subscription_status: 'active',
             stripe_customer_id: customerId,
-          })
+          }, env)
           console.log(`Activated premium for user ${userId}`)
         }
         break
@@ -89,7 +90,7 @@ export async function handler(event) {
           await updateProfile(userId, {
             subscription_status: status,
             subscription_end: endDate,
-          })
+          }, env)
           console.log(`Updated subscription for user ${userId}: ${status}`)
         }
         break
@@ -102,7 +103,7 @@ export async function handler(event) {
           await updateProfile(userId, {
             subscription_status: 'canceled',
             subscription_end: new Date().toISOString(),
-          })
+          }, env)
           console.log(`Canceled subscription for user ${userId}`)
         }
         break
@@ -112,9 +113,12 @@ export async function handler(event) {
         console.log(`Unhandled event type: ${stripeEvent.type}`)
     }
 
-    return { statusCode: 200, body: JSON.stringify({ received: true }) }
+    return new Response(JSON.stringify({ received: true }), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' },
+    })
   } catch (err) {
     console.error('Webhook error:', err)
-    return { statusCode: 400, body: `Webhook Error: ${err.message}` }
+    return new Response(`Webhook Error: ${err.message}`, { status: 400 })
   }
 }

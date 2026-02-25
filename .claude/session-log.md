@@ -1,14 +1,16 @@
-# Strain Finder — Session Log
+# MyStrain+ — Session Log
 
 This file is updated by Claude at the end of work sessions to preserve context across restarts.
 
-## Session: 2026-02-24 — FULLY LIVE & OPERATIONAL
+## Session: 2026-02-24 (latest) — LEGAL HARDENING + DISPENSARY COMPLETE
 
 ### Current State
-- **Live URL:** https://strain-finder.netlify.app
-- **GitHub (both synced):** origin → nhouseholder/Strain-Finder-Front-Cannalchemy-Back, cannalchemy-v2 → nhouseholder/cannalchemy-v2
-- **Latest commit:** `bf4cde6` — Rename domain to strain-finder.netlify.app
-- **Status:** FULLY OPERATIONAL. Stripe live, auth working, admin account active.
+- **Live URL:** https://mystrainplus.netlify.app
+- **GitHub (both synced at `31dd8ef`):** origin → nhouseholder/Strain-Finder-Front-Cannalchemy-Back, cannalchemy-v2 → nhouseholder/cannalchemy-v2
+- **Latest commit:** `31dd8ef` — Comprehensive legal hardening across all pages
+- **Status:** FULLY OPERATIONAL. All features live, legal hardening complete, dispensary with regional caching live.
+- **Paywall:** Currently disabled (FREE_LIMIT=Infinity) — all results free
+- **Stripe price:** $0.99/mo (price_1T4BpSQBM4GMGA1Hzd0k3OpJ)
 
 ### Admin Account
 - **Email:** nikhouseholdr@gmail.com
@@ -16,60 +18,92 @@ This file is updated by Claude at the end of work sessions to preserve context a
 - **Admin:** true
 - **Subscription:** active
 
-### What Was Done This Session
-1. **Domain rename**: `strain-finder-cannalchemy-2.netlify.app` → `strain-finder.netlify.app`
-   - Updated 7 source files (index.html, sitemap, robots, stripe-checkout, stripe-portal, setup.sh, session-log)
-   - Updated Stripe webhook URL via API
-   - Redeployed to Netlify
-   - Pushed to both GitHub remotes
-2. **Fixed Supabase trigger**: `handle_new_user()` was crashing all user creation (missing `SET search_path = public` and permissions for `supabase_auth_admin`)
-3. **Created admin account**: nikhouseholdr@gmail.com with confirmed email, admin=true, subscription=active
-4. **Verified login**: Auth working via Supabase anon key
-5. **Verified all 6 functions**: Quiz (1,094 strains), Stripe checkout (live cs_live_ sessions), portal, webhook, anthropic proxy
+### Recent Commits (newest first)
+1. `31dd8ef` — Comprehensive legal hardening across all pages (12 files modified, 1 new)
+2. `3eeffd0` — Add unique colors to predicted effects bars based on effect type
+3. `0019656` — Add live dispensary availability, regional cache, drawer, skip quiz splash
+4. `784f863` — Add DOB age gate, soften medical labels, add disclaimers to cards
+5. `282c73d` — Harden legal protections for launch as free platform
+6. `2338941` — Remove paywall — all results are free for now
 
-### Commits This Session
-1. `bf4cde6` — Rename domain to strain-finder.netlify.app
+### What Was Done (2026-02-24 sessions)
+
+#### Legal Hardening (commit `31dd8ef`) — 12 files, 11 tasks
+1. **LandingPage.jsx** — Softened all medical/scientific claims, added 4-section disclaimer (Important Notice, Medical Disclaimer, Health Warnings, Legal Notice)
+2. **SignupPage.jsx** — Added 2 mandatory checkboxes (ToS agreement + 21+ confirmation) with validation
+3. **AppShell.jsx** — Expanded footer with platform identity + pregnancy warning
+4. **TermsPage.jsx** — Added §17 (AI Content), §18 (Subscription Terms), §19 (Health Warnings)
+5. **PrivacyPage.jsx** — Added Stripe/Anthropic to third-party list, §11 (Not HIPAA), §12 (AI/ML Data)
+6. **PaywallOverlay.jsx** — Softened language + "software access only" footer
+7. **CheckoutSuccessPage.jsx** — "software subscription" + "not a purchase of cannabis products"
+8. **WhatToExpect.jsx** — "Scientifically Predicted" → "Community-Reported"
+9. **StrainCardExpanded.jsx** — Comment update to match
+10. **TerpeneGuide.jsx** — "Medical Research" → "Published Research (Informational)"
+11. **LegalConsent.jsx** (NEW) — Consent gate with disclaimers + 2 checkboxes, wraps ResultsPage
+
+#### Live Dispensary System (commit `0019656`)
+- Regional caching via Netlify Blobs (24h TTL, shared across users)
+- `dispensary-cache.js` Netlify function
+- `useDispensaryAvailability.js` hook (singleton pattern)
+- `AvailabilityBadge.jsx` on StrainCards
+- `DispensaryDrawer.jsx` detail modal
+- `DispensaryFilters.jsx` + `LocationInput.jsx`
+- Enhanced `dispensarySearch.js` (2-layer cache: localStorage 30min + regional 24h)
+- Enhanced `promptBuilder.js` with per-strain pricing prompt
+
+#### Other Features (commits `3eeffd0`, `784f863`, `282c73d`, `2338941`)
+- Unique colors for predicted effects bars
+- DOB age gate (AgeGate.jsx wrapping entire app)
+- Softened medical labels throughout
+- Paywall removed (all results free)
+- Pricing dropped to $0.99/mo
+
+### Three-Layer Consent Architecture
+1. **AgeGate** — DOB verification, blocks entire app, `localStorage: sf_age_verified`
+2. **Signup checkboxes** — Explicit ToS + 21+ consent at account creation
+3. **LegalConsent** — Risk acknowledgment before viewing AI results, `localStorage: sf_legal_consent`
 
 ### Stripe (LIVE MODE)
 - **Account:** acct_1T443qQBM4GMGA1H
-- **Product:** prod_U2EJU1VRpfDuSj ("Strain Finder Premium")
-- **Price:** price_1T49qYQBM4GMGA1H8WRzNkOn ($9.99/month)
-- **Webhook:** we_1T49qgQBM4GMGA1HryppTWQn → https://strain-finder.netlify.app/.netlify/functions/stripe-webhook
+- **Price:** price_1T4BpSQBM4GMGA1Hzd0k3OpJ ($0.99/month)
+- **Paywall:** Disabled (FREE_LIMIT=Infinity in useSubscription.js)
 
 ### Everything Built & Deployed (Cumulative)
-- **1,094 strains** (up from 77) with import scripts + one-command rebuild
-- **Age gate** (21+ verification, localStorage persistence)
-- **Terms of Service** + **Privacy Policy** (full legal pages)
-- **Medical disclaimers** on all pages + footer links
-- **Terms consent** in signup flow
-- **Stripe Billing Portal** function + "Manage Subscription" button
-- **API rate limiting** (10/hr premium, 3/hr free) + **response caching** (30min TTL)
-- **Rate-limit UI** with countdown timer on Dispensary page
-- **RateLimitError** class with Retry-After parsing
-- **Lazy-loaded strains.json** (1.4MB → 23KB initial bundle)
+- **1,094 strains** with import scripts + one-command rebuild
+- **DOB age gate** (21+ verification, localStorage persistence)
+- **Three-layer consent** (AgeGate → Signup → LegalConsent)
+- **Terms of Service** (21 sections) + **Privacy Policy** (14 sections)
+- **Comprehensive legal disclaimers** on all pages + footer
+- **Live dispensary search** with AI-powered availability
+- **Regional dispensary cache** (Netlify Blobs, 24h TTL)
+- **Dispensary drawer** with pricing, deals, hours, directions
+- **Availability badges** on strain cards
+- **Stripe Billing Portal** + subscription management
+- **API rate limiting** (10/hr premium, 3/hr free) + caching (30min TTL)
+- **Rate-limit UI** with countdown timer
+- **Colored effects bars** with type-specific colors
+- **Lazy-loaded strains.json** (1.4MB → 23KB initial)
 - **Vite chunk splitting** (recharts + leaflet vendor chunks)
-- **Security headers** (CSP with wss://, HSTS, X-Frame-Options, etc.)
-- **OG image** + **Twitter card** for social sharing
-- **JSON-LD** structured data (WebApplication schema)
-- **Canonical URL** + **dns-prefetch** for Supabase/Plausible
-- **Apple touch icon** + improved PWA manifest
-- **Global error handlers** (window.onerror, unhandledrejection)
-- **Dynamic Leaflet CSS** (only loads on Dispensary page)
-- **Sitemap.xml** + **robots.txt**
-- **Plausible analytics** script (cookieless, GDPR-compliant)
+- **Security headers** (CSP, HSTS, X-Frame-Options)
+- **OG image** + Twitter card + JSON-LD structured data
+- **Sitemap.xml** + robots.txt + Plausible analytics (cookieless)
 
 ### Nick's Remaining Tasks
-1. ✅ ~~Switch Stripe test → live keys~~ (done)
-2. ✅ ~~Enable Stripe Billing Portal~~ (done)
-3. ✅ ~~Create live Stripe webhook~~ (done via API)
-4. ✅ ~~Set Netlify env vars with live keys~~ (done)
-5. ✅ ~~Make admin account~~ (done)
-6. ✅ ~~Sign up for Plausible.io~~ (done)
-7. **Test real $9.99 payment end-to-end** — Log in, take quiz, hit paywall, complete Stripe checkout with real card
-8. **Update Plausible domain** — Change from old domain to strain-finder.netlify.app in Plausible dashboard
-9. **Eventually: custom domain** — Buy domain, add to Netlify + Stripe + Supabase
+1. ✅ ~~Switch Stripe test → live keys~~
+2. ✅ ~~Enable Stripe Billing Portal~~
+3. ✅ ~~Create live Stripe webhook~~
+4. ✅ ~~Set Netlify env vars with live keys~~
+5. ✅ ~~Make admin account~~
+6. ✅ ~~Sign up for Plausible.io~~
+7. ✅ ~~Legal hardening (comprehensive)~~
+8. ✅ ~~Live dispensary system with caching~~
+9. ✅ ~~Share repos with 2incertus~~
+10. **Update Plausible domain** — Change to mystrainplus.netlify.app in Plausible dashboard
+11. **Eventually: custom domain** — Buy domain, add to Netlify + Stripe + Supabase
+12. **End-to-end payment test** — Real $0.99 charge through Stripe
 
 ### Previous Sessions
+- **2026-02-24 (latest)**: Legal hardening (12 files), dispensary availability, effects bars, age gate
 - **2026-02-23 (final)**: Domain rename, trigger fix, admin account creation
 - **2026-02-23 (evening)**: 429 handling, bundle optimization, security headers
 - **2026-02-23 (afternoon)**: Strain Registry (1,094 strains), Stripe portal, rate limiting, SEO, analytics

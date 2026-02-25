@@ -453,7 +453,7 @@ function PricingSection({ onGetStarted }) {
     // Logged-in free user → Stripe Checkout
     setUpgradeLoading(true)
     try {
-      const res = await fetch('/.netlify/functions/stripe-checkout', {
+      const res = await fetch('/api/stripe-checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: user.email, userId: user.id, returnUrl: window.location.origin + '/checkout-success' }),

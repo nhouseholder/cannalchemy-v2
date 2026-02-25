@@ -1,11 +1,14 @@
 /**
- * Netlify Edge Function — Full quiz recommendation engine.
+ * Cloudflare Pages Function — Full quiz recommendation engine.
  *
  * Ports the Python backend's 5-layer matching engine to JavaScript,
  * with all 77 strains + receptor pharmacology embedded.
- * No external database needed — runs entirely on Netlify's edge.
+ * No external database needed — runs entirely on Cloudflare's edge.
+ *
+ * Includes KV-based result caching (1h TTL) — the engine is deterministic,
+ * so identical quiz inputs always produce identical outputs.
  */
-import strainData from './strain-data.js';
+import strainData from '../../../_data/strain-data.js';
 
 // ============================================================
 // Effect Mapper (from effect_mapper.py)
@@ -285,7 +288,6 @@ function buildForumAnalysis(strain) {
   const posCount = positive.reduce((s, e) => s + (e.reports || 0), 0);
   const sentiment = total > 0 ? Math.round((posCount / total) * 100) / 10 : 5.0;
 
-  // Include ALL positive effects so EffectVerification can match user's desired effects
   const pros = positive.map(e => {
     const pct = Math.min(Math.round((e.reports / Math.max(total, 1)) * 100), 95);
     return { effect: canonicalToDisplay(e.name), pct, baseline: Math.max(pct - 15, 20) };
@@ -305,7 +307,6 @@ function buildForumAnalysis(strain) {
 }
 
 function md5Simple(str) {
-  // Simple hash for deterministic variation (not cryptographic)
   let hash = 0;
   for (let i = 0; i < str.length; i++) {
     hash = ((hash << 5) - hash) + str.charCodeAt(i);
@@ -389,7 +390,6 @@ function buildWhyMatch(strain, desiredCanonicals) {
     const molInfo = FRIENDLY_MOLECULE[mol.name];
     const recInfo = FRIENDLY_RECEPTOR[receptor] || 'receptors in your body';
 
-    // Find matched effect
     let matchedEffect = null;
     for (const e of desiredCanonicals) {
       if ((EFFECT_RECEPTOR_PATHWAYS[e] || '').includes(receptor)) {
@@ -513,15 +513,17 @@ function buildStrainResult(strain, matchPct, desiredCanonicals) {
 }
 
 // ============================================================
-// Main Handler
+// Main Handler — Cloudflare Pages Function
 // ============================================================
-export default async (req) => {
-  if (req.method === 'OPTIONS') {
-    return new Response(null, { status: 204, headers: { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Methods': 'POST', 'Access-Control-Allow-Headers': 'Content-Type' } });
-  }
-  if (req.method !== 'POST') {
-    return new Response(JSON.stringify({ error: 'Method not allowed' }), { status: 405, headers: { 'Content-Type': 'application/json' } });
-  }
+export async function onRequestOptions() {
+  return new Response(null, {
+    status: 204,
+    headers: { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Methods': 'POST', 'Access-Control-Allow-Headers': 'Content-Type' },
+  });
+}
+
+export async function onRequestPost(context) {
+  const { request: req, env } = context
 
   let quiz;
   try { quiz = await req.json(); } catch {
@@ -531,6 +533,30 @@ export default async (req) => {
   const effects = quiz.effects || [];
   if (!effects.length) {
     return new Response(JSON.stringify({ error: 'At least one effect must be selected' }), { status: 400, headers: { 'Content-Type': 'application/json' } });
+  }
+
+  // ── KV cache check (deterministic engine — same inputs = same outputs) ──
+  const quizCacheKey = `quiz:${md5Simple(JSON.stringify({
+    effects: (quiz.effects || []).slice().sort(),
+    effectRanking: quiz.effectRanking || [],
+    avoidEffects: (quiz.avoidEffects || []).slice().sort(),
+    thcPreference: quiz.thcPreference || 'no_preference',
+    cbdPreference: quiz.cbdPreference || 'no_preference',
+    subtype: quiz.subtype || 'no_preference',
+    consumptionMethod: quiz.consumptionMethod || 'no_preference',
+    budget: quiz.budget || 'no_preference',
+  }))}`
+
+  if (env?.CACHE) {
+    try {
+      const cached = await env.CACHE.get(quizCacheKey, 'json')
+      if (cached) {
+        return new Response(JSON.stringify(cached), {
+          status: 200,
+          headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*', 'X-Cache': 'HIT' },
+        })
+      }
+    } catch { /* cache miss, compute fresh */ }
   }
 
   const desiredCanonicals = mapQuizEffects(quiz.effectRanking?.length ? quiz.effectRanking : effects);
@@ -602,16 +628,20 @@ export default async (req) => {
     subtype: quiz.subtype || 'hybrid',
   };
 
-  return new Response(JSON.stringify({
+  const responseData = {
     strains: mainResults,
     aiPicks: aiPicks.slice(0, 2),
     idealProfile,
-  }), {
-    status: 200,
-    headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
-  });
-};
+  }
 
-export const config = {
-  path: '/api/v1/quiz/recommend',
-};
+  // Store in KV cache (1h TTL — deterministic engine)
+  if (env?.CACHE) {
+    env.CACHE.put(quizCacheKey, JSON.stringify(responseData), { expirationTtl: 3600 })
+      .catch(() => {}) // fire-and-forget
+  }
+
+  return new Response(JSON.stringify(responseData), {
+    status: 200,
+    headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*', 'X-Cache': 'MISS' },
+  });
+}
