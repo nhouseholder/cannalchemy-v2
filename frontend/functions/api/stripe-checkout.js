@@ -1,7 +1,7 @@
 // Cloudflare Pages Function: Create Stripe Checkout Session
 // POST /api/stripe-checkout
 
-const SITE_URL = 'https://mystrainplus.pages.dev'
+const SITE_URL = 'https://mystrainai.pages.dev'
 
 function corsHeaders() {
   return {

@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-const BASE_TITLE = 'MyStrain+'
+const BASE_TITLE = 'MyStrainAi'
 
 export default function usePageTitle(title) {
   useEffect(() => {
